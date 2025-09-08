@@ -1,0 +1,1531 @@
+[{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a61"
+  },
+  "product_id": "AMD0XS",
+  "product_name": "AAROHI MAXI DRESS",
+  "category": "Maxi dress",
+  "size": "XS",
+  "colour": "Lavender",
+  "mrp": 1499,
+  "sell_price": 999,
+  "gender": "Women",
+  "images": [
+    "/images/AAROHI MAXI DRESS1.webp",
+    "/images/AAROHI MAXI DRESS2.webp",
+    "/images/AAROHI MAXI DRESS3.webp",
+    "/images/AAROHI MAXI DRESS4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a62"
+  },
+  "product_id": "AMD00S",
+  "product_name": "AAROHI MAXI DRESS",
+  "category": "Maxi dress",
+  "size": "S",
+  "colour": "Lavender",
+  "mrp": 1499,
+  "sell_price": 999,
+  "gender": "Women",
+  "images": [
+    "/images/AAROHI MAXI DRESS1.webp",
+    "/images/AAROHI MAXI DRESS2.webp",
+    "/images/AAROHI MAXI DRESS3.webp",
+    "/images/AAROHI MAXI DRESS4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a63"
+  },
+  "product_id": "AMD00M",
+  "product_name": "AAROHI MAXI DRESS",
+  "category": "Maxi dress",
+  "size": "M",
+  "colour": "Lavender",
+  "mrp": 1499,
+  "sell_price": 999,
+  "gender": "Women",
+  "images": [
+    "/images/AAROHI MAXI DRESS1.webp",
+    "/images/AAROHI MAXI DRESS2.webp",
+    "/images/AAROHI MAXI DRESS3.webp",
+    "/images/AAROHI MAXI DRESS4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a64"
+  },
+  "product_id": "AMD00L",
+  "product_name": "AAROHI MAXI DRESS",
+  "category": "Maxi dress",
+  "size": "L",
+  "colour": "Lavender",
+  "mrp": 1499,
+  "sell_price": 1049,
+  "gender": "Women",
+  "images": [
+    "/images/AAROHI MAXI DRESS1.webp",
+    "/images/AAROHI MAXI DRESS2.webp",
+    "/images/AAROHI MAXI DRESS3.webp",
+    "/images/AAROHI MAXI DRESS4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a65"
+  },
+  "product_id": "AMD0XL",
+  "product_name": "AAROHI MAXI DRESS",
+  "category": "Maxi dress",
+  "size": "XL",
+  "colour": "Lavender",
+  "mrp": 1499,
+  "sell_price": 1099,
+  "gender": "Women",
+  "images": [
+    "/images/AAROHI MAXI DRESS1.webp",
+    "/images/AAROHI MAXI DRESS2.webp",
+    "/images/AAROHI MAXI DRESS3.webp",
+    "/images/AAROHI MAXI DRESS4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a66"
+  },
+  "product_id": "ACKXXS",
+  "product_name": "ANVITHA CORSET KURTI",
+  "category": "Long Kurti",
+  "size": "XXS",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 749,
+  "gender": "Women",
+  "images": [
+    "/images/ANVITHA CORSET KURT 1.webp",
+    "/images/ANVITHA CORSET KURT 2.webp",
+    "/images/ANVITHA CORSET KURT 3.webp",
+    "/images/ANVITHA CORSET KURT 4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a67"
+  },
+  "product_id": "ACK0XS",
+  "product_name": "ANVITHA CORSET KURTI",
+  "category": "Long Kurti",
+  "size": "XS",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price ": 749,
+  "gender": "Women",
+  "images": [
+    "/images/ANVITHA CORSET KURT 1.webp",
+    "/images/ANVITHA CORSET KURT 2.webp",
+    "/images/ANVITHA CORSET KURT 3.webp",
+    "/images/ANVITHA CORSET KURT 4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a68"
+  },
+  "product_id": "ACK00S",
+  "product_name": "ANVITHA CORSET KURTI",
+  "category": "Long Kurti",
+  "size": "S",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 749,
+  "gender": "Women",
+  "images": [
+    "/images/ANVITHA CORSET KURT 1.webp",
+    "/images/ANVITHA CORSET KURT 2.webp",
+    "/images/ANVITHA CORSET KURT 3.webp",
+    "/images/ANVITHA CORSET KURT 4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a69"
+  },
+  "product_id": "ACK00M",
+  "product_name": "ANVITHA CORSET KURTI",
+  "category": "Long Kurti",
+  "size": "M",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 749,
+  "gender": "Women",
+  "images": [
+    "/images/ANVITHA CORSET KURT 1.webp",
+    "/images/ANVITHA CORSET KURT 2.webp",
+    "/images/ANVITHA CORSET KURT 3.webp",
+    "/images/ANVITHA CORSET KURT 4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a6a"
+  },
+  "product_id": "ACK00L",
+  "product_name": "ANVITHA CORSET KURTI",
+  "category": "Long Kurti",
+  "size": "L",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 769,
+  "gender": "Women",
+  "images": [
+    "/images/ANVITHA CORSET KURT 1.webp",
+    "/images/ANVITHA CORSET KURT 2.webp",
+    "/images/ANVITHA CORSET KURT 3.webp",
+    "/images/ANVITHA CORSET KURT 4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a6b"
+  },
+  "product_id": "ACK0XL",
+  "product_name": "ANVITHA CORSET KURTI",
+  "category": "Long Kurti",
+  "size": "XL",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 769,
+  "gender": "Women",
+  "images": [
+    "/images/ANVITHA CORSET KURT 1.webp",
+    "/images/ANVITHA CORSET KURT 2.webp",
+    "/images/ANVITHA CORSET KURT 3.webp",
+    "/images/ANVITHA CORSET KURT 4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a6c"
+  },
+  "product_id": "APKXXS",
+  "product_name": "APSARA KURTI",
+  "category": "Short Kurti",
+  "size": "XXS",
+  "colour": "Pink",
+  "mrp": 749,
+  "sell_price": 749,
+  "gender": "Women",
+  "images": [
+    "/images/ANVITHA CORSET KURT 1.webp",
+    "/images/ANVITHA CORSET KURT 2.webp",
+    "/images/ANVITHA CORSET KURT 3.webp",
+    "/images/ANVITHA CORSET KURT 4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a6d"
+  },
+  "product_id": "APK0XS",
+  "product_name": "APSARA KURTI",
+  "category": "Short Kurti",
+  "size": "XS",
+  "colour": "Pink",
+  "mrp": 749,
+  "sell_price": 749,
+  "gender": "Women",
+  "images": [
+    "/images/APSARA KURTI 1.webp",
+    "/images/Apsara_kurti.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a6e"
+  },
+  "product_id": "APK00S",
+  "product_name": "APSARA KURTI",
+  "category": "Short Kurti",
+  "size": "S",
+  "colour": "Pink",
+  "mrp": 759,
+  "sell_price": 759,
+  "gender": "Women",
+  "images": [
+    "/images/APSARA KURTI 1.webp",
+    "/images/Apsara_kurti.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a6f"
+  },
+  "product_id": "APK00M",
+  "product_name": "APSARA KURTI",
+  "category": "Short Kurti",
+  "size": "M",
+  "colour": "Pink",
+  "mrp": 769,
+  "sell_price": 769,
+  "gender": "Women",
+  "images": [
+    "/images/APSARA KURTI 1.webp",
+    "/images/Apsara_kurti.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a70"
+  },
+  "product_id": "APK00L",
+  "product_name": "APSARA KURTI",
+  "category": "Short Kurti",
+  "size": "L",
+  "colour": "Pink",
+  "mrp": 789,
+  "sell_price": 789,
+  "gender": "Women",
+  "images": [
+    "/images/APSARA KURTI 1.webp",
+    "/images/Apsara_kurti.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a71"
+  },
+  "product_id": "APK0XL",
+  "product_name": "APSARA KURTI",
+  "category": "Short Kurti",
+  "size": "XL",
+  "colour": "Pink",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Women",
+  "images": [
+    "/images/APSARA KURTI 1.webp",
+    "/images/Apsara_kurti.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a72"
+  },
+  "product_id": "BHKXXS",
+  "product_name": "BLUSH HOUR KURTI",
+  "category": "Short Kurti",
+  "size": "XXS",
+  "colour": "Red",
+  "mrp": 649,
+  "sell_price": 649,
+  "gender": "Women",
+  "images": [
+    "/images/BLUSH HOUR KURTI.webp",
+    "/images/BLUSH HOUR KURTI2.webp",
+    "/images/BLUSH HOUR KURTI3.webp",
+    "/images/BLUSH HOUR KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a73"
+  },
+  "product_id": "BHK0XS",
+  "product_name": "BLUSH HOUR KURTI",
+  "category": "Short Kurti",
+  "size": "XS",
+  "colour": "Red",
+  "mrp": 669,
+  "sell_price": 669,
+  "gender": "Women",
+  "images": [
+    "/images/BLUSH HOUR KURTI.webp",
+    "/images/BLUSH HOUR KURTI2.webp",
+    "/images/BLUSH HOUR KURTI3.webp",
+    "/images/BLUSH HOUR KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a74"
+  },
+  "product_id": "BHK00S",
+  "product_name": "BLUSH HOUR KURTI",
+  "category": "Short Kurti",
+  "size": "S",
+  "colour": "Red",
+  "mrp": 669,
+  "sell_price": 669,
+  "gender": "Women",
+  "images": [
+    "/images/BLUSH HOUR KURTI.webp",
+    "/images/BLUSH HOUR KURTI2.webp",
+    "/images/BLUSH HOUR KURTI3.webp",
+    "/images/BLUSH HOUR KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a75"
+  },
+  "product_id": "BHK00M",
+  "product_name": "BLUSH HOUR KURTI",
+  "category": "Short Kurti",
+  "size": "M",
+  "colour": "Red",
+  "mrp": 679,
+  "sell_price": 679,
+  "gender": "Women",
+  "images": [
+    "/images/BLUSH HOUR KURTI.webp",
+    "/images/BLUSH HOUR KURTI2.webp",
+    "/images/BLUSH HOUR KURTI3.webp",
+    "/images/BLUSH HOUR KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a76"
+  },
+  "product_id": "BHK00L",
+  "product_name": "BLUSH HOUR KURTI",
+  "category": "Short Kurti",
+  "size": "L",
+  "colour": "Red",
+  "mrp": 699,
+  "sell_price": 699,
+  "gender": "Women",
+  "images": [
+    "/images/BLUSH HOUR KURTI.webp",
+    "/images/BLUSH HOUR KURTI2.webp",
+    "/images/BLUSH HOUR KURTI3.webp",
+    "/images/BLUSH HOUR KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a77"
+  },
+  "product_id": "BHK0XL",
+  "product_name": "BLUSH HOUR KURTI",
+  "category": "Short Kurti",
+  "size": "XL",
+  "colour": "Red",
+  "mrp": 699,
+  "sell_price": 699,
+  "gender": "Women",
+  "images": [
+    "/images/BLUSH HOUR KURTI.webp",
+    "/images/BLUSH HOUR KURTI2.webp",
+    "/images/BLUSH HOUR KURTI3.webp",
+    "/images/BLUSH HOUR KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a78"
+  },
+  "product_id": "GEKXXS",
+  "product_name": "GLOWUP ERA KURTI",
+  "category": "Short Kurti",
+  "size": "XXS",
+  "colour": "Black and white",
+  "mrp": 649,
+  "sell_price": 649,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04671_1.png",
+    "/images/DSC04656_1.png",
+    "/images/GLOWUP ERA KURTI2.webp",
+    "/images/GLOWUP ERA KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a79"
+  },
+  "product_id": "GEK0XS",
+  "product_name": "GLOWUP ERA KURTI",
+  "category": "Short Kurti",
+  "size": "XS",
+  "colour": "Black and white",
+  "mrp": 649,
+  "sell_price": 649,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04671_1.png",
+    "/images/DSC04656_1.png",
+    "/images/GLOWUP ERA KURTI2.webp",
+    "/images/GLOWUP ERA KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a7a"
+  },
+  "product_id": "GEK00S",
+  "product_name": "GLOWUP ERA KURTI",
+  "category": "Short Kurti",
+  "size": "S",
+  "colour": "Black and white",
+  "mrp": 649,
+  "sell_price": 649,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04671_1.png",
+    "/images/DSC04656_1.png",
+    "/images/GLOWUP ERA KURTI2.webp",
+    "/images/GLOWUP ERA KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a7b"
+  },
+  "product_id": "GEK00M",
+  "product_name": "GLOWUP ERA KURTI",
+  "category": "Short Kurti",
+  "size": "M",
+  "colour": "Black and white",
+  "mrp": 659,
+  "sell_price": 659,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04671_1.png",
+    "/images/DSC04656_1.png",
+    "/images/GLOWUP ERA KURTI2.webp",
+    "/images/GLOWUP ERA KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a7c"
+  },
+  "product_id": "GEK00L",
+  "product_name": "GLOWUP ERA KURTI",
+  "category": "Short Kurti",
+  "size": "L",
+  "colour": "Black and white",
+  "mrp": 679,
+  "sell_price": 679,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04671_1.png",
+    "/images/DSC04656_1.png",
+    "/images/GLOWUP ERA KURTI2.webp",
+    "/images/GLOWUP ERA KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a7d"
+  },
+  "product_id": "GEK0XL",
+  "product_name": "GLOWUP ERA KURTI",
+  "category": "Short Kurti",
+  "size": "XL",
+  "colour": "Black and white",
+  "mrp": 699,
+  "sell_price": 699,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04671_1.png",
+    "/images/DSC04656_1.png",
+    "/images/GLOWUP ERA KURTI2.webp",
+    "/images/GLOWUP ERA KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a7e"
+  },
+  "product_id": "NOKXXS",
+  "product_name": "NOOR KURTI",
+  "category": "Short Kurti",
+  "size": "XXS",
+  "colour": "White",
+  "mrp": 899,
+  "sell_price": 669,
+  "gender": "Women",
+  "images": [
+    "/imagesDSC04207_1.png",
+    "/images/DSC04216_1.png",
+    "/images/NOOR KURTI1.webp",
+    "/images/NOOR KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a7f"
+  },
+  "product_id": "NOK0XS",
+  "product_name": "NOOR KURTI",
+  "category": "Short Kurti",
+  "size": "XS",
+  "colour": "White",
+  "mrp": 899,
+  "sell_price": 679,
+  "gender": "Women",
+  "images": [
+    "/imagesDSC04207_1.png",
+    "/images/DSC04216_1.png",
+    "/images/NOOR KURTI1.webp",
+    "/images/NOOR KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a80"
+  },
+  "product_id": "NOK00S",
+  "product_name": "NOOR KURTI",
+  "category": "Short Kurti",
+  "size": "S",
+  "colour": "White",
+  "mrp": 899,
+  "sell_price": 689,
+  "gender": "Women",
+  "images": [
+    "/imagesDSC04207_1.png",
+    "/images/DSC04216_1.png",
+    "/images/NOOR KURTI1.webp",
+    "/images/NOOR KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a81"
+  },
+  "product_id": "NOK00M",
+  "product_name": "NOOR KURTI",
+  "category": "Short Kurti",
+  "size": "M",
+  "colour": "White",
+  "mrp": 899,
+  "sell_price": 699,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04207_1.png",
+    "/images/DSC04216_1.png",
+    "/images/NOOR KURTI1.webp",
+    "/images/NOOR KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a82"
+  },
+  "product_id": "NOK00L",
+  "product_name": "NOOR KURTI",
+  "category": "Short Kurti",
+  "size": "L",
+  "colour": "White",
+  "mrp": 899,
+  "sell_price": 719,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04207_1.png",
+    "/images/DSC04216_1.png",
+    "/images/NOOR KURTI1.webp",
+    "/images/NOOR KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a83"
+  },
+  "product_id": "NOK0XL",
+  "product_name": "NOOR KURTI",
+  "category": "Short Kurti",
+  "size": "XL",
+  "colour": "White",
+  "mrp": 899,
+  "sell_price": 739,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04207_1.png",
+    "/images/DSC04216_1.png",
+    "/images/NOOR KURTI1.webp",
+    "/images/NOOR KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a84"
+  },
+  "product_id": "RAKXXS",
+  "product_name": "RAAHI KURTI",
+  "category": "Long Kurti",
+  "size": "XXS",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 629,
+  "gender": "Women",
+  "images": [
+    "/images/DSC05074_1.png",
+    "/images/DSC05094_1.png",
+    "/images/RAAHI KURTI1.webp",
+    "/images/RAAHI KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a85"
+  },
+  "product_id": "RAK0XS",
+  "product_name": "RAAHI KURTI",
+  "category": "Long Kurti",
+  "size": "XS",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 629,
+  "gender": "Women",
+  "images": [
+    "/images/DSC05074_1.png",
+    "/images/DSC05094_1.png",
+    "/images/RAAHI KURTI1.webp",
+    "/images/RAAHI KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a86"
+  },
+  "product_id": "RAK00S",
+  "product_name": "RAAHI KURTI",
+  "category": "Long Kurti",
+  "size": "S",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 639,
+  "gender": "Women",
+  "images": [
+    "/images/DSC05074_1.png",
+    "/images/DSC05094_1.png",
+    "/images/RAAHI KURTI1.webp",
+    "/images/RAAHI KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a87"
+  },
+  "product_id": "RAK00M",
+  "product_name": "RAAHI KURTI",
+  "category": "Long Kurti",
+  "size": "M",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 639,
+  "gender": "Women",
+  "images": [
+    "/images/DSC05074_1.png",
+    "/images/DSC05094_1.png",
+    "/images/RAAHI KURTI1.webp",
+    "/images/RAAHI KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a88"
+  },
+  "product_id": "RAK00L",
+  "product_name": "RAAHI KURTI",
+  "category": "Long Kurti",
+  "size": "L",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 659,
+  "gender": "Women",
+  "images": [
+    "/images/DSC05074_1.png",
+    "/images/DSC05094_1.png",
+    "/images/RAAHI KURTI1.webp",
+    "/images/RAAHI KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a89"
+  },
+  "product_id": "RAK0XL",
+  "product_name": "RAAHI KURTI",
+  "category": "Long Kurti",
+  "size": "XL",
+  "colour": "Brown",
+  "mrp": 999,
+  "sell_price": 689,
+  "gender": "Women",
+  "images": [
+    "/images/DSC05074_1.png",
+    "/images/DSC05094_1.png",
+    "/images/RAAHI KURTI1.webp",
+    "/images/RAAHI KURTI2.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a8a"
+  },
+  "product_id": "REKXXS",
+  "product_name": "REBEL KURTI",
+  "category": "Short Kurti",
+  "size": "XXS",
+  "colour": "Black and blue",
+  "mrp": 899,
+  "sell_price": 649,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04590_1_ab213a00-bf86-4fbd-8dcf-7a88eba4a155_6.png",
+    "/images/DSC04634.png",
+    "/images/REBELKURTI2.webp",
+    "/images/REBELKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a8b"
+  },
+  "product_id": "REK0XS",
+  "product_name": "REBEL KURTI",
+  "category": "Short Kurti",
+  "size": "XS",
+  "colour": "Black and blue",
+  "mrp": 899,
+  "sell_price": 649,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04590_1_ab213a00-bf86-4fbd-8dcf-7a88eba4a155_6.png",
+    "/images/DSC04634.png",
+    "/images/REBELKURTI2.webp",
+    "/images/REBELKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a8c"
+  },
+  "product_id": "REK00S",
+  "product_name": "REBEL KURTI",
+  "category": "Short Kurti",
+  "size": "S",
+  "colour": "Black and blue",
+  "mrp": 899,
+  "sell_price": 659,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04590_1_ab213a00-bf86-4fbd-8dcf-7a88eba4a155_6.png",
+    "/images/DSC04634.png",
+    "/images/REBELKURTI2.webp",
+    "/images/REBELKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a8d"
+  },
+  "product_id": "REK00M",
+  "product_name": "REBEL KURTI",
+  "category": "Short Kurti",
+  "size": "M",
+  "colour": "Black and blue",
+  "mrp": 899,
+  "sell_price": 669,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04590_1_ab213a00-bf86-4fbd-8dcf-7a88eba4a155_6.png",
+    "/images/DSC04634.png",
+    "/images/REBELKURTI2webp",
+    "/images/REBELKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a8e"
+  },
+  "product_id": "REK00L",
+  "product_name": "REBEL KURTI",
+  "category": "Short Kurti",
+  "size": "L",
+  "colour": "Black and blue",
+  "mrp": 899,
+  "sell_price": 689,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04590_1_ab213a00-bf86-4fbd-8dcf-7a88eba4a155_6.png",
+    "/images/DSC04634.png",
+    "/images/REBELKURTI2.webp",
+    "/images/REBELKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a8f"
+  },
+  "product_id": "REK0XL",
+  "product_name": "REBEL KURTI",
+  "category": "Short Kurti",
+  "size": "XL",
+  "colour": "Black and blue",
+  "mrp": 899,
+  "sell_price": 689,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04590_1_ab213a00-bf86-4fbd-8dcf-7a88eba4a155_6.png",
+    "/images/DSC04634.png",
+    "/images/REBELKURTI2.webp",
+    "/images/REBELKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a90"
+  },
+  "product_id": "RUHXXS",
+  "product_name": "RUHANI KURTI",
+  "category": "Short Kurti",
+  "size": "XXS",
+  "colour": "Green",
+  "mrp": 716,
+  "sell_price": 716,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04243.png",
+    "/images/DSC04233_6.png",
+    "/images/RUHANI KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a91"
+  },
+  "product_id": "RUH0XS",
+  "product_name": "RUHANI KURTI",
+  "category": "Short Kurti",
+  "size": "XS",
+  "colour": "Green",
+  "mrp": 719,
+  "sell_price": 719,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04243.png",
+    "/images/DSC04233_6.png",
+    "/images/RUHANI KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a92"
+  },
+  "product_id": "RUH00S",
+  "product_name": "RUHANI KURTI",
+  "category": "Short Kurti",
+  "size": "S",
+  "colour": "Green",
+  "mrp": 729,
+  "sell_price": 729,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04243.png",
+    "/images/DSC04233_6.png",
+    "/images/RUHANI KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a93"
+  },
+  "product_id": "RUH00M",
+  "product_name": "RUHANI KURTI",
+  "category": "Short Kurti",
+  "size": "M",
+  "colour": "Green",
+  "mrp": 739,
+  "sell_price": 739,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04243.png",
+    "/images/DSC04233_6.png",
+    "/images/RUHANI KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a94"
+  },
+  "product_id": "RUH00L",
+  "product_name": "RUHANI KURTI",
+  "category": "Short Kurti",
+  "size": "L",
+  "colour": "Green",
+  "mrp": 759,
+  "sell_price": 759,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04243.png",
+    "/images/DSC04233_6.png",
+    "/images/RUHANI KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a95"
+  },
+  "product_id": "RUH0XL",
+  "product_name": "RUHANI KURTI",
+  "category": "Short Kurti",
+  "size": "XL",
+  "colour": "Green",
+  "mrp": 789,
+  "sell_price": 789,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04243.png",
+    "/images/DSC04233_6.png",
+    "/images/RUHANI KURTI1.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a96"
+  },
+  "product_id": "VAKXXS",
+  "product_name": "VAANI KURTI",
+  "category": "Short Kurti",
+  "size": "XXS",
+  "colour": "Yellow",
+  "mrp": 949,
+  "sell_price": 799,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04917_2.png",
+    "/images/DSC05023_1.png",
+    "/images/VAANIKURTI2.webp",
+    "/images/VAANIKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a97"
+  },
+  "product_id": "VAK0XS",
+  "product_name": "VAANI KURTI",
+  "category": "Short Kurti",
+  "size": "XS",
+  "colour": "Yellow",
+  "mrp": 949,
+  "sell_price": 799,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04917_2.png",
+    "/images/DSC05023_1.png",
+    "/images/VAANIKURTI2.webp",
+    "/images/VAANIKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a98"
+  },
+  "product_id": "VAK00S",
+  "product_name": "VAANI KURTI",
+  "category": "Short Kurti",
+  "size": "S",
+  "colour": "Yellow",
+  "mrp": 949,
+  "sell_price": 799,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04917_2.png",
+    "/images/DSC05023_1.png",
+    "/images/VAANIKURTI2.webp",
+    "/images/VAANIKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a99"
+  },
+  "product_id": "VAK00M",
+  "product_name": "VAANI KURTI",
+  "category": "Short Kurti",
+  "size": "M",
+  "colour": "Yellow",
+  "mrp": 949,
+  "sell_price": 799,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04917_2.png",
+    "/images/DSC05023_1.png",
+    "/images/VAANIKURTI2.webp",
+    "/images/VAANIKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a9a"
+  },
+  "product_id": "VAK00L",
+  "product_name": "VAANI KURTI",
+  "category": "Short Kurti",
+  "size": "L",
+  "colour": "Yellow",
+  "mrp": 949,
+  "sell_price": 809,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04917_2.png",
+    "/images/DSC05023_1.png",
+    "/images/VAANIKURTI2.webp",
+    "/images/VAANIKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a9b"
+  },
+  "product_id": "VAK0XL",
+  "product_name": "VAANI KURTI",
+  "category": "Short Kurti",
+  "size": "XL",
+  "colour": "Yellow",
+  "mrp": 949,
+  "sell_price": 809,
+  "gender": "Women",
+  "images": [
+    "/images/DSC04917_2.png",
+    "/images/DSC05023_1.png",
+    "/images/VAANIKURTI2.webp",
+    "/images/VAANIKURTI3.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a9c"
+  },
+  "product_id": "VEKXXS",
+  "product_name": "VEDIKA KURTI",
+  "category": "Long Kurti",
+  "size": "XXS",
+  "colour": "Lavender",
+  "mrp": 1199,
+  "sell_price": 799,
+  "gender": "Women",
+  "images": [
+    "/images/VEDIKA KURTI1.webp",
+    "/images/VEDIKA KURTI2.webp",
+    "/images/VEDIKA KURTI3.webp",
+    "/images/VEDIKA KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a9d"
+  },
+  "product_id": "VEK0XS",
+  "product_name": "VEDIKA KURTI",
+  "category": "Long Kurti",
+  "size": "XS",
+  "colour": "Lavender",
+  "mrp": 1199,
+  "sell_price": 799,
+  "gender": "Women",
+  "images": [
+    "/images/VEDIKA KURTI1.webp",
+    "/images/VEDIKA KURTI2.webp",
+    "/images/VEDIKA KURTI3.webp",
+    "/images/VEDIKA KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a9e"
+  },
+  "product_id": "VEK00S",
+  "product_name": "VEDIKA KURTI",
+  "category": "Long Kurti",
+  "size": "S",
+  "colour": "Lavender",
+  "mrp": 1199,
+  "sell_price": 809,
+  "gender": "Women",
+  "images": [
+    "/images/VEDIKA KURTI1.webp",
+    "/images/VEDIKA KURTI2.webp",
+    "/images/VEDIKA KURTI3.webp",
+    "/images/VEDIKA KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634a9f"
+  },
+  "product_id": "VEK00M",
+  "product_name": "VEDIKA KURTI",
+  "category": "Long Kurti",
+  "size": "M",
+  "colour": "Lavender",
+  "mrp": 1199,
+  "sell_price": 829,
+  "gender": "Women",
+  "images": [
+    "/images/VEDIKA KURTI1.webp",
+    "/images/VEDIKA KURTI2.webp",
+    "/images/VEDIKA KURTI3.webp",
+    "/images/VEDIKA KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aa0"
+  },
+  "product_id": "VEK00L",
+  "product_name": "VEDIKA KURTI",
+  "category": "Long Kurti",
+  "size": "L",
+  "colour": "Lavender",
+  "mrp": 1199,
+  "sell_price": 849,
+  "gender": "Women",
+  "images": [
+    "/images/VEDIKA KURTI1.webp",
+    "/images/VEDIKA KURTI2.webp",
+    "/images/VEDIKA KURTI3.webp",
+    "/images/VEDIKA KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aa1"
+  },
+  "product_id": "VEK0XL",
+  "product_name": "VEDIKA KURTI",
+  "category": "Long Kurti",
+  "size": "XL",
+  "colour": "Lavender",
+  "mrp": 1199,
+  "sell_price": 859,
+  "gender": "Women",
+  "images": [
+    "/images/VEDIKA KURTI1.webp",
+    "/images/VEDIKA KURTI2.webp",
+    "/images/VEDIKA KURTI3.webp",
+    "/images/VEDIKA KURTI4.webp"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aa2"
+  },
+  "product_id": "BWCF0XS",
+  "product_name": " Black & white classic Full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "XS",
+  "colour": "Black & white",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aa3"
+  },
+  "product_id": "BWCF00S",
+  "product_name": " Black & white classic Full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "S",
+  "colour": "Black & white",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aa4"
+  },
+  "product_id": "BWCF00M",
+  "product_name": " Black & white classic Full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "M",
+  "colour": "Black & white",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aa5"
+  },
+  "product_id": "BWCF00L",
+  "product_name": " Black & white classic Full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "L",
+  "colour": "Black & white",
+  "mrp": 829,
+  "sell_price": 829,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aa6"
+  },
+  "product_id": "BWCF0XL",
+  "product_name": " Black & white classic Full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "XL",
+  "colour": "Black & white",
+  "mrp": 879,
+  "sell_price": 879,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aa7"
+  },
+  "product_id": "BWCFXXL",
+  "product_name": " Black & white classic Full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "XXL",
+  "colour": "Black & white",
+  "mrp": 879,
+  "sell_price": 879,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aa8"
+  },
+  "product_id": "BPCF0XS",
+  "product_name": "Blush Pink classic full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "XS",
+  "colour": "Blush Pink",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aa9"
+  },
+  "product_id": "BPCF00S",
+  "product_name": "Blush Pink classic full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "S",
+  "colour": "Blush Pink",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aaa"
+  },
+  "product_id": "BPCF00M",
+  "product_name": "Blush Pink classic full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "M",
+  "colour": "Blush Pink",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aab"
+  },
+  "product_id": "BPCF00L",
+  "product_name": "Blush Pink classic full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "L",
+  "colour": "Blush Pink",
+  "mrp": 849,
+  "sell_price": 849,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aac"
+  },
+  "product_id": "BPCF0XL",
+  "product_name": "Blush Pink classic full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "XL",
+  "colour": "Blush Pink",
+  "mrp": 849,
+  "sell_price": 849,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aad"
+  },
+  "product_id": "BPCFXXL",
+  "product_name": "Blush Pink classic full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "XXL",
+  "colour": "Blush Pink",
+  "mrp": 899,
+  "sell_price": 899,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aae"
+  },
+  "product_id": "TBJF0XS",
+  "product_name": "The banjaara full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "XS",
+  "colour": "Blue & black ",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634aaf"
+  },
+  "product_id": "TBJF00S",
+  "product_name": "The banjaara full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "S",
+  "colour": "Blue & black ",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634ab0"
+  },
+  "product_id": "TBJF00M",
+  "product_name": "The banjaara full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "M",
+  "colour": "Blue & black ",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634ab1"
+  },
+  "product_id": "TBJF00L",
+  "product_name": "The banjaara full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "L",
+  "colour": "Blue & black ",
+  "mrp": 829,
+  "sell_price": 829,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634ab2"
+  },
+  "product_id": "TBJF0XL",
+  "product_name": "The banjaara full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "XL",
+  "colour": "Blue & black ",
+  "mrp": 879,
+  "sell_price": 879,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634ab3"
+  },
+  "product_id": "TBJFXXL",
+  "product_name": "The banjaara full sleeves shirt",
+  "category": "Full sleeves shirt",
+  "size": "XXL",
+  "colour": "Blue & black ",
+  "mrp": 879,
+  "sell_price": 879,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634ab4"
+  },
+  "product_id": "TBOS0XS",
+  "product_name": "Tropical brown oversized shirt",
+  "category": "half sleeve shirt",
+  "size": "XS",
+  "colour": "Brown",
+  "mrp": 699,
+  "sell_price": 699,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634ab5"
+  },
+  "product_id": "TBOS00S",
+  "product_name": "Tropical brown oversized shirt",
+  "category": "half sleeve shirt",
+  "size": "S",
+  "colour": "Brown",
+  "mrp": 699,
+  "sell_price": 699,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634ab6"
+  },
+  "product_id": "TBOS00M",
+  "product_name": "Tropical brown oversized shirt",
+  "category": "half sleeve shirt",
+  "size": "M",
+  "colour": "Brown",
+  "mrp": 699,
+  "sell_price": 699,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634ab7"
+  },
+  "product_id": "TBOS00L",
+  "product_name": "Tropical brown oversized shirt",
+  "category": "half sleeve shirt",
+  "size": "L",
+  "colour": "Brown",
+  "mrp": 699,
+  "sell_price": 699,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634ab8"
+  },
+  "product_id": "TBOS0XL",
+  "product_name": "Tropical brown oversized shirt",
+  "category": "half sleeve shirt",
+  "size": "XL",
+  "colour": "Brown",
+  "mrp": 749,
+  "sell_price": 749,
+  "gender": "Men"
+},
+{
+  "_id": {
+    "$oid": "68b33dcd96cdbb6257634ab9"
+  },
+  "product_id": "TBOSXXL",
+  "product_name": "Tropical brown oversized shirt",
+  "category": "half sleeve shirt",
+  "size": "XXL",
+  "colour": "Brown",
+  "mrp": 799,
+  "sell_price": 799,
+  "gender": "Men"
+}]

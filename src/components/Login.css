@@ -1,0 +1,19 @@
+.login-form .field {
+  margin-bottom: 24px;
+}
+
+.login-form .submit {
+  margin-top: 24px;
+}
+
+/* Animate placeholder and hide on hover */
+.login-form input::placeholder {
+  opacity: 1;
+  transition: opacity 200ms ease;
+}
+
+.login-form input:hover::placeholder {
+  opacity: 0;
+}
+
+
