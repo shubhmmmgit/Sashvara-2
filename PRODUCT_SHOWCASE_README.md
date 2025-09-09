@@ -86,21 +86,24 @@ npm install swiper
 
 #### Fetch All Products
 ```javascript
-fetch('http://localhost:5000/api/products')
+fetch("https://sashvara-2.vercel.app/api/products")
+
   .then(response => response.json())
   .then(data => console.log(data));
 ```
 
 #### Fetch Products by Category
 ```javascript
-fetch('http://localhost:5000/api/products?category=Women&limit=6')
+fetch("https://sashvara-2.vercel.app/api/products")
+category=Women&limit=6')
   .then(response => response.json())
   .then(data => console.log(data));
 ```
 
 #### Fetch Single Product
 ```javascript
-fetch('http://localhost:5000/api/products/68b33dcd96cdbb6257634a61')
+fetch("https://sashvara-2.vercel.app/api/products")
+68b33dcd96cdbb6257634a61')
   .then(response => response.json())
   .then(data => console.log(data));
 ```
