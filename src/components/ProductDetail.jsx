@@ -184,12 +184,14 @@ export default function ProductDetail() {
       p?.cheapestVariant?.size ??
       null;
     if (!id) return;
+    const normalizedSize = selectedSize ?? "One Size";
     setCartItems((prev) => {
-      const existing = prev.find((it) => it.id === id);
+      // Match existing items by id + size so different sizes can coexist in cart
+      const existing = prev.find((it) => it.id === id && (it.size ?? "One Size") === normalizedSize);
       if (existing) {
-        return prev.map((it) => (it.id === id ? { ...it, qty: (it.qty || 0) + 1 } : it));
+        return prev.map((it) => (it.id === id && (it.size ?? "One Size") === normalizedSize ? { ...it, qty: (it.qty || 0) + 1 } : it));
       }
-      return [...prev, { id, name, price, image, qty: 1, size: selectedSize || "One Size" }];
+      return [...prev, { id, name, price, image, qty: 1, size: normalizedSize }];
     });
   };
 

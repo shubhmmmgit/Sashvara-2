@@ -24,13 +24,23 @@ const CartDrawer = ({
   const updateQty = (id, change) => {
     setProducts((prev) =>
       prev.map((p) =>
-        p.id === id ? { ...p, qty: Math.max(1, (p.qty || 1) + change) } : p
+        // if id is an object { id, size } or string id, support both
+        (typeof id === 'object'
+          ? p.id === id.id && (p.size ?? p.selectedSize ?? 'One Size') === (id.size ?? 'One Size')
+          : p.id === id)
+          ? { ...p, qty: Math.max(1, (p.qty || 1) + change) }
+          : p
       )
     );
   };
 
   const removeItem = (id) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+    setProducts((prev) =>
+      prev.filter((p) =>
+        // allow removing by { id, size } or by id string
+        typeof id === 'object' ? !(p.id === id.id && (p.size ?? p.selectedSize ?? 'One Size') === (id.size ?? 'One Size')) : p.id !== id
+      )
+    );
   };
 
   // ---- define checkout handler BEFORE JSX ----
@@ -52,12 +62,12 @@ const CartDrawer = ({
   };
 
   const renderSize = (product) => {
-    
     return (
       product.size ||
       product.selectedSize ||
       product.variant?.size ||
       product.variant?.option ||
+      product.sizeLabel ||
       "One Size"
     );
   };
@@ -107,7 +117,7 @@ const CartDrawer = ({
                   <div className="ml-4 flex flex-1 flex-col ml-[5%] ">
                     <h3 className="font-medium text-[#001f3f]">{product.name}</h3>
                     <p className="text-sm text-[#808080]">₹{product.price}</p>
-                    <p className="text-sm text-[#808080]">Size:{product.size}</p>
+                    <p className="text-sm text-[#808080]">Size: {renderSize(product)}</p>
 
                     <div className="size-container">
                     <div className="size-box  ">
@@ -197,7 +207,7 @@ const CartDrawer = ({
                   <div className="ml-4 flex flex-1 flex-col">
                     <h3 className="font-medium text-[#001f3f]">{product.name}</h3>
                     <p className="text-sm text-gray-500">₹{product.price}</p>
-                    <p className="text-sm text-gray-500">{product.size}</p>
+                    <p className="text-sm text-gray-500">Size: {renderSize(product)}</p>
 
                     <div className="flex items-center space-x-2 mt-2">
                       <button onClick={() => updateQty(product.id, -1)} className="px-2 py-1 border rounded ">

@@ -416,10 +416,10 @@ export default function Checkout() {
                       />
                       
                     </div>
-                    <div className="flex-1 ml-[30%] ">
+                      <div className="flex-1 ml-[30%] ">
                       <h3 className="font-medium text-[#001f3f]">{item.name}</h3>
-                      <p className="text-sm text-[#808080]">Size: {item.size.toLocaleString()}</p>
-                      <p className="text-sm font-semibold text-gray">₹{item.price.toLocaleString()}</p>
+                      <p className="text-sm text-[#808080]">Size: {item.size ?? item.selectedSize ?? item.variant?.size ?? 'One Size'}</p>
+                      <p className="text-sm font-semibold text-gray">₹{(item.price || 0).toLocaleString()}</p>
                     </div>
                   </div>
                 ))}
