@@ -13,6 +13,7 @@ import PrimaryButton from "./PrimaryButton";
 import ProductZoom from "./ProductZoom";
 import { useCart } from "../context/CartContext";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import toast from "react-hot-toast";
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "http://localhost:5000";
 const BRAND = "#001f3f";
@@ -327,21 +328,21 @@ export default function ProductDetail() {
         method: "DELETE",
       });
       if (res.ok) {
-        alert("Product deleted");
+        toast("Product deleted");
         navigate("/products");
       } else {
         const json = await res.json().catch(() => null);
-        alert(`Delete failed: ${json?.message ?? res.statusText}`);
+        toast.error(`Delete failed: ${json?.message ?? res.statusText}`);
       }
     } catch (err) {
       console.error("Delete error:", err);
-      alert("Delete error, check console");
+      toast.error("Delete error, check console");
     }
   };
 
   const handleEdit = () => {
     const pid = product?.product_id ?? extractMongoIdString(product?._id);
-    if (!pid) return alert("No product id to edit");
+    if (!pid) return toast("No product id to edit");
     navigate(`/edit-product/${encodeURIComponent(pid)}`);
   };
 
@@ -433,6 +434,10 @@ export default function ProductDetail() {
         >
           ₹{displayPrice?.toLocaleString() ?? "N/A"}
         </div>
+        {displayMrp && displayMrp > displayPrice &&(
+            <div className="ml-[1%] text-red-600 font-semibold text-[#000000] visited:text-[#000000]">
+            ({Math.round(((displayMrp - displayPrice) / displayMrp) * 100)}% OFF)
+            </div> )}
          </>
           )}
         </div>
@@ -557,12 +562,18 @@ export default function ProductDetail() {
                     )}
                   </div>
                   <div className="p-3">
-                    <div className=" text-[#001f3f] font-semibold line-clamp-2 h-10" style={{fontWeight:600}}>{sp.product_name || pid}</div>
+                    <div className=" text-[#001f3f] font-semibold text-center line-clamp-2 h-10" style={{fontWeight:600}}>{sp.product_name || pid}</div>
                     <div className="mt-1 flex items-baseline gap-2">
-                      <div className="text-[#001f3f] font-bold"style={{fontWeight:500, fontSize:"1.5rem"}}>{price !== null ? `₹${Number(price).toLocaleString()}` : "N/A"}</div>
                       {mrp && mrp !== price && (
                         <div className="text-xs text-gray-500 line-through">₹{Number(mrp).toLocaleString()}</div>
+                        
                       )}
+                      <div className="text-[#001f3f]  font-bold"style={{fontWeight:500, fontSize:"1.5rem"}}>{price !== null ? `₹${Number(price).toLocaleString()}` : "N/A"}</div>
+                      {mrp && mrp > price &&(
+                      <div className="ml-[1%] text-red-600 font-semibold text-[#000000] visited:text-[#000000]">
+                        ({Math.round(((mrp - price) / mrp) * 100)}% OFF)
+                      </div> )}
+                    
                     </div>
                         <div className="mt-2 flex justify-center">
                           <PrimaryButton

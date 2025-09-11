@@ -3,6 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import "./Login.css";
 import { RxCross2 } from "react-icons/rx";
 import PrimaryButton from "./PrimaryButton";
+import toast from "react-hot-toast";
 
 
 function Login({ onLogin }) {
@@ -15,7 +16,7 @@ function Login({ onLogin }) {
     e.preventDefault();
 
     if (!email || !password) {
-      alert("Please fill in both fields");
+      toast("Please fill in both fields");
       return;
     }
 

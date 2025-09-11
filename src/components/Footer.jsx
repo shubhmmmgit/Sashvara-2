@@ -1,5 +1,6 @@
 import React from "react";
 import { FaInstagram, FaYoutube } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 
 const n =Date.now();
@@ -7,8 +8,8 @@ const year = new Date(n).getFullYear();
 
 const Footer = () => {
   return (
-    <footer className=" mt-12 border-t border-gray-800 bg-[#001f3f] text-[#ffffff]" style={{ marginTop: "3rem" }}>
-      <div className=" container mx-auto px-6 py-10">
+    <footer id="site-footer" className=" mt-12  border-t border-gray-800 bg-[#001f3f] text-[#ffffff]" style={{ marginTop: "3rem" }}>
+      <div className=" container mx-auto px-6 py-10 ">
         <div className="grid grid-cols-3  gap-8">
           
           <div className="needhelp">
@@ -26,19 +27,20 @@ const Footer = () => {
             </ul>
           </div>
           <div className="order-2 md:order-2 text-center">
-            <h4 className="text-[#ffffff] font-semibold mb-4">CUSTOMER CARE</h4>
-            <ul className="list-none   space-y-2 text-sm">
-              <li><a href="" className="no-underline visited:no-underline cursor-default text-[#ffffff] visited:text-white hover:text-white" style={{ fontSize:"1.21rem", textDecoration: 'none', cursor: 'default' }}>Orders & Shipment</a></li>
-              <li><a href="" className="no-underline visited:no-underline cursor-default text-[#ffffff] visited:text-white hover:text-white" style={{ fontSize:"1.21rem", textDecoration: 'none', cursor: 'default' }}>Returns & Exchange</a></li>
+            <h4 className="text-[#ffffff] font-semibold mb-4 ">CUSTOMER CARE</h4>
+            <ul className="list-none cursor-pointer  space-y-2 text-sm">
+              <li><Link to="/shipping-policy" className="no-underline visited:no-underline  text-[#ffffff] visited:text-white cursor-pointer" style={{ fontSize:"1.21rem", textDecoration: 'none' }}>Orders & Shipment</Link></li>
+              <li><Link to="/refund-policy" href="" className="no-underline  visited:no-underline  text-[#ffffff] visited:text-white cursor-pointer" style={{ fontSize:"1.21rem", textDecoration: 'none' }}>Returns & Exchange</Link></li>
             </ul>
           </div>
 
           <div className="order-3 md:order-3 text-right">
-            <h4 className="text-[#ffffff] font-semibold mb-4">ABOUT US</h4>
-            <ul className="list-none space-y-2 text-sm">
-              <li><a href="#" className="no-underline visited:no-underline cursor-default text-[#ffffff] visited:text-white hover:text-white" style={{ fontSize:"1.21rem", textDecoration: 'none', cursor: 'default' }}>Sustainability</a></li>
+            <Link to ="/aboutus" className="text-[#ffffff] cursor-pointer font-semibold no-underline mb-4">
+            <h4  >ABOUT US</h4></Link>
+            {/* <ul className="list-none space-y-2 text-sm">
+             <li><a href="#" className="no-underline visited:no-underline cursor-default text-[#ffffff] visited:text-white hover:text-white" style={{ fontSize:"1.21rem", textDecoration: 'none', cursor: 'default' }}>Sustainability</a></li>
               <li><a href="#" className="no-underline visited:no-underline cursor-default text-[#ffffff] visited:text-white hover:text-white" style={{fontSize:"1.21rem", textDecoration: 'none', cursor: 'default' }}>Careers</a></li>
-            </ul>
+            </ul>*/} 
           </div>
 
         </div>

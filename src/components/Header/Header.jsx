@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HashLink as Link } from "react-router-hash-link";
 import Search from "../Search";
-import CartDrawer from "../CartDrawer";
-import Login from "../Login";
+import MyOrders from "../MyOrders";
 import { useCart } from "../../context/CartContext";
 import { FaTruck } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { IoPersonSharp } from "react-icons/io5";
+import { FaShoppingBag } from "react-icons/fa";
+
 
 const Header = () => {
   const navigate = useNavigate();
@@ -18,6 +18,17 @@ const Header = () => {
   const [loginOpen, setLoginOpen] = useState(false);
 
   const totalQty = cartItems.reduce((acc, item) => acc + item.qty, 0);
+
+  
+  const handleOrderClick = () => {
+    const lastOrderId = localStorage.getItem("lastOrderId");
+    if (lastOrderId) {
+      navigate(`/my-order/${lastOrderId}`);
+    } else {
+      // if no order found, maybe go to homepage or show a toast
+      navigate("/");
+    }
+  };
 
   // Always show header on all routes (including /login)
 
@@ -79,25 +90,13 @@ const Header = () => {
 
             {/* Drawer removed in favor of dedicated Cart page */}
 
-            {/* Login button */}
+            {/* MyOrderPage */}
             <button
-              onClick={() => navigate("/login")}
-              className="bg-transparent border-0 hover:bg-gray-100 p-2 rounded-md"
+            onClick={() => navigate("my-orders")}
+            className="bg-transparent border-0 hover:bg-gray-100 p-2 rounded-md"
             >
-              <IoPersonSharp className="text-[30px] text-[#001f3f]" />
+           <FaShoppingBag className="text-[30px] text-[#001f3f]" />
             </button>
-
-            {/* Login Modal */}
-            {loginOpen && (
-              <Login
-                open={loginOpen}
-                onClose={() => setLoginOpen(false)}
-                onLogin={(user) => {
-                  console.log("User logged in:", user);
-                  setLoginOpen(false);
-                }}
-              />
-            )}
           </div>
         </div>
       </div>

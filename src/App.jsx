@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Home from "./Pages/Home";
-import Login from "./components/Login";
+import MyOrders from "./components/MyOrders";
 import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
 import { useCart } from "./context/CartContext"; 
@@ -10,6 +10,10 @@ import Footer from "./components/Footer";
 import CartDrawer from "./components/CartDrawer";
 import Collection from "./components/Collection";
 import Checkout from "./components/Checkout";
+import RefundPolicy from "./components/RefundPolicy";
+import ShippingPolicy from "./components/ShippingPolicy";
+import AboutUs from "./components/AboutUs";
+import { Toaster } from "react-hot-toast";
 
 function App() {
  
@@ -25,7 +29,9 @@ function App() {
         <main className="flex-1 min-h-[200px] min-w-[400px]">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
+           
+            
+            <Route path="/my-orders" element={<MyOrders />} />
             <Route path="/products" element={<ProductList />} />
             <Route path="/search" element={<ProductList />} />
             <Route
@@ -52,7 +58,13 @@ function App() {
             />
              <Route path="/checkout" element={<Checkout />} />
              <Route path="/collections/:collection" element={<Collection />} />
+             <Route path="/refund-policy" element={<RefundPolicy />} />
+             <Route path="/shipping-policy" element={<ShippingPolicy/>} />
+             <Route path="/aboutus" element={<AboutUs />} />
+             
+            
           </Routes>
+           <Toaster position="top-right" reverseOrder={false} />
         </main>
 
         {/* Footer always at bottom */}

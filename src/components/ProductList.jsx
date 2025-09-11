@@ -5,6 +5,7 @@ import { FaSpinner } from "react-icons/fa";
 import { MdOutlineShoppingCart, MdShoppingBag } from "react-icons/md";
 import { useCart } from "../context/CartContext";
 import PrimaryButton from "./PrimaryButton";
+import toast from "react-hot-toast";
 
 
 
@@ -147,7 +148,7 @@ export default function ProductList({ gender = null, limit = 50, category = null
   const handleCheckout = () => {
     console.log("Checkout clicked, cart items:", cartItems);
     if (cartItems.length === 0) {
-      alert("Your cart is empty. Add some items to proceed with checkout.");
+      toast("Your cart is empty. Add some items to proceed with checkout.");
       return;
     }
     navigate("/checkout");
@@ -272,22 +273,27 @@ export default function ProductList({ gender = null, limit = 50, category = null
                     ₹{Number(p.displayMrp).toLocaleString()}
                   </div>
                 )}
-                <div className="text-base font-bold text-[#001f3f]" >
+                <div className="text-base font-bold text-[#001f3f]" style={{fontSize:"1.5rem"}} >
                   {p.displayPrice != null
                     ? `₹${Number(p.displayPrice).toLocaleString()}`
                     : "Price N/A"}
                 </div>
+                 {p.displayMrp && p.displayMrp > p.displayPrice &&(
+                      <div className="ml-[1%] text-red-600 font-semibold text-[#000000] visited:text-[#000000]">
+                        ({Math.round(((p.displayMrp - p.displayPrice) / p.displayMrp) * 100)}% OFF)
+                      </div> )}
               </div>
 
-              <div className="mt-2 text-xs text-gray-500 text-center">
+              <div className="mt-2 text-xs text-[#001f3f] text-center visited:text-[#001f3f] ">
                 {p.sizesAvailable && p.sizesAvailable.length
                   ? `${p.sizesAvailable.length} size${p.sizesAvailable.length > 1 ? "s" : ""} available`
                   : "Single size"}
+                  
               </div>
               <div className="mt-3 flex justify-center">
                 <PrimaryButton
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(p); }}
-                  className="inline-flex items-center  gap-2 rounded-full"
+                  className="inline-flex items-center gap-2 rounded-full"
                 >
                   <MdOutlineShoppingCart className="text-base" />
                   Add to Cart

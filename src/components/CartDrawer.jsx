@@ -4,6 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import PrimaryButton from "./PrimaryButton";
 import { useNavigate } from "react-router-dom";
 import { FaRegTrashAlt } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 
 
@@ -24,30 +25,20 @@ const CartDrawer = ({
   const updateQty = (id, change) => {
     setProducts((prev) =>
       prev.map((p) =>
-        // if id is an object { id, size } or string id, support both
-        (typeof id === 'object'
-          ? p.id === id.id && (p.size ?? p.selectedSize ?? 'One Size') === (id.size ?? 'One Size')
-          : p.id === id)
-          ? { ...p, qty: Math.max(1, (p.qty || 1) + change) }
-          : p
+        p.id === id ? { ...p, qty: Math.max(1, (p.qty || 1) + change) } : p
       )
     );
   };
 
   const removeItem = (id) => {
-    setProducts((prev) =>
-      prev.filter((p) =>
-        // allow removing by { id, size } or by id string
-        typeof id === 'object' ? !(p.id === id.id && (p.size ?? p.selectedSize ?? 'One Size') === (id.size ?? 'One Size')) : p.id !== id
-      )
-    );
+    setProducts((prev) => prev.filter((p) => p.id !== id));
   };
 
   // ---- define checkout handler BEFORE JSX ----
   const goToCheckout = () => {
     // use `products` (not cartItems)
     if (!products || products.length === 0) {
-      alert("Your cart is empty. Add some items to proceed with checkout.");
+      toast("Your cart is empty. Add some items to proceed with checkout.");
       return;
     }
 
@@ -62,12 +53,12 @@ const CartDrawer = ({
   };
 
   const renderSize = (product) => {
+    
     return (
       product.size ||
       product.selectedSize ||
       product.variant?.size ||
       product.variant?.option ||
-      product.sizeLabel ||
       "One Size"
     );
   };
@@ -117,7 +108,7 @@ const CartDrawer = ({
                   <div className="ml-4 flex flex-1 flex-col ml-[5%] ">
                     <h3 className="font-medium text-[#001f3f]">{product.name}</h3>
                     <p className="text-sm text-[#808080]">₹{product.price}</p>
-                    <p className="text-sm text-[#808080]">Size: {renderSize(product)}</p>
+                    <p className="text-sm text-[#808080]">Size:{product.size}</p>
 
                     <div className="size-container">
                     <div className="size-box  ">
@@ -139,8 +130,8 @@ const CartDrawer = ({
                     </div>
                     
 
-                    <div className="flex justify-between items-center mt-2">
-                      <p className="text-gray-900">
+                    <div className="flex justify-end items-center mt-2" style={{fontWeight:500, fontSize:"1.5rem"}}>
+                      <p className="text-[#001f3f]">
                         ₹{((product.price || 0) * (product.qty || 0)).toLocaleString()}
                       </p>
                       
@@ -191,7 +182,7 @@ const CartDrawer = ({
           ) : (
             <ul className="divide-y divide-gray-200">
               {products.map((product) => (
-                <li key={product.id} className="flex py-6">
+                <li key={product.id} className="flex py-6 bg-[#FAF9F6] ">
                   <div className="w-28 h-36 overflow-hidden rounded bg-gray-100 flex">
                     <img
                       src={product.image || "/images/placeholder.png"}
@@ -207,7 +198,7 @@ const CartDrawer = ({
                   <div className="ml-4 flex flex-1 flex-col">
                     <h3 className="font-medium text-[#001f3f]">{product.name}</h3>
                     <p className="text-sm text-gray-500">₹{product.price}</p>
-                    <p className="text-sm text-gray-500">Size: {renderSize(product)}</p>
+                    <p className="text-sm text-gray-500">{product.size}</p>
 
                     <div className="flex items-center space-x-2 mt-2">
                       <button onClick={() => updateQty(product.id, -1)} className="px-2 py-1 border rounded ">

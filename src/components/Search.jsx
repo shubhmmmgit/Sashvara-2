@@ -213,7 +213,7 @@ export default function Search({ className = "" }) {
                             {product.category} {product.colour ? `· ${product.colour}` : ""}
                           </div>
                           {product.variants?.[0]?.size && (
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-gray-500 visited:text-[#001f3f] ">
                               Available in {product.variants.map(v => v.size).join(", ")}
                             </div>
                           )}

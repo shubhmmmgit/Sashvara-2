@@ -1,13 +1,17 @@
+import 'dotenv/config';
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import { connectDB } from "./config/db.js"; 
 import productRoutes from "./routes/productRoutes.js";
 import userSuggestionRoutes from "./routes/userSuggestionRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 
-dotenv.config();
+
+//dotenv.config();
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,7 +23,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "dist")));
+
 
 // Static files
 app.use("/images", express.static("public/images"));
@@ -34,10 +39,13 @@ connectDB();
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.use("/api/products", productRoutes);
 app.use("/api/suggestions", userSuggestionRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/payment", paymentRoutes);
 
 
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "build", "index.html"));
+  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
 });
 
 

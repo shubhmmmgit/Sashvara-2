@@ -9,6 +9,7 @@ import { FaSpinner } from "react-icons/fa";
 import { MdOutlineShoppingCart,MdShoppingBag } from "react-icons/md";
 import { useCart } from "../context/CartContext";
 import PrimaryButton from "./PrimaryButton";
+import toast from "react-hot-toast";
 
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "http://localhost:5000";
@@ -107,6 +108,10 @@ const normalizeProduct = (p) => {
   const displayMrp =
   cheapest?.mrp && cheapest?.mrp !== cheapest?.sell_price ? cheapest.mrp : null;
 
+  
+
+ 
+
   // images
   const imgsPick = pickVal(p, ["images"]);
   const imgsRaw = imgsPick.value ?? [];
@@ -161,7 +166,7 @@ export default function HomeSlider({ gender = null, collection = null, limit = 1
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
-      alert("Your cart is empty. Add some items to proceed with checkout.");
+      toast("Your cart is empty. Add some items to proceed with checkout.");
       return;
     }
     navigate("/checkout");
@@ -264,11 +269,17 @@ export default function HomeSlider({ gender = null, collection = null, limit = 1
                         ₹{Number(p.displayMrp).toLocaleString()}
                       </div>
                     )}
-                    <div className="text-xl text-[#001f3f]  " style={{fontSize:"1.12rem", marginBottom:"1rem"}}>
+                    <div className="text-xl text-[#001f3f]  " style={{fontSize:"1.50rem", marginBottom:"1rem"}}>
                       {p.displayPrice != null
                         ? `₹${Number(p.displayPrice).toLocaleString()}`
                         : "Price N/A"}
+                        
                     </div>
+                    {p.displayMrp != null && (
+                      <div className="ml-[1%] text-red-600 font-semibold text-[#000000] visited:text-[#000000]" >
+                        ({Math.round(((p.displayMrp - p.displayPrice) / p.displayMrp) * 100)}% OFF)
+                      </div>
+                    )}
                   </div>
 
                   <div className="mt-3 flex justify-center">
