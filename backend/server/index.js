@@ -1,82 +1,47 @@
-import 'dotenv/config';
 import express from "express";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
-import { connectDB } from "./config/db.js"; 
+import dotenv from "dotenv";
+import { connectDB } from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
 import userSuggestionRoutes from "./routes/userSuggestionRoutes.js";
-import orderRoutes from "./routes/orderRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-import paymentRoutes from "./routes/paymentRoutes.js";
 
-
-//dotenv.config();
-
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const allowedOrigins = [
-  "https://sashvara-2.onrender.com",              // React dev server
-  "https://sashvara.netlify.app/"         // Production frontend
-];
-
+dotenv.config();
 
 const app = express();
 
-// Middleware
+// ✅ Allowed origins
+const allowedOrigins = [
+  "http://localhost:5173",        // Vite dev
+  "https://sashvara.netlify.app", // Netlify production
+];
+
+// ✅ Middleware
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like Postman, server-to-server)
-    if (!origin) return callback(null, true);
-
+    if (!origin) return callback(null, true); // allow Postman/server-to-server
     if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
+      const msg = `The CORS policy does not allow access from the origin: ${origin}`;
       return callback(new Error(msg), false);
     }
     return callback(null, true);
   },
-  credentials: true   // If you want to allow cookies or auth headers
+  credentials: true, // if you need cookies/auth headers
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // dev only; tighten in prod
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 
-app.use("/images", express.static(path.join(__dirname, "images"), {
-  maxAge: 0 // no cache during dev so you don't see stale 304s
-}));
-
-// Static files
-//app.use("/images", express.static(path.join(__dirname, "../../frontend/public/images")));
-app.use("/uploads", express.static("uploads"));
-
-// DB connection
+// ✅ Connect DB
 connectDB();
 
-
-
-// Routes
+// ✅ Routes
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.use("/api/products", productRoutes);
 app.use("/api/suggestions", userSuggestionRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/payment", paymentRoutes);
-app.use("/api/order", paymentRoutes);
 
-app.get("/api/test", (req, res) => {
-  res.json({ message: "CORS is working!" });
-});
+// ❌ Removed serving frontend from backend
+// (since frontend is on Netlify)
 
-//app.get("*", (req, res) => {
- // res.sendFile(path.resolve(__dirname,  "../../frontend/dist/index.html"));
-//});
-
-
+// ✅ Start server
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`API listening on :${port}`));
