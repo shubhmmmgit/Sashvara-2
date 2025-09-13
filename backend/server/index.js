@@ -18,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const allowedOrigins = [
   "https://sashvara-2.onrender.com",              // React dev server
-  "https://sashvara-2-2ixd.vercel.app"         // Production frontend
+  "https://sashvara.netlify.app/"         // Production frontend
 ];
 
 
