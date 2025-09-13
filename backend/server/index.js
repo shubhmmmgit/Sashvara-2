@@ -17,8 +17,8 @@ import paymentRoutes from "./routes/paymentRoutes.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const allowedOrigins = [
-  "http://localhost:3000",              // React dev server
-  "https://sashvara.vercel.app"         // Production frontend
+  "https://sashvara-2.onrender.com",              // React dev server
+  "https://sashvara-2-2ixd.vercel.app"         // Production frontend
 ];
 
 
