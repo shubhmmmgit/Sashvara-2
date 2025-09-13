@@ -40,8 +40,13 @@ const extractProductId = (p) => {
 const collectImages = (obj) => {
   if (!obj) return [];
   if (Array.isArray(obj.images) && obj.images.length) {
-    return obj.images.filter(Boolean).map((i) => String(i));
-  }
+    const imageEntries = Object.keys(obj)
+    .filter(k => k.startsWith("images/"))
+    .sort()
+    .map(k => obj[k]);
+
+  return imageEntries;
+};
 
   const imageEntries = Object.keys(obj)
     .map((k) => {
