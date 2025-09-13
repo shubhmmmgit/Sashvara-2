@@ -9,6 +9,10 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import FlashCard from "./Flashcard";
 
+console.log("VITE MODE:", import.meta.env.VITE_RAZORPAY_MODE);
+console.log("TEST KEY:", import.meta.env.VITE_RAZORPAY_KEY_ID_TEST);
+console.log("LIVE KEY:", import.meta.env.VITE_RAZORPAY_KEY_ID_LIVE);
+
 export default function Checkout() {
   const { cartItems } = useCart();
   const [formData, setFormData] = useState({
@@ -126,7 +130,7 @@ export default function Checkout() {
         const options = {
           key: import.meta.env.VITE_RAZORPAY_MODE === "test"
               ? import.meta.env.VITE_RAZORPAY_KEY_ID_TEST
-              : import.meta.env.RAZORPAY_TEST_KEY_SECRET,
+              : import.meta.env.VITE_RAZORPAY_KEY_ID_LIVE,
           amount: razorpayOrder.amount * 100,
           currency: razorpayOrder.currency,
           name: "Sashvara Shop",  

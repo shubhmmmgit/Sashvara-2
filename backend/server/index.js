@@ -23,11 +23,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*"); // dev only; tighten in prod
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
+app.use("/images", express.static(path.join(__dirname, "images"), {
+  maxAge: 0 // no cache during dev so you don't see stale 304s
+}));
 
 // Static files
-app.use("/images", express.static("public/images"));
+app.use("/images", express.static(path.join(__dirname, "../../frontend/public/images")));
 app.use("/uploads", express.static("uploads"));
 
 // DB connection
@@ -42,10 +50,12 @@ app.use("/api/suggestions", userSuggestionRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/order", paymentRoutes);
+
 
 
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+  res.sendFile(path.resolve(__dirname,  "../../frontend/dist/index.html"));
 });
 
 
