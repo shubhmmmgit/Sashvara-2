@@ -125,7 +125,7 @@ export const WishlistPage = ({ onMoveToCart }) => {
         {items.map((p) => (
           <li key={p.id} className="flex gap-4 p-4 border rounded">
             <div className="w-24 h-28 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
-              <img src={`${import.meta.env.VITE_API_HOST}${p.image}`} alt={p.name} className="w-full h-full object-cover" />
+              <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
             </div>
             <div className="flex-1 flex flex-col justify-between">
               <div>

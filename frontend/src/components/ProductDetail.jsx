@@ -559,7 +559,7 @@ export default function ProductDetail() {
                   <div className="aspect-square bg-gray-100 overflow-hidden">
                     {img ? (
                       
-                      <img src={`${import.meta.env.VITE_API_HOST}${img}`} alt={sp.product_name || pid} className="w-full h-full object-cover" />
+                      <img src={img} alt={sp.product_name || pid} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">No Image</div>
                     )}

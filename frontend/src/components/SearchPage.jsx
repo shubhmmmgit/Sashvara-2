@@ -409,7 +409,7 @@ export default function SearchPage() {
                        <Link key={pid} to={`/product/${encodeURIComponent(pid)}`} className="rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow no-underline text-current">
                          <div className="aspect-square bg-gray-100 overflow-hidden">
                            {img ? (
-                             <img src={`${import.meta.env.VITE_API_HOST}${img}`} alt={sp.name || pid} className="w-full h-full object-cover" />
+                             <img src={img} alt={sp.name || pid} className="w-full h-full object-cover" />
                            ) : (
                              <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">No Image</div>
                            )}

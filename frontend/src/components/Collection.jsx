@@ -299,7 +299,7 @@ export default function Collection() {
             >
               <div className="aspect-[9/16] bg-gray-100">
                 {p.img ? (
-                  <img src={`${import.meta.env.VITE_API_HOST}${p.img}`} alt={p.name} className="w-full h-full object-contain" loading="lazy" />
+                  <img src={p.img} alt={p.name} className="w-full h-full object-contain" loading="lazy" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
                 )}
