@@ -41,13 +41,10 @@ dist-ssr/
 build/
 
 # Environment files
+# Ignore all env files by default
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# But allow frontend/.env (safe, only VITE_ keys)
+.env.*
+# But allow frontend/.env (safe, only contains VITE_ keys)
 !frontend/.env
 
 # Editor directories and files
