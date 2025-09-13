@@ -52,7 +52,7 @@ app.use("/images", express.static(path.join(__dirname, "images"), {
 }));
 
 // Static files
-app.use("/images", express.static(path.join(__dirname, "../../frontend/public/images")));
+//app.use("/images", express.static(path.join(__dirname, "../../frontend/public/images")));
 app.use("/uploads", express.static("uploads"));
 
 // DB connection
@@ -73,9 +73,9 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "CORS is working!" });
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname,  "../../frontend/dist/index.html"));
-});
+//app.get("*", (req, res) => {
+ // res.sendFile(path.resolve(__dirname,  "../../frontend/dist/index.html"));
+//});
 
 
 const port = process.env.PORT || 5000;
