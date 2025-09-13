@@ -16,11 +16,28 @@ import paymentRoutes from "./routes/paymentRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const allowedOrigins = [
+  "http://localhost:3000",              // React dev server
+  "https://sashvara.vercel.app"         // Production frontend
+];
+
 
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like Postman, server-to-server)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true   // If you want to allow cookies or auth headers
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../../frontend/dist")));
@@ -52,7 +69,9 @@ app.use("/api/users", userRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/order", paymentRoutes);
 
-
+app.get("/api/test", (req, res) => {
+  res.json({ message: "CORS is working!" });
+});
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname,  "../../frontend/dist/index.html"));
