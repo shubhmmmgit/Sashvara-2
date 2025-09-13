@@ -13,7 +13,7 @@ const normalizeImageUrl = (img) => {
   const raw = String(img).trim().replace(/\\/g, "/"); // handle backslashes
   if (raw.startsWith("http")) return raw;
   if (raw.startsWith("/")) return `${BACKEND_HOST}${raw}`;
-  return `${BACKEND_HOST}/${raw}`;
+  return `${BACKEND_HOST}/images/${raw}`;
 };
 
 /** Gather images from images[] or flattened images/0, images/1, ... */

@@ -6,6 +6,7 @@ import { MdOutlineShoppingCart, MdShoppingBag } from "react-icons/md";
 import { useCart } from "../context/CartContext";
 import PrimaryButton from "./PrimaryButton";
 import toast from "react-hot-toast";
+import { fetchProducts } from "../api";
 
 
 
@@ -19,7 +20,7 @@ const normalizeImageUrl = (img) => {
   const s = String(img).trim();
   if (s.startsWith("http")) return s;
   if (s.startsWith("/")) return `${BACKEND_HOST}${s}`;
-  return `${BACKEND_HOST}/${s}`;
+  return `${BACKEND_HOST}/images/${s}`;
 };
 
 // Extract product_id
@@ -126,6 +127,7 @@ export default function ProductList({ gender = null, limit = 50, category = null
   const { cartItems, setCartItems } = useCart();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
   
   // Get search query from URL parameters
   const searchQuery = searchParams.get('q');
@@ -160,6 +162,8 @@ export default function ProductList({ gender = null, limit = 50, category = null
   }, [cartItems]);
 
   useEffect(() => {
+
+    
     let mounted = true;
     (async () => {
       try {

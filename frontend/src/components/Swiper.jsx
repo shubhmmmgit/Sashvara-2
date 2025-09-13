@@ -57,7 +57,7 @@ const normalizeImageUrl = (img) => {
   const s = String(img).trim();
   if (s.startsWith("http")) return s;
   if (s.startsWith("/")) return `${BACKEND_HOST}${s}`;
-  return `${BACKEND_HOST}/${s}`;
+  return `${BACKEND_HOST}/images/${s}`;
 };
 
 /* ---------- FIX: collectVariants for flattened keys ---------- */

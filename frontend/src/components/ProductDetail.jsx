@@ -24,7 +24,7 @@ const normalizeImageUrl = (img) => {
   const s = String(img).trim();
   if (!s) return "";
   if (/^https?:\/\//i.test(s)) return s;
-  return s.startsWith("/") ? `${BACKEND_HOST}${s}` : `${BACKEND_HOST}/${s}`;
+  return s.startsWith("/") ? `${BACKEND_HOST}/images/${s}` : `${BACKEND_HOST}/${s}`;
 };
 
 const extractMongoIdString = (maybeId) => {
