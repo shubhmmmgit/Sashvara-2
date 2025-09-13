@@ -42,24 +42,27 @@ const extractMongoIdString = (maybeId) => {
   return String(maybeId);
 };
 const collectImages = (obj) => {
-  if (!obj) return [];
+  if (!obj || typeof obj !== "object") return [];
+
+  // 1️⃣ If obj.images is an array
   if (Array.isArray(obj.images) && obj.images.length) {
-    return obj.images.filter(Boolean).map((i) => String(i));
+    return obj.images
+      .map((it) => (typeof it === "string" ? it : it?.url || it?.src || ""))
+      .filter(Boolean)
+      .map((i) => String(i).trim());
   }
 
-const imageEntries = Object.keys(obj)
-  .map((k) => {
-    const m = k.match(/^images\/(\d+)$/);
-    if (m) return { key: k, idx: Number(m[1]) };
-    return null;
-    })
-    .filter(Boolean);
+  // 2️⃣ If obj has keys like images/0, images/1
+  const imageEntries = Object.keys(obj)
+    .filter((k) => /^images\/\d+$/.test(k))
+    .sort((a, b) => Number(a.split("/")[1]) - Number(b.split("/")[1]))
+    .map((k) => obj[k])
+    .filter(Boolean)
+    .map((i) => String(i).trim());
 
-  if (!imageEntries.length) return [];
-
-  imageEntries.sort((a, b) => a.idx - b.idx);
-  return imageEntries.map((e) => String(obj[e.key]).trim()).filter(Boolean);
+  return imageEntries;
 };
+
 
 /**
  * Accepts the raw product object (possibly malformed from older CSV import)
