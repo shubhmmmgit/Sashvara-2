@@ -6,7 +6,7 @@ import productRoutes from "./routes/productRoutes.js";
 import userSuggestionRoutes from "./routes/userSuggestionRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
-
+import path from
 
 dotenv.config();
 
@@ -32,7 +32,15 @@ app.use("/api/products", productRoutes);
 app.use("/api/suggestions", userSuggestionRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
-app.use("/images", express.static("public/images"));
+app.use(
+  "/images",
+  (req, res, next) => {
+    // allow your Netlify origin specifically or use "*" for permissive access
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    next();
+  },
+  express.static(path.join(process.cwd(), "public/images"))
+);
 app.use("/uploads", express.static("uploads"));
 
 
