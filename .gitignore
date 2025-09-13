@@ -47,6 +47,9 @@ build/
 .env.test.local
 .env.production.local
 
+# But allow frontend/.env (safe, only VITE_ keys)
+!frontend/.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
