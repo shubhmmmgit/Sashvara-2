@@ -13,7 +13,9 @@ import Checkout from "./components/Checkout";
 import RefundPolicy from "./components/RefundPolicy";
 import ShippingPolicy from "./components/ShippingPolicy";
 import AboutUs from "./components/AboutUs";
+import ProductTest from "./components/ProductTest";
 import { Toaster } from "react-hot-toast";
+import Product from "../../backend/server/models/product";
 
 function App() {
  
@@ -65,6 +67,7 @@ function App() {
             
           </Routes>
            <Toaster position="top-right" reverseOrder={false} />
+           <ProductTest />
         </main>
 
         {/* Footer always at bottom */}
