@@ -30,7 +30,7 @@ export default function MyOrders({ order: initialOrder }) {
         setLoading(true);
         setError(null);
         const res = await axios.get(
-          `http://localhost:5000/api/orders/${encodeURIComponent(id)}`
+          `https://sashvara-2.onrender.com/api/orders/${encodeURIComponent(id)}`
         );
         setOrder(res.data);
         return true;
@@ -58,7 +58,7 @@ export default function MyOrders({ order: initialOrder }) {
         setLoading(true);
         setError(null);
         // expects backend endpoint that returns array or single latest order
-        const res = await axios.get("http://localhost:5000/api/orders");
+        const res = await axios.get("https://sashvara-2.onrender.com/api/orders");
         // backend could return an array or single object; handle both
         const data = res.data;
         if (!data) {

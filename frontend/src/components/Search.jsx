@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
-const BACKEND_HOST = import.meta.env.VITE_API_HOST || "http://localhost:5000";
+const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
 
 export default function Search({ className = "" }) {
   const [open, setOpen] = useState(false);

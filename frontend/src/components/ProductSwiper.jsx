@@ -24,7 +24,7 @@ const ProductSwiper = ({ title = "Featured Products", category = null, limit = 8
       setLoading(true);
       setError(null);
       
-      let url = `http://localhost:5000/api/products`;
+      let url = `https://sashvara-2.onrender.com/api/products`;
       if (category && category !== 'all') {
         url += `?category=${encodeURIComponent(category)}`;
       }

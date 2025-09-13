@@ -103,7 +103,7 @@ export default function Checkout() {
     try {
       // 1️⃣ Save order in backend
       const orderData = { ...formData, cartItems, total };
-      const res = await fetch("http://localhost:5000/api/orders", {
+      const res = await fetch("https://sashvara-2.onrender.com/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),
@@ -118,7 +118,7 @@ export default function Checkout() {
           formData.paymentMethod === "partialcod" ? total * 0.25 : total;
 
         const { data: razorpayOrder } = await axios.post(
-          "http://localhost:5000/api/payment/order",
+          "https://sashvara-2.onrender.com/api/payment/order",
           { amount: paymentAmount }
         );
 
@@ -141,7 +141,7 @@ export default function Checkout() {
 
 
          try {
-          const verifyRes = await axios.post("http://localhost:5000/api/payment/verify", {
+          const verifyRes = await axios.post("https://sashvara-2.onrender.com/api/payment/verify", {
           razorpay_order_id: response.razorpay_order_id,
           razorpay_payment_id: response.razorpay_payment_id,
           razorpay_signature: response.razorpay_signature,
@@ -149,7 +149,7 @@ export default function Checkout() {
           });
 
         if (verifyRes.data.status === "success") {
-        await axios.put(`http://localhost:5000/api/orders/${savedOrder._id}`, {
+        await axios.put(`https://sashvara-2.onrender.com/api/orders/${savedOrder._id}`, {
         status: "Paid",
         amountPaid: paymentAmount,
         paymentMode: formData.paymentMethod,

@@ -5,7 +5,7 @@ import PrimaryButton from "./PrimaryButton";
 import { useCart } from "../context/CartContext";
 import { MdOutlineShoppingCart } from "react-icons/md";
 
-const BACKEND_HOST = import.meta.env.VITE_API_HOST || "http://localhost:5000";
+const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
 
 /** Ensure absolute, clean image URL */
 const normalizeImageUrl = (img) => {

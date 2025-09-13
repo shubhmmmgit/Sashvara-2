@@ -12,7 +12,7 @@ export default function OrdersList() {
     async function load() {
       try {
         setLoading(true);
-        const { data } = await axios.get("http://localhost:5000/api/orders");
+        const { data } = await axios.get("https://sashvara-2.onrender.com/api/orders");
         if (!mounted) return;
         setOrders(data || []);
       } catch (err) {
