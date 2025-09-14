@@ -49,17 +49,14 @@ app.use("/api/suggestions", userSuggestionRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
 
-// Serve static files from backend/public
-// This makes /images/IMG_3550.JPG accessible when the file is at backend/public/images/IMG_3550.JPG
+
 app.use(express.static(path.join(process.cwd(), "public")));
 
-// Optional explicit /images mount — not strictly needed if you serve 'public' above,
-// but harmless. Keep if you prefer it explicit.
+
 app.use(
   "/images",
   (req, res, next) => {
-    // If you truly need cross-origin image access, set header here.
-    // For plain <img> tags it's usually not required; leave '*' only for testing.
+    
     res.setHeader("Access-Control-Allow-Origin", "*");
     next();
   },

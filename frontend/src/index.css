@@ -419,7 +419,74 @@ button.primary-button,
   transition: color 0.2s e
 }
 
+/* Mobile hamburger (CSS-only) */
+.mobile-toggle-label {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+}
+
+/* three bars */
+.mobile-toggle-label span {
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  background: #001f3f;
+  border-radius: 2px;
+  transition: transform 200ms ease, opacity 150ms ease;
+}
+
+/* mobile menu hidden by default */
+.mobile-menu {
+  display: none;
+}
+
+/* when checkbox checked, show mobile menu */
+#mobile-toggle:checked ~ .mobile-menu {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: white;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  z-index: 1100;
+}
+
+/* transform hamburger to X when open */
+#mobile-toggle:checked + .mobile-toggle-label span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+#mobile-toggle:checked + .mobile-toggle-label span:nth-child(2) {
+  opacity: 0;
+}
+#mobile-toggle:checked + .mobile-toggle-label span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+.desktop-nav {
+  display: none;
+}
+
+/* ensure desktop layout unaffected */
+@media (min-width: 768px) {
+  .desktop-nav {
+    display: flex !important;
+  }
+  .mobile-toggle-label, .mobile-menu { display: none !important; }
+}
+
 @media (max-width: 768px) {
+   .desktop-nav {
+    display: none !important;
+  }
+   #mobile-toggle:checked ~ .mobile-menu {
+    display: block;
+  }
   .main-swiper {
     height: 300px;
   }
@@ -427,9 +494,114 @@ button.primary-button,
   .thumbnail-swiper {
     padding: 2px 0;
   }
+
+  
 }
 
 @media (max-width: 640px) {
   .search-dropdown.open { top: calc(var(--header-height, 56px)); }
   .search-dropdown.open .search-box { width: calc(100% - 16px); }
+  
+  /* Hero heading and paragraph (only for the page hero gradient) */
+  .bg-gradient-to-r.from-blue-50.to-indigo-100 h2 {
+    font-size: 1.5rem; /* ~24px */
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .bg-gradient-to-r.from-blue-50.to-indigo-100 p {
+    font-size: 1rem; /* ~16px */
+    margin-bottom: 1rem;
+  }
+
+  /* Banner: override inline styles for mobile so video scales properly */
+  .banner {
+    width: calc(100% - 32px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    height: auto !important;
+    border-radius: 12px !important;
+    padding: 8px 0;
+  }
+
+  .banner video {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 360px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  /* tighten spacing for the hero on small screens */
+  .bg-gradient-to-r.from-blue-50.to-indigo-100 {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+}
+
+/* Mobile product-card tweaks - only affect small screens */
+@media (max-width: 768px) {
+  /* Ensure product image boxes stay visually consistent on mobile */
+  .product-image {
+    aspect-ratio: 9/16; /* portrait product card */
+    max-height: 360px;
+    height: auto;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .product-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+  }
+
+  /* Product title (adjacent to .product-image) - reduce size and allow wrapping */
+  .product-image + .mt-2 .font-medium {
+    font-size: 1rem !important; /* ~16px */
+    line-height: 1.2 !important;
+    margin-top: 0.5rem !important;
+    padding: 0 8px !important;
+    text-align: center !important;
+    word-break: break-word !important;
+  }
+
+  /* Price area: make prices more compact on mobile */
+  .product-image + .mt-2 .text-xl {
+    font-size: 1.05rem !important; /* ~17px */
+    margin-bottom: 0.35rem !important;
+  }
+
+  .product-image + .mt-2 .text-xs {
+    font-size: 0.8rem !important;
+  }
+
+  /* Add-to-Cart button: reduce padding and font-size so it fits nicely */
+  .product-image + .mt-2 .primary-button,
+  .product-image + .mt-2 button.primary-button {
+    padding: 6px 12px !important;
+    font-size: 0.9rem !important;
+    min-width: 0 !important;
+    border-radius: 9999px !important; /* pill */
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .product-image + .mt-2 .primary-button svg,
+  .product-image + .mt-2 button.primary-button svg {
+    font-size: 1rem !important;
+  }
+
+  /* Tighten spacing in the card on mobile */
+  .product-image + .mt-2 { padding-bottom: 0.4rem !important; }
+  .product-image + .mt-2 .mt-1 { margin-top: 0.35rem !important; }
+}
+
+/* Extra small devices - fine tune */
+@media (max-width: 420px) {
+  .product-image { max-height: 300px; }
+  .product-image + .mt-2 .font-medium { font-size: 0.95rem !important; }
+  .product-image + .mt-2 .text-xl { font-size: 1rem !important; }
+  .product-image + .mt-2 .primary-button { padding: 6px 10px !important; font-size: 0.85rem !important; }
 }

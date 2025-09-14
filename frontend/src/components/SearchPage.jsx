@@ -6,10 +6,11 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { useCart } from "../context/CartContext";
 import PrimaryButton from "./PrimaryButton";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { imageUrl } from '../utils/imageUrl';
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
 
-/* ---------- Utilities ---------- */
+/* ---------- Utilities ---------- 
 
 // Normalize image URLs
 const normalizeImageUrl = (img) => {
@@ -18,7 +19,7 @@ const normalizeImageUrl = (img) => {
   if (s.startsWith("http")) return s;
   if (s.startsWith("/")) return `${BACKEND_HOST}${s}`;
   return `${BACKEND_HOST}/images/${s}`;
-};
+};*/
 
 // Extract product_id
 const extractProductId = (p) => {
@@ -117,8 +118,8 @@ const normalizeRawProduct = (raw) => {
     product_id: pid,
     id: pid ?? raw._id,
     name: raw.product_name ?? raw.title ?? raw.name ?? pid ?? "Unnamed product",
-    images: images.map(normalizeImageUrl),
-    main_image: images.length ? normalizeImageUrl(images[0]) : "",
+    images: images.map(imageUrl),
+    main_image: images.length ? imageUrl(images[0]) : "",
     variants,
     sizesAvailable: variants.map((v) => v.size).filter(Boolean),
     displayPrice,
@@ -150,8 +151,8 @@ const normalizeProduct = (raw) => {
     product_id: pid,
     id: pid ?? raw._id,
     name: raw.product_name ?? raw.title ?? raw.name ?? pid ?? "Unnamed product",
-    images: images.map(normalizeImageUrl),
-    main_image: images.length ? normalizeImageUrl(images[0]) : "",
+    images: images.map(imageUrl),
+    main_image: images.length ? imageUrl(images[0]) : "",
     variants,
     sizesAvailable: variants.map((v) => v.size).filter(Boolean),
     displayPrice,
@@ -409,7 +410,7 @@ export default function SearchPage() {
                        <Link key={pid} to={`/product/${encodeURIComponent(pid)}`} className="rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow no-underline text-current">
                          <div className="aspect-square bg-gray-100 overflow-hidden">
                            {img ? (
-                             <img src={img} alt={sp.name || pid} className="w-full h-full object-cover" />
+                             <img src={imageUrl(img)} alt={sp.name || pid} className="w-full h-full object-cover" />
                            ) : (
                              <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">No Image</div>
                            )}

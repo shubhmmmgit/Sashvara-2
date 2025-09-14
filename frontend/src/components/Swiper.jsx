@@ -10,6 +10,7 @@ import { MdOutlineShoppingCart,MdShoppingBag } from "react-icons/md";
 import { useCart } from "../context/CartContext";
 import PrimaryButton from "./PrimaryButton";
 import toast from "react-hot-toast";
+import { imageUrl } from "../utils/imageUrl";
 
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
@@ -51,14 +52,14 @@ const extractId = (maybeId) => {
   return String(maybeId);
 };
 
-// Ensure absolute image URL
+/* Ensure absolute image URL
 const normalizeImageUrl = (img) => {
   if (!img) return "";
   const s = String(img).trim();
   if (s.startsWith("http")) return s;
   if (s.startsWith("/")) return `${BACKEND_HOST}${s}`;
   return `${BACKEND_HOST}/images/${s}`;
-};
+};*/
 
 /* ---------- FIX: collectVariants for flattened keys ---------- */
 const collectVariants = (obj) => {
@@ -124,7 +125,7 @@ const normalizeProduct = (p) => {
     keys.forEach((k) => imgsArray.push(p[k]));
   } 
 
-  const images = imgsArray.map(normalizeImageUrl);
+  const images = imgsArray.map(imageUrl);
   const main_image = images[0] || "";
   const second_image = images[1] || "";
 
@@ -236,16 +237,26 @@ export default function HomeSlider({ gender = null, collection = null, limit = 1
           modules={[Navigation]}
           spaceBetween={8}
           slidesPerView={4}
-          slidesOffsetBefore={0}
-          slidesOffsetAfter={0}
-         
-          className="mySwiper  h-[] w-[97%]"
+          breakpoints={{
+            // when window width is >= 320px
+            320: { slidesPerView: 1, spaceBetween: 8 },
+            // when window width is >= 640px
+            640: { slidesPerView: 2, spaceBetween: 8 },
+            // when window width is >= 768px
+            768: { slidesPerView: 3, spaceBetween: 8 },
+            // when window width is >= 1024px (desktop)
+            1024: { slidesPerView: 4, spaceBetween: 8 },
+          }}
+           slidesOffsetBefore={0}
+           slidesOffsetAfter={0}
           
-        >
+           className="mySwiper  h-[] w-[97%]"
+           
+         >
           {items.map((p) => (
             <SwiperSlide key={p.id ?? p.product_id} >
               <Link to={`/product/${p.product_id ?? ""}`} className="block group no-underline hover:no-underline" >
-                <div className="flex-shrink-0 w-full aspect-[3/4] object-cover object-center bg-gray-100 rounded-lg overflow-hidden" >
+                <div className="product-image flex-shrink-0 w-full aspect-[3/4] object-cover object-center bg-gray-100 rounded-lg overflow-hidden" >
                   {p.main_image ? (
                     <img
                       src={p.main_image}

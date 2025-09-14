@@ -15,11 +15,9 @@ const Header = () => {
 
   const { cartItems, setCartItems } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
-
+  const [mobileOpen, setMobileOpen] = useState(false);
   const totalQty = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
-  
   const handleOrderClick = () => {
     const lastOrderId = localStorage.getItem("lastOrderId");
     if (lastOrderId) {
@@ -47,7 +45,7 @@ const Header = () => {
 
       {/* Header main */}
       <div className="header border-b border-gray-200">
-        <div className="container py-3 flex items-center justify-between">
+        <div className="container py-3 flex items-center justify-between relative">
           {/* Logo */}
           <div className="col1">
             <Link to={"/"}>
@@ -59,8 +57,8 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Nav links */}
-          <nav className="col2 flex justify-between items-center px-6 py-3 bg-white shadow">
+          {/* Nav links (desktop only) */}
+          <nav className="desktop-nav col2 hidden">
             <ul className="flex list-none space-x-6">
               <li><Link smooth to="/#women" className="text-[18px] no-underline">WOMEN</Link></li>
               <li><Link smooth to="/#men" className="text-[18px] no-underline">MEN</Link></li>
@@ -69,6 +67,26 @@ const Header = () => {
               <li><Link smooth to="/#collections" className="text-[18px] no-underline">COLLECTIONS</Link></li>
             </ul>
           </nav>
+
+          {/* CSS-only mobile hamburger toggle (phone only) */}
+          <>
+            <input id="mobile-toggle" type="checkbox" className="hidden" />
+            <label htmlFor="mobile-toggle" className="mobile-toggle-label " aria-hidden="false" aria-controls="mobile-menu">
+              <span className="block w-6 h-[2px] bg-[#001f3f] rounded"></span>
+              <span className="block w-6 h-[2px] bg-[#001f3f] rounded"></span>
+              <span className="block w-6 h-[2px] bg-[#001f3f] rounded"></span>
+            </label>
+
+            <nav id="mobile-menu" className="mobile-menu">
+              <ul className="flex flex-col gap-4 list-none">
+                <li><Link smooth to="/#women" className="no-underline">WOMEN</Link></li>
+                <li><Link smooth to="/#men" className="no-underline">MEN</Link></li>
+                <li><Link smooth to="/#bestsellers" className="no-underline">BEST SELLERS</Link></li>
+                <li><Link smooth to="/#newarrival" className="no-underline">NEW ARRIVALS</Link></li>
+                <li><Link smooth to="/#collections" className="no-underline">COLLECTIONS</Link></li>
+              </ul>
+            </nav>
+          </>
 
           {/* Right-side icons */}
           <div className="flex items-center space-x-4">

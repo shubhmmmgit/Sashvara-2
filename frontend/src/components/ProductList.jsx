@@ -7,12 +7,13 @@ import { useCart } from "../context/CartContext";
 import PrimaryButton from "./PrimaryButton";
 import toast from "react-hot-toast";
 import { fetchProducts } from "../api";
+import { imageUrl } from "../utils/imageUrl";
 
 
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
 
-/* ---------- Utilities ---------- */
+/* ---------- Utilities ---------- 
 
 // Normalize image URLs
 const normalizeImageUrl = (img) => {
@@ -21,7 +22,7 @@ const normalizeImageUrl = (img) => {
   if (s.startsWith("http")) return s;
   if (s.startsWith("/")) return `${BACKEND_HOST}${s}`;
   return `${BACKEND_HOST}/images/${s}`;
-};
+};*/
 
 // Extract product_id
 const extractProductId = (p) => {
@@ -111,8 +112,8 @@ const normalizeProduct = (raw) => {
     product_id: pid,
     id: pid ?? raw._id,
     name: raw.product_name ?? raw.title ?? raw.name ?? pid ?? "Unnamed product",
-    images: images.map(normalizeImageUrl),
-    main_image: images.length ? normalizeImageUrl(images[0]) : "",
+    images: images.map(imageUrl),
+    main_image: images.length ? imageUrl(images[0]) : "",
     variants,
     sizesAvailable: variants.map((v) => v.size).filter(Boolean),
     displayPrice,

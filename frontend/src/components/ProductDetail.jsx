@@ -14,18 +14,19 @@ import ProductZoom from "./ProductZoom";
 import { useCart } from "../context/CartContext";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import toast from "react-hot-toast";
+import { imageUrl } from '../utils/imageUrl';
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
 const BRAND = "#001f3f";
 
-/* ----------------- Helpers ----------------- */
+/* ----------------- Helpers -----------------
 const normalizeImageUrl = (img) => {
   if (img === undefined || img === null) return "";
   const s = String(img).trim();
   if (!s) return "";
   if (/^https?:\/\//i.test(s)) return s;
   return s.startsWith("/") ? `${BACKEND_HOST}/images/${s}` : `${BACKEND_HOST}/${s}`;
-};
+}; */
 
 const extractMongoIdString = (maybeId) => {
   if (!maybeId) return null;
@@ -90,7 +91,7 @@ const normalizeRawProduct = (raw) => {
       images = imgKeys.map((k) => p[k]).filter(Boolean);
     }
   }
-  images = images.map(normalizeImageUrl).filter(Boolean);
+  images = images.map(imageUrl).filter(Boolean);
 
   // 2) Normalize variants:
   let variants = [];
@@ -193,7 +194,7 @@ export default function ProductDetail() {
       if (existing) {
         return prev.map((it) => (it.id === id ? { ...it, qty: (it.qty || 0) + 1 } : it));
       }
-      return [...prev, { id, name, price, image, qty: 1, size: selectedSize || "One Size" }];
+      return [...prev, { id, name, price, image: imageUrl(image), qty: 1, size: selectedSize || "One Size" }];
     });
   };
 
@@ -399,7 +400,7 @@ export default function ProductDetail() {
         <div className="flex items-start space-x-8">
           {console.log('Product images:', product.images)}
           <ProductZoom 
-            images={product.images ? product.images.map(normalizeImageUrl) : []} 
+            images={product.images ? product.images.map(imageUrl) : []} 
             productName={product.product_name || product.product_id || "Product"} 
           />
         </div>
@@ -550,7 +551,7 @@ export default function ProductDetail() {
           <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-6 " style={{gap:"25px"}}>
             {similarProducts.slice(0,4).map((sp) => {
               const pid = sp.product_id ?? extractMongoIdString(sp._id);
-              const img = (sp.images && sp.images.length) ? normalizeImageUrl(sp.images[0]) : "";
+              const img = (sp.images && sp.images.length) ? imageUrl(sp.images[0]) : "";
               const variant = sp.cheapestVariant ?? sp.variants?.[0] ?? null;
               const price = variant?.sell_price ?? variant?.mrp ?? sp.sell_price ?? sp.mrp ?? null;
               const mrp = variant?.mrp ?? sp.mrp ?? null;
@@ -559,7 +560,7 @@ export default function ProductDetail() {
                   <div className="aspect-square bg-gray-100 overflow-hidden">
                     {img ? (
                       
-                      <img src={img} alt={sp.product_name || pid} className="w-full h-full object-cover" />
+                      <img src={imageUrl(img)} alt={sp.product_name || pid} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">No Image</div>
                     )}

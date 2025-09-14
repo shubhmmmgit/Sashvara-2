@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
         </div>
       </div>
 
-     <div className="banner relative w-[90%] items-center overflow-hidden mb-6 " style={{height:800, marginLeft:90, borderRadius:"16px" , boxShadow: "0 12px 40px rgba(0, 0, 0, 0.2)"}}>
+     <div className="banner relative w-[90%] items-center overflow-hidden mb-6 " style={{height:800, marginLeft:90, borderRadius:"16px"}}>
         <video 
         className="w-full h-64 md:h-96 object-contain "
         autoPlay

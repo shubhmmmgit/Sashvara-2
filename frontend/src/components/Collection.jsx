@@ -4,17 +4,18 @@ import { useEffect, useState } from "react";
 import PrimaryButton from "./PrimaryButton";
 import { useCart } from "../context/CartContext";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { imageUrl } from '../utils/imageUrl';
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
 
-/** Ensure absolute, clean image URL */
+/** Ensure absolute, clean image URL 
 const normalizeImageUrl = (img) => {
   if (!img) return "";
   const raw = String(img).trim().replace(/\\/g, "/"); // handle backslashes
   if (raw.startsWith("http")) return raw;
   if (raw.startsWith("/")) return `${BACKEND_HOST}${raw}`;
   return `${BACKEND_HOST}/images/${raw}`;
-};
+};*/
 
 /** Gather images from images[] or flattened images/0, images/1, ... */
 const collectImages = (p) => {
@@ -182,7 +183,7 @@ const resolveMrp = (product, price) => {
 const normalizeProduct = (p, idx = 0) => {
   if (!p) return null;
 
-  const imgs = collectImages(p).map(normalizeImageUrl);
+  const imgs = collectImages(p).map(imageUrl);
   const variants = collectVariants(p);
   const cheapest = cheapestVariant(variants);
 
@@ -218,9 +219,9 @@ const normalizeProduct = (p, idx = 0) => {
     id: pid,
     product_id: pid,
     name: p.product_name ?? p.name ?? p.title ?? pid ?? "Unnamed product",
-    img: imgs[0] ? normalizeImageUrl(imgs[0]) : "",
-    main_image: imgs[0] ? normalizeImageUrl(imgs[0]) : "",
-    images: imgs.map(normalizeImageUrl),
+    img: imgs[0] ? imageUrl(imgs[0]) : "",
+    main_image: imgs[0] ? imageUrl(imgs[0]) : "",
+    images: imgs.map(imageUrl),
     variants,
     sizesAvailable: variants.map(v => v.size).filter(Boolean),
     displayPrice: finalPrice != null ? Number(finalPrice) : null,
@@ -299,7 +300,7 @@ export default function Collection() {
             >
               <div className="aspect-[9/16] bg-gray-100">
                 {p.img ? (
-                  <img src={p.img} alt={p.name} className="w-full h-full object-contain" loading="lazy" />
+                  <img src={imageUrl(p.img)} alt={p.name} className="w-full h-full object-contain" loading="lazy" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
                 )}
