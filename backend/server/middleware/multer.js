@@ -2,14 +2,14 @@ import multer from 'multer';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { v2 as cloudinary } from 'cloudinary';
 
-// Configure Cloudinary
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Configure Cloudinary storage
+
 const cloudinaryStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -22,9 +22,9 @@ const cloudinaryStorage = new CloudinaryStorage({
   },
 });
 
-// File filter function
+
 const fileFilter = (req, file, cb) => {
-  // Check file type
+ 
   if (file.mimetype.startsWith('image/')) {
     cb(null, true);
   } else {
@@ -32,23 +32,22 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Create multer instance with Cloudinary storage
 const upload = multer({
   storage: cloudinaryStorage,
   fileFilter: fileFilter,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
-    files: 10, // Maximum 10 files
+    fileSize: 5 * 1024 * 1024, 
+    files: 10, 
   },
 });
 
-// Single file upload middleware
+
 export const uploadSingle = upload.single('image');
 
-// Multiple files upload middleware
+
 export const uploadMultiple = upload.array('images', 10);
 
-// Error handling middleware for multer
+
 export const handleUploadError = (error, req, res, next) => {
   if (error instanceof multer.MulterError) {
     if (error.code === 'LIMIT_FILE_SIZE') {
@@ -81,7 +80,7 @@ export const handleUploadError = (error, req, res, next) => {
   next(error);
 };
 
-// Helper function to get file URLs from uploaded files
+
 export const getFileUrls = (files) => {
   if (!files) return [];
   

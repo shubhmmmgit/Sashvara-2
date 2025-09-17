@@ -16,7 +16,17 @@ function Login({ onLogin }) {
     e.preventDefault();
 
     if (!email || !password) {
-      toast("Please fill in both fields");
+      toast("Please fill in both fields",{
+                position: "top-center",
+        style: {
+        background: "#fff",     
+        color: "#001f3f",       
+        fontWeight: "500",
+        fontSize: "14px",
+        border: "1px solid #001f3f",
+        borderRadius: "8px",
+    }
+      });
       return;
     }
 

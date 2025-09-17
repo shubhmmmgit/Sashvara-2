@@ -9,9 +9,12 @@ export default function Search({ className = "" }) {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const wrapperRef = useRef(null);
+  const wrapperRef = useRef(null);      // outer wrapper
+  const dropdownRef = useRef(null);     // suggestions dropdown / fixed container
   const inputRef = useRef(null);
   const navigate = useNavigate();
+  const debounceRef = useRef(null);
+  const abortControllerRef = useRef(null);
 
   useEffect(() => {
     if (open && inputRef.current) {
@@ -20,6 +23,7 @@ export default function Search({ className = "" }) {
     }
   }, [open]);
 
+  // Close when clicking outside or pressing Escape / Enter for search
   useEffect(() => {
     function handleDown(e) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
@@ -33,6 +37,7 @@ export default function Search({ className = "" }) {
         setSuggestions([]);
       } 
       if (e.key === "Enter" && query.trim()) {
+        // If user pressed Enter directly (not on a suggestion), go to the search page
         e.preventDefault();
         navigate(`/search?q=${encodeURIComponent(query.trim())}`);
         setOpen(false);
@@ -47,33 +52,44 @@ export default function Search({ className = "" }) {
     };
   }, [query, navigate]);
 
-  // Fetch product suggestions
+  // Fetch suggestions:
+  // - If open && query is empty => fetch popular suggestions immediately
+  // - If user types (query non-empty) => debounce and call search endpoint
   useEffect(() => {
-    const controller = new AbortController();
-
-    async function fetchSuggestions() {
-      if (!query.trim()) {
-        setSuggestions([]);
-        setLoading(false);
-        return;
+    // only fetch when the search panel is open
+    if (!open) {
+      // abort in-flight request if panel closed
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
       }
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = null;
+      }
+      return;
+    }
 
+    // clear previous requests
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+
+    // Helper to fetch (shared)
+    const doFetch = async (url) => {
+      abortControllerRef.current = new AbortController();
       setLoading(true);
       try {
-        const res = await fetch(
-          `${BACKEND_HOST}/api/products/search?q=${encodeURIComponent(query)}&limit=8`,
-          { signal: controller.signal }
-        );
-        if (!res.ok) throw new Error("Failed to fetch suggestions");
+        const res = await fetch(url, { signal: abortControllerRef.current.signal });
+        if (!res.ok) throw new Error(`Failed to fetch (${res.status})`);
         const data = await res.json();
         const items = data?.data ?? [];
-        console.log("Search API response:", data);
-        console.log("Products found:", items);
-        if (items.length > 0) {
-          console.log("First product:", items[0]);
-          console.log("First product variants:", items[0].variants);
-        }
-        setSuggestions(items.slice(0, 8)); // show top 8 products
+        setSuggestions(items.slice(0, 8));
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error("Search suggestions error:", err);
@@ -82,14 +98,30 @@ export default function Search({ className = "" }) {
       } finally {
         setLoading(false);
       }
+    };
+
+    const trimmed = (query || "").trim();
+
+    if (!trimmed) {
+      // fetch popular suggestions when input is empty
+      const url = `${BACKEND_HOST}/api/products/search?popular=true&limit=8`;
+      doFetch(url);
+      return () => {
+        if (abortControllerRef.current) abortControllerRef.current.abort();
+      };
     }
 
-    const delay = setTimeout(fetchSuggestions, 300); // debounce typing
+    // typed query -> debounce
+    debounceRef.current = setTimeout(() => {
+      const url = `${BACKEND_HOST}/api/products/search?q=${encodeURIComponent(trimmed)}&limit=8`;
+      doFetch(url);
+    }, 300);
+
     return () => {
-      clearTimeout(delay);
-      controller.abort();
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      if (abortControllerRef.current) abortControllerRef.current.abort();
     };
-  }, [query]);
+  }, [query, open]);
 
   // Submit full search
   const handleSubmit = (e) => {
@@ -101,27 +133,25 @@ export default function Search({ className = "" }) {
     }
   };
 
-  // Helper function to get the cheapest price from variants
+  // Get cheapest variant helper (keeps your existing behavior)
   const getCheapestPrice = (product) => {
     if (!product.variants || !Array.isArray(product.variants) || product.variants.length === 0) {
       return { sell_price: null, mrp: null };
     }
-    
     const cheapest = product.variants.reduce((cheapest, variant) => {
-      const variantPrice = variant.sell_price || variant.mrp || Infinity;
-      const cheapestPrice = cheapest.sell_price || cheapest.mrp || Infinity;
+      const variantPrice = variant.sell_price ?? variant.mrp ?? Infinity;
+      const cheapestPrice = (cheapest.sell_price ?? cheapest.mrp) ?? Infinity;
       return variantPrice < cheapestPrice ? variant : cheapest;
-    });
-    
+    }, product.variants[0] || {});
     return {
-      sell_price: cheapest.sell_price || null,
-      mrp: cheapest.mrp || null
+      sell_price: cheapest.sell_price ?? null,
+      mrp: cheapest.mrp ?? null
     };
   };
 
-  // Handle suggestion click
   const handleSuggestionClick = (product) => {
-    navigate(`/product/${product.product_id || product._id}`);
+    const pid = product.product_id || product._id || product.id;
+    navigate(`/product/${encodeURIComponent(pid)}`);
     setOpen(false);
     setQuery("");
     setSuggestions([]);
@@ -129,7 +159,6 @@ export default function Search({ className = "" }) {
 
   return (
     <div ref={wrapperRef} className={`search-root relative ${className}`.trim()}>
-      
       <button
         aria-expanded={open}
         aria-controls="site-search"
@@ -142,7 +171,7 @@ export default function Search({ className = "" }) {
 
       <div
         id="site-search"
-        ref={wrapperRef}
+        ref={dropdownRef}
         className={`search-dropdown ${open ? "open" : ""}`}
         aria-hidden={!open}
         style={{ position: "fixed", left: 0, right: 0, zIndex: 900 }}
@@ -159,7 +188,7 @@ export default function Search({ className = "" }) {
               onChange={(e) => setQuery(e.target.value)}
             />
           </form>
-          
+
           {/* Product Suggestions */}
           {(suggestions.length > 0 || loading) && (
             <div className="suggestions-dropdown">
@@ -177,13 +206,14 @@ export default function Search({ className = "" }) {
               ) : (
                 suggestions.map((product) => {
                   const prices = getCheapestPrice(product);
-                  const imageUrl = product.images?.[0] ? 
-                    (product.images[0].startsWith('http') ? product.images[0] : `${BACKEND_HOST}${product.images[0]}`) 
+                  const rawImage = product.images?.[0] ?? null;
+                  const imageUrl = rawImage
+                    ? (String(rawImage).startsWith("http") ? rawImage : `${BACKEND_HOST}${String(rawImage).startsWith("/") ? rawImage : `/${rawImage}`}`)
                     : null;
-                  
+
                   return (
                     <div
-                      key={product.product_id || product._id}
+                      key={product.product_id || product._id || product.id}
                       className="suggestion-item"
                       onClick={() => handleSuggestionClick(product)}
                     >
@@ -193,18 +223,14 @@ export default function Search({ className = "" }) {
                             src={imageUrl}
                             alt={product.product_name}
                             className="w-12 h-12 object-cover rounded"
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                              e.target.nextSibling.style.display = 'flex';
-                            }}
+                            onError={(e) => { e.target.style.display = 'none'; }}
                           />
-                        ) : null}
-                        <div 
-                          className={`w-12 h-12 bg-gray-200 rounded flex items-center justify-center ${imageUrl ? 'hidden' : 'flex'}`}
-                        >
-                          <span className="text-gray-400 text-xs">No Image</span>
-                        </div>
-                        
+                        ) : (
+                          <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
+                            <span className="text-gray-400 text-xs">No Image</span>
+                          </div>
+                        )}
+
                         <div className="flex-1 min-w-0">
                           <div className="suggestion-name truncate">
                             {product.product_name}
@@ -213,12 +239,12 @@ export default function Search({ className = "" }) {
                             {product.category} {product.colour ? `· ${product.colour}` : ""}
                           </div>
                           {product.variants?.[0]?.size && (
-                            <div className="text-xs text-gray-500 visited:text-[#001f3f] ">
-                              Available in {product.variants.map(v => v.size).join(", ")}
+                            <div className="text-xs text-gray-500">
+                              Available in {product.variants.map(v => v.size).filter(Boolean).join(", ")}
                             </div>
                           )}
                         </div>
-                        
+
                         {(prices.sell_price || prices.mrp) && (
                           <div className="suggestion-price text-right">
                             <div className="font-semibold text-gray-900">
@@ -236,7 +262,7 @@ export default function Search({ className = "" }) {
                   );
                 })
               )}
-              
+
               {/* Show more results link */}
               {suggestions.length > 0 && (
                 <div className="suggestion-item view-all">

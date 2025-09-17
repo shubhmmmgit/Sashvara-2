@@ -46,7 +46,10 @@ router.post("/", uploadMultiple, handleUploadError, async (req, res) => {
 
     // If images were uploaded via multer, merge them
     if (req.files && req.files.length) {
-      payload.images = getFileUrls(req.files);
+  const rawUrls = getFileUrls(req.files);
+  payload.images = rawUrls.map(url =>
+    url.replace("/upload/", "/upload/f_auto,q_auto,w_800/")
+  );
     } else if (payload.images && typeof payload.images === "string") {
       // JSON strings sometimes get passed in form-data; try to parse
       try {
@@ -335,14 +338,20 @@ router.put("/:identifier", uploadMultiple, handleUploadError, async (req, res) =
     const payload = req.body ?? {};
 
     // Merge uploaded images (if any)
-    if (req.files && req.files.length) {
-      const uploaded = getFileUrls(req.files);
-      if (payload.replaceImages === "true" || payload.replaceImages === true) {
-        product.images = uploaded;
-      } else {
-        product.images = Array.isArray(product.images) ? product.images.concat(uploaded) : uploaded;
-      }
-    }
+   if (req.files && req.files.length) {
+  const rawUrls = getFileUrls(req.files);
+  const optimizedUrls = rawUrls.map(url =>
+    url.replace("/upload/", "/upload/f_auto,q_auto,w_800/")
+  );
+
+  if (payload.replaceImages === "true" || payload.replaceImages === true) {
+    product.images = optimizedUrls;
+  } else {
+    product.images = Array.isArray(product.images)
+      ? product.images.concat(optimizedUrls)
+      : optimizedUrls;
+  }
+}
 
     // Allow updating top-level fields
     const updatable = [

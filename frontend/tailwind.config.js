@@ -9,6 +9,9 @@ export default {
       colors: {
         primary: "#0a1a44", 
       },
+      fontFamily: {
+        avenir: ["Avenir", "sans-serif"],
+      },
     
   },
   plugins: [],

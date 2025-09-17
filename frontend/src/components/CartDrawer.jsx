@@ -38,7 +38,18 @@ const CartDrawer = ({
   const goToCheckout = () => {
     // use `products` (not cartItems)
     if (!products || products.length === 0) {
-      toast("Your cart is empty. Add some items to proceed with checkout.");
+      toast("Your cart is empty. Add some items to proceed with checkout.", {
+        position: "top-center",
+        style: {
+        background: "#fff",      
+        color: "#001f3f",       
+        fontWeight: "500",
+        fontSize: "14px",
+        border: "1px solid #001f3f",
+        borderRadius: "8px",
+    },
+
+      });
       return;
     }
 
@@ -76,6 +87,7 @@ const CartDrawer = ({
             <MdOutlineShoppingCart className="text-[30px] text-[#001f3f]" />
             <h2 className="text-lg font-semibold text-[#001f3f]">Shopping Cart</h2>
             <button
+              id="cartCross"
               onClick={() => window.history.back()}
               className="p-2 rounded text-gray-400 hover:text-gray-600"
             >
@@ -130,7 +142,7 @@ const CartDrawer = ({
                     </div>
                     
 
-                    <div className="flex justify-end items-center mt-2" style={{fontWeight:500, fontSize:"1.5rem"}}>
+                    <div id="cartProductPrize" className="flex justify-end items-center mt-2" style={{fontWeight:500, fontSize:"1.5rem"}}>
                       <p className="text-[#001f3f]">
                         ₹{((product.price || 0) * (product.qty || 0)).toLocaleString()}
                       </p>
@@ -143,8 +155,8 @@ const CartDrawer = ({
           )}
 
           {/* Footer */}
-          <div className="border-t px-0 py-4 bg-white shadow mt-6">
-            <div className="flex justify-between items-center text-base font-medium text-[#001f3f] mb-4">
+          <div  className="border-t px-0 py-4 bg-white shadow mt-6">
+            <div id="cartSubtotal" className="flex justify-between items-center text-base font-medium text-[#001f3f] mb-4">
               <p>Subtotal</p>
               <p>₹{subtotal.toLocaleString()}</p>
             </div>

@@ -261,6 +261,7 @@ export default function SearchPage() {
         const currentId = firstItem.product_id ?? extractMongoIdString(firstItem.raw._id);
         const targetCategory = (firstItem.raw.category ?? "").toString().trim().toLowerCase();
         const targetGender = (firstItem.raw.gender ?? "").toString().trim().toLowerCase();
+        const targetColor    = (product.color ?? "").toString().trim().toLowerCase();
 
         const sims = normalized
           .filter((p) => {
@@ -268,8 +269,10 @@ export default function SearchPage() {
             if (pid && currentId && String(pid) === String(currentId)) return false;
             const pc = (p.raw.category ?? "").toString().trim().toLowerCase();
             const pg = (p.raw.gender ?? "").toString().trim().toLowerCase();
+            const pcl = (p.color ?? "").toString().trim().toLowerCase();
             if (targetCategory && pc !== targetCategory) return false;
             if (targetGender && pg !== targetGender) return false;
+            if (targetColor && pcl !== targetColor) return false;
             return true;
           })
           .slice(0, 6);
@@ -315,7 +318,7 @@ export default function SearchPage() {
 
 
   return (
-    <section className="py-6 w-full">
+    <section className="product-section py-6 w-full">
       {/* Search Results Header */}
       <div className="mb-6 px-4 ">
         <h2 className="text-2xl text-center font-semibold text-[#001f3f]">
@@ -338,11 +341,13 @@ export default function SearchPage() {
             className="block group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow no-underline hover:no-underline "
           >
             {/* Product Image */}
-            <div className=" bg-gray-100 aspect-[9/16] overflow-hidden flex items-center justify-center ml-[10%]   " >
+            <div className="searchedPage">
+            <div   className=" bg-gray-100 aspect-[9/16] overflow-hidden flex items-center justify-center ml-[10%]   " >
               {p.main_image ? (
                 <img
                   src={p.main_image}
                   alt={p.name}
+                  id="searchedImage"
                   className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105 items-centergap-[10%] " 
                 />
               ) : (
@@ -386,9 +391,10 @@ export default function SearchPage() {
               </div>
 
             </div>
+            </div>
           </Link>
         ))}
-         
+          
 
       </div>
 
@@ -410,7 +416,7 @@ export default function SearchPage() {
                        <Link key={pid} to={`/product/${encodeURIComponent(pid)}`} className="rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow no-underline text-current">
                          <div className="aspect-square bg-gray-100 overflow-hidden">
                            {img ? (
-                             <img src={imageUrl(img)} alt={sp.name || pid} className="w-full h-full object-cover" />
+                             <img src={imageUrl(img)} alt={sp.name || pid} className="w-full h-full object-cover" loading="lazy"/>
                            ) : (
                              <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">No Image</div>
                            )}

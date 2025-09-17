@@ -15,6 +15,9 @@ import { useCart } from "../context/CartContext";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import toast from "react-hot-toast";
 import { imageUrl } from '../utils/imageUrl';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Thumbs, FreeMode,Navigation } from "swiper/modules";
+
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
 const BRAND = "#001f3f";
@@ -98,7 +101,7 @@ const normalizeRawProduct = (raw) => {
   if (Array.isArray(p.variants) && p.variants.length) {
     variants = p.variants.map((v) => ({ ...v }));
   } else {
-    // handle flattened variant keys like variants/0/size etc.
+    
     const variantIndexSet = new Set();
     Object.keys(p).forEach((k) => {
       const m = k.match(/^variants\/(\d+)\/(.+)$/);
@@ -174,6 +177,9 @@ export default function ProductDetail() {
   const [loadingSimilar, setLoadingSimilar] = useState(false);
   const { cartItems, setCartItems } = useCart();
   const [zoomed, setZoomed] = useState(false);
+  const [showSizeChart, setShowSizeChart] = useState(false);
+  const [showBottomActions, setShowBottomActions] = useState(false);
+
 
   // UI state
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
@@ -198,6 +204,35 @@ export default function ProductDetail() {
     });
   };
 
+  
+  const goToCheckout = () => {
+  // Ensure the product is in the cart before navigating
+  const id = product?.product_id ?? extractMongoIdString(product?._id);
+  if (!id) return;
+
+  const item = {
+    id,
+    name: product.product_name ?? "Unnamed Product",
+    price: displayPrice ?? 0,
+    image: (product.images && product.images[0]) ? imageUrl(product.images[0]) : "",
+    qty: 1,
+    size: selectedVariant?.size ?? product?.cheapestVariant?.size ?? "One Size",
+  };
+
+  // Insert into CartContext (same as drawer does)
+  setCartItems((prev) => {
+    const existing = prev.find((it) => it.id === id);
+    if (existing) {
+      return prev.map((it) =>
+        it.id === id ? { ...it, qty: (it.qty || 0) + 1 } : it
+      );
+    }
+    return [...prev, item];
+  });
+
+  // Navigate after adding
+  navigate("/checkout");
+};
   useEffect(() => {
     let mounted = true;
     async function load() {
@@ -296,6 +331,8 @@ export default function ProductDetail() {
         const currentId = product.product_id ?? extractMongoIdString(product._id);
         const targetCategory = (product.category ?? "").toString().trim().toLowerCase();
         const targetGender = (product.gender ?? "").toString().trim().toLowerCase();
+        const targetColor    = (product.color ?? "").toString().trim().toLowerCase();
+
 
         const sims = normalized
           .filter((p) => {
@@ -303,8 +340,10 @@ export default function ProductDetail() {
             if (pid && currentId && String(pid) === String(currentId)) return false;
             const pc = (p.category ?? "").toString().trim().toLowerCase();
             const pg = (p.gender ?? "").toString().trim().toLowerCase();
+            const pcl = (p.color ?? "").toString().trim().toLowerCase();
             if (targetCategory && pc !== targetCategory) return false;
             if (targetGender && pg !== targetGender) return false;
+            if (targetColor && pcl !== targetColor) return false;
             return true;
           })
           .slice(0, 6);
@@ -340,13 +379,33 @@ export default function ProductDetail() {
       }
     } catch (err) {
       console.error("Delete error:", err);
-      toast.error("Delete error, check console");
+      toast.error("Delete error, check console",{
+                position: "top-center",
+        style: {
+        background: "#fff",     
+        color: "#001f3f",       
+        fontWeight: "500",
+        fontSize: "14px",
+        border: "1px solid #001f3f",
+        borderRadius: "8px",
+    }
+      });
     }
   };
 
   const handleEdit = () => {
     const pid = product?.product_id ?? extractMongoIdString(product?._id);
-    if (!pid) return toast("No product id to edit");
+    if (!pid) return toast("No product id to edit",{
+              position: "top-center",
+        style: {
+        background: "#fff",     
+        color: "#001f3f",       
+        fontWeight: "500",
+        fontSize: "14px",
+        border: "1px solid #001f3f",
+        borderRadius: "8px",
+    }
+    });
     navigate(`/edit-product/${encodeURIComponent(pid)}`);
   };
 
@@ -395,9 +454,9 @@ export default function ProductDetail() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* layout */}
-      <div className="grid grid-cols-2  gap-8">
+      <div id="product-conatiner" className="grid grid-cols-2 sm:grid grid-cols-1 md:grid grid-cols-1  gap-8">
         {/* left: images */}
-        <div className="flex items-start space-x-8">
+        <div id="left-box" className="left-box flex items-start space-x-8">
           {console.log('Product images:', product.images)}
           <ProductZoom 
             images={product.images ? product.images.map(imageUrl) : []} 
@@ -406,10 +465,10 @@ export default function ProductDetail() {
         </div>
 
         {/* right: details */}
-        <div className="discription flex-1 space-y-6 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-[#001f3f]">{product.product_name}</h1>
-            <div className="mt-1 text-sm text-gray-500">ID: {product.product_id ?? extractMongoIdString(product._id)}</div>
+        <div id="product-detail" className="product-detail discription flex-1 space-y-6 mb-8">
+          <div id="product-detail-name" className="product-detail-name">
+            <h1 className="text-3xl font-avenir font-bold text-[#001f3f]">{product.product_name}</h1>
+            
           </div>
 
           {/* price area */}
@@ -439,7 +498,7 @@ export default function ProductDetail() {
           ₹{displayPrice?.toLocaleString() ?? "N/A"}
         </div>
         {displayMrp && displayMrp > displayPrice &&(
-            <div className="ml-[1%] text-red-600 font-semibold text-[#000000] visited:text-[#000000]">
+            <div className="ml-[1%] text-red-600 font-semibold text-[#001f3f] visited:text-[#001f3f]">
             ({Math.round(((displayMrp - displayPrice) / displayMrp) * 100)}% OFF)
             </div> )}
          </>
@@ -447,14 +506,14 @@ export default function ProductDetail() {
         </div>
 
             {savedAmount > 0 && (
-              <div className="text-sm text-gray-600 mt-2">You save ₹{savedAmount.toLocaleString()}</div>
+              <div className="text-sm text-gray-600 mt-2 mb-[5%] ">You save ₹{savedAmount.toLocaleString()}</div>
             )}
           </div>
 
           {/* size selector (variants) */}
-          <div className="bg-white p-4 rounded-lg ">
+          <div id="size-selector" className="bg-white p-4 rounded-lg ">
             <div className="text-gray-500 mb-2" >Select Size</div>
-            <div className="flex flex-wrap " style={{ gap:"15px" }} >
+            <div id="size-selector-wrap" className="flex flex-wrap " style={{ gap:"15px" }} >
               {variants.length ? (
                 variants.map((v, idx) => {
                   const isSelected = idx === selectedVariantIndex;
@@ -477,45 +536,7 @@ export default function ProductDetail() {
               )}
             </div>
           </div>
-
-          {/* specs grid */}
-          <div className="grid grid-cols-1 gap-4">
-            <div className=" bg-white p-3 rounded-lg ">
-              <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Category:</p>
-              <p className="font-medium">{product.category ?? "N/A"}</p>
-            </div>
-            <div className="bg-white p-3 rounded-lg ">
-              <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Color:</p>
-              <p className="font-medium">{product.colour ?? "N/A"}</p>
-            </div>
-            <div className="bg-white p-3 rounded-lg ">
-              <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Gender:</p>
-              <p className="font-medium capitalize">{product.gender ?? "N/A"}</p>
-            </div>
-            <div className="bg-white p-3 rounded-lg ">
-              <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Images:</p>
-              <p className="font-medium">{product.images?.length ?? 0}</p>
-            </div>
-          </div>
-
-          {/* description */}
-          <div className="bg-white p-4 rounded-lg ">
-            <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Description:</p>
-            <p className="font-medium whitespace-pre-line text-[#808080] " style={{fontSize:"0.9rem"}}>{product.description ?? "N/A"}</p>
-            <p className="text-[#808080] " >Model is wearing size XS with a height of 5'5" </p>
-            <p className="text-[#808080] " > CARE : Gentle machine wash or Handwash preferred . </p>
-           <div      
-            className={` cursor-pointer transition-transform duration-300 ${
-             zoomed ? "scale-230 " : "scale-100"
-             }`}
-             onClick={() => setZoomed(!zoomed)}
-             > 
-             <img className="w-[20%] text-[#808080] " src="../images/sizechart.png" /></div> 
-             <p className="text-[#808080]  "style={{fontSize:"0.9rem"}}>click to view</p>
-
-          </div>
-
-          {/* actions */}
+          <div className="space-y-[2%] mt-[5%]">
           <div className="flex gap-3 items-center">
             <PrimaryButton   onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart({
                id: product.product_id ?? extractMongoIdString(product._id),
@@ -526,8 +547,89 @@ export default function ProductDetail() {
             }); }} 
              className="flex-1 py-3">Add to Cart</PrimaryButton>
             
-            <button className="px-4 py-3 rounded bg-gray-100"><FaShare className="text-lg" /></button>
+            
           </div>
+           <div className=" px-0 py-4 bg-white shadow mt-6">
+          
+            <PrimaryButton type="button" onClick={goToCheckout} className="w-full py-3">
+              Checkout
+            </PrimaryButton>
+           
+          </div>
+           </div>
+
+          {/* specs grid */}
+          <div id="product-params" className="grid grid-cols-1 gap-4">
+            <div id="category" className=" bg-white p-3 rounded-lg ">
+              <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Category:</p>
+              <p className="font-medium">{product.category ?? "N/A"}</p>
+            </div>
+            <div className="bg-white p-3 rounded-lg ">
+              <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Color:</p>
+              <p className="font-medium">{product.colour ?? "N/A"}</p>
+            </div>
+
+          </div>
+
+          {/* description */}
+          <div id="product-description" className="bg-white p-4 rounded-lg ">
+            <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Description:</p>
+            <p className="font-medium whitespace-pre-line text-[#808080] " style={{fontSize:"0.9rem"}}>{product.description ?? "N/A"}</p>
+            <p className="text-[#808080] " >Model is wearing size XS with a height of 5'5" </p>
+            <p className="text-[#808080] " > CARE : Gentle machine wash or Handwash preferred . </p>
+
+
+{/* SizeChartModal - drop this where you currently render your modal */}
+{showSizeChart && (
+  <>
+    <div
+      className="sizechart-overlay"
+      onClick={() => {
+        setShowSizeChart(false);
+        // remove body lock if you add it (see below)
+        document.body.classList.remove('modal-open');
+      }}
+      aria-hidden="true"
+    />
+    <div
+      className="sizechart-modal"
+      role="dialog"
+      aria-modal="true"
+      onClick={(e) => e.stopPropagation()} // prevent overlay click from closing
+    >
+      <button
+        type="button"
+        className="sizechart-close"
+        aria-label="Close size chart"
+        onClick={() => {
+          setShowSizeChart(false);
+          document.body.classList.remove('modal-open');
+        }}
+      >
+        ✕
+      </button>
+
+      <img
+        src="../images/sizechart.png" 
+        alt="Size Chart"
+      />
+    </div>
+  </>
+)}
+
+            <div
+         className="cursor-pointer"
+         onClick={() => setShowSizeChart(true)}
+         >
+         <img className="w-[20%]" src="../images/sizechart.png" />
+          </div>
+          <p className="text-[#808080]" style={{fontSize:"0.9rem"}}>click to view</p>
+
+             
+
+          </div>
+
+          {/* actions */}
 
           {/* extra info 
           <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-600 mb-8">
@@ -540,61 +642,145 @@ export default function ProductDetail() {
       </div>
 
       {/* Similar Products */}
-      <div className="mt-12">
-        <h2 className="text-2xl text-center font-bold text-[#001f3f] mb-4">Similar Products</h2>
-        {loadingSimilar ? (
-          <div className="text-gray-600">Loading similar products...</div>
-        ) : similarProducts.length === 0 ? (
-          <div className="text-gray-500">No similar products found.</div>
-        ) : (
-          
-          <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-6 " style={{gap:"25px"}}>
-            {similarProducts.slice(0,4).map((sp) => {
-              const pid = sp.product_id ?? extractMongoIdString(sp._id);
-              const img = (sp.images && sp.images.length) ? imageUrl(sp.images[0]) : "";
-              const variant = sp.cheapestVariant ?? sp.variants?.[0] ?? null;
-              const price = variant?.sell_price ?? variant?.mrp ?? sp.sell_price ?? sp.mrp ?? null;
-              const mrp = variant?.mrp ?? sp.mrp ?? null;
-              return (
-                <Link key={pid} to={`/product/${encodeURIComponent(pid)}`} className=" rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow no-underline text-current ">
-                  <div className="aspect-square bg-gray-100 overflow-hidden">
-                    {img ? (
-                      
-                      <img src={imageUrl(img)} alt={sp.product_name || pid} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">No Image</div>
-                    )}
+<div className="similar-prodcuts">
+  <h2 className="text-2xl text-center font-bold text-[#001f3f] mb-4">Similar Products</h2>
+  {loadingSimilar ? (
+    <div className="text-gray-600">Loading similar products...</div>
+  ) : similarProducts.length === 0 ? (
+    <div className="text-gray-500">No similar products found.</div>
+  ) : (
+    <Swiper
+      navigation
+      modules={[Navigation]}
+      spaceBetween={25}   // matches your current inline style gap: "25px"
+      slidesPerView={4}
+      breakpoints={{
+        320: { slidesPerView: 2, spaceBetween: 8 },
+        640: { slidesPerView: 2, spaceBetween: 8 },
+        768: { slidesPerView: 2, spaceBetween: 8 },
+        1024: { slidesPerView: 4, spaceBetween: 25 },
+      }}
+      slidesOffsetBefore={0}
+      slidesOffsetAfter={0}
+      className="mySwiper w-[97%]"
+    >
+      {similarProducts.slice(0, 4).map((sp) => {
+        const pid = sp.product_id ?? extractMongoIdString(sp._id);
+        const img =
+          sp.images && sp.images.length ? imageUrl(sp.images[0]) : "";
+        const variant = sp.cheapestVariant ?? sp.variants?.[0] ?? null;
+        const price =
+          variant?.sell_price ??
+          variant?.mrp ??
+          sp.sell_price ??
+          sp.mrp ??
+          null;
+        const mrp = variant?.mrp ?? sp.mrp ?? null;
+        return (
+          <SwiperSlide key={pid}>
+            <Link
+              to={`/product/${encodeURIComponent(pid)}`}
+              className="rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow no-underline text-current"
+            >
+              <div className="aspect-square bg-gray-100 overflow-hidden">
+                {img ? (
+                  <img
+                    src={imageUrl(img)}
+                    alt={sp.product_name || pid}
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                    No Image
                   </div>
-                  <div className="p-3">
-                    <div className=" text-[#001f3f] font-semibold text-center line-clamp-2 h-10" style={{fontWeight:600}}>{sp.product_name || pid}</div>
-                    <div className="mt-1 flex items-baseline gap-2">
-                      {mrp && mrp !== price && (
-                        <div className="text-xs text-gray-500 line-through">₹{Number(mrp).toLocaleString()}</div>
-                        
-                      )}
-                      <div className="text-[#001f3f]  font-bold"style={{fontWeight:500, fontSize:"1.5rem"}}>{price !== null ? `₹${Number(price).toLocaleString()}` : "N/A"}</div>
-                      {mrp && mrp > price &&(
-                      <div className="ml-[1%] text-red-600 font-semibold text-[#000000] visited:text-[#000000]">
-                        ({Math.round(((mrp - price) / mrp) * 100)}% OFF)
-                      </div> )}
-                    
+                )}
+              </div>
+              <div className="p-3">
+                <div
+                  className="text-[#001f3f] font-semibold text-center line-clamp-2 h-10"
+                  style={{ fontWeight: 600 }}
+                >
+                  {sp.product_name || pid}
+                </div>
+                <div className="mt-1 flex justify-center items-baseline gap-[1%] ">
+                  {mrp && mrp !== price && (
+                    <div className="text-xs text-gray-500 line-through">
+                      ₹{Number(mrp).toLocaleString()}
                     </div>
-                        <div className="mt-2 flex justify-center">
-                          <PrimaryButton
-                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart({ id: pid, product_id: pid, name: sp.product_name || pid, price: price ?? 0, image: img, images: sp.images || [], main_image: img }); }}
-                            className="inline-flex items-center gap-1 rounded-full text-xs px-2 py-1">
-                                     
-                            <MdOutlineShoppingCart className="text-xs" />
-                            Add to Cart
-                          </PrimaryButton>
-                        </div>
+                  )}
+                  <div
+                    className="text-[#001f3f]  font-bold"
+                    style={{ fontWeight: 500, fontSize: "1.5rem" }}
+                  >
+                    {price !== null
+                      ? `₹${Number(price).toLocaleString()}`
+                      : "N/A"}
                   </div>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </div>
+                  {mrp && mrp > price && (
+                    <div className="ml-[1%] text-red-600 font-semibold text-[#001f3f] visited:text-[#001f3f]">
+                      ({Math.round(((mrp - price) / mrp) * 100)}% OFF)
+                    </div>
+                  )}
+                </div>
+<div className="view-detail flex items-center justify-center space-y-4 mb-[10%] mt-[5%] ">
+  {/* View Details button */}
+  <PrimaryButton
+    onClick={() => setShowBottomActions(true)}
+    className="w-[50%]  py-3"
+  >
+    View Details
+  </PrimaryButton>
+</div>
+
+{/* Bottom action bar */}
+<div className={`bottom-actions ${showBottomActions ? "visible" : ""}`}>
+  <div className="inner">
+    <PrimaryButton
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        addToCart({
+          id: product.product_id ?? extractMongoIdString(product._id),
+          name: product.product_name,
+          price: displayPrice,
+          image: product.images?.[0] ?? "",
+          size: selectedVariant?.size ?? null,
+        });
+      }}
+      className="flex-1 py-3"
+    >
+      Add to Cart
+    </PrimaryButton>
+
+    <PrimaryButton
+      type="button"
+      onClick={goToCheckout}
+      className="flex-1 py-3 bg-green-600 hover:bg-green-700"
+    >
+      Checkout
+    </PrimaryButton>
+
+    {/* Close button */}
+    <button
+      onClick={() => setShowBottomActions(false)}
+      className="ml-3 px-3 py-2 rounded-md text-sm text-slate-600 hover:text-slate-900"
+      aria-label="Close"
+    >
+      ✕
+    </button>
+  </div>
+</div>
+
+                  
+                </div>
+            </Link>
+          </SwiperSlide>
+        );
+      })}
+    </Swiper>
+  )}
+</div>
     </div>
   );
 }

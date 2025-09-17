@@ -28,10 +28,12 @@ const ProductZoom = ({ images = [], productName = "Product" }) => {
     <div className="w-full flex justify-start px-4 mb-8">
       
       {/* wrapper keeps thumbs + main together and prevents main from growing */}
-      <div className="flex items-start space-x-8">
+      <div className="left-box flex items-start space-x-8">
+
         {/* THUMBS: fixed column on left */}
+
         {images.length > 1 && (
-          <div className="thumbnail-container">
+          <div id="thumbnail-container" className="thumbnail-container">
             <Swiper
               direction="vertical"
               modules={[FreeMode, Thumbs]}
@@ -68,7 +70,7 @@ const ProductZoom = ({ images = [], productName = "Product" }) => {
         )}
 
         {/* MAIN: prevent flex grow — give a fixed max width so it doesn't become too wide */}
-        <div className="main-container relative flex-none w-[450px] max-w-full overflow-hidden rounded-lg">
+        <div  className="main-container relative flex-none w-[70%] max-w-full overflow-hidden rounded-lg">
           <Swiper
             modules={[ Thumbs]}
             
@@ -91,16 +93,17 @@ const ProductZoom = ({ images = [], productName = "Product" }) => {
             {images.map((image, index) => (
               <SwiperSlide key={image ?? index} className="!w-full">
                 {/* keep same visible height you used previously */}
-                <div className="relative w-full h-[600px] bg-gray-100 overflow-hidden rounded-lg">
+                <div id="main-container" className="product-image-wrap relative w-full h-full bg-gray-100 overflow-hidden rounded-lg">
                   <div              
                    className={`cursor-pointer transition-transform duration-300 ${
                    zoomed ? "scale-200" : "scale-100"
                     }`}
-                   onClick={() => setZoomed(!zoomed)}>
+                   onClick={() => setZoomed(!zoomed)} style={{ width: "100%", display: "block" }}> 
                   <img
                     src={image}
                     alt={`${productName} - Image ${index + 1}`}
-                    className="max-h-[600px] w-auto max-w-full object-contain"
+                    className="product-image max-w-full object-contain"
+                    
                     
                   />
                   </div>

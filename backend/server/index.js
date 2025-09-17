@@ -8,6 +8,7 @@ import userSuggestionRoutes from "./routes/userSuggestionRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import path from "path";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ const allowedOrigins = [
   "https://sashvara.netlify.app",
 ];
 
-// --- CORS: allow requests from the whitelist (works with arrays)
+
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -48,6 +49,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/suggestions", userSuggestionRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/upload", uploadRoutes);
+
 
 
 app.use(express.static(path.join(process.cwd(), "public")));
@@ -60,7 +63,12 @@ app.use(
     res.setHeader("Access-Control-Allow-Origin", "*");
     next();
   },
-  express.static(path.join(process.cwd(), "public", "images"))
+  express.static(path.join(process.cwd(), "public", "images"),{
+    maxAge: "30d",         
+    etag: true,             
+    lastModified: true
+
+  })
 );
 
 // If you later serve an SPA index.html as a catch-all, make sure this comes AFTER static and API routes:

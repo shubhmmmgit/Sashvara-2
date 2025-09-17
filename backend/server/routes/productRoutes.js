@@ -394,4 +394,69 @@ router.delete("/:identifier", async (req, res) => {
   }
 });
 
+/* ---------------------- SEARCH PRODUCTS (dedicated search endpoint) ---------------------- */
+router.get("/search", async (req, res) => {
+  try {
+    const { q, limit = 10, gender, category, popular } = req.query;
+    const limitNum = Math.min(parseInt(limit, 10) || 10, 50);
+
+    // If client specifically asks for popular/top suggestions (used when search box opens)
+    if (String(popular).toLowerCase() === "true") {
+      // Prefer soldCount (best sellers), then fallback to newest
+      const docs = await Product.find({})
+        .sort({ soldCount: -1, createdAt: -1 })
+        .limit(limitNum)
+        .exec();
+      return res.json({ success: true, data: docs, total: docs.length });
+    }
+
+    // If no query provided, return empty array (preserves previous behaviour)
+    if (!q || !q.trim()) {
+      return res.json({ success: true, data: [], total: 0 });
+    }
+
+    const searchTerm = q.trim();
+    const query = {
+      $or: [
+        { product_name: { $regex: searchTerm, $options: "i" } },
+        { category: { $regex: searchTerm, $options: "i" } },
+        { product_id: { $regex: searchTerm, $options: "i" } },
+        { colour: { $regex: searchTerm, $options: "i" } },
+        { collection: { $regex: searchTerm, $options: "i" } },
+        { "variants.size": { $regex: searchTerm, $options: "i" } }
+      ]
+    };
+
+    // Add gender filter if provided
+    if (gender) {
+      query.gender = new RegExp(`^${gender}$`, "i");
+    }
+
+    // Add category filter if provided (exact-ish)
+    if (category && category !== "all") {
+      query.category = new RegExp(`^${category}$`, "i");
+    }
+
+    const products = await Product.find(query)
+      .limit(limitNum)
+      .sort({ createdAt: -1 })
+      .exec();
+
+    return res.json({
+      success: true,
+      data: products,
+      total: products.length,
+      query: searchTerm
+    });
+  } catch (err) {
+    console.error("Search products error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Search failed",
+      error: err.message
+    });
+  }
+});
+
+
 export default router;

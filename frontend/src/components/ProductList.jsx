@@ -131,7 +131,8 @@ export default function ProductList({ gender = null, limit = 50, category = null
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  
+  const [showBottomActions, setShowBottomActions] = useState(false);
+
   // Get search query from URL parameters
   const searchQuery = searchParams.get('q');
 
@@ -153,7 +154,17 @@ export default function ProductList({ gender = null, limit = 50, category = null
   const handleCheckout = () => {
     console.log("Checkout clicked, cart items:", cartItems);
     if (cartItems.length === 0) {
-      toast("Your cart is empty. Add some items to proceed with checkout.");
+      toast("Your cart is empty. Add some items to proceed with checkout.",{
+                position: "top-center",
+        style: {
+        background: "#fff",     
+        color: "#001f3f",       
+        fontWeight: "500",
+        fontSize: "14px",
+        border: "1px solid #001f3f",
+        borderRadius: "8px",
+    }
+      });
       return;
     }
     navigate("/checkout");
@@ -241,7 +252,7 @@ export default function ProductList({ gender = null, limit = 50, category = null
   }
 
   return (
-    <section className="py-6 w-full">
+    <section  className="product-section py-6 w-full">
       {searchQuery && (
         <div className="mb-6 px-4">
           <h2 className="text-2xl font-semibold text-gray-800">
@@ -253,18 +264,19 @@ export default function ProductList({ gender = null, limit = 50, category = null
         </div>
       )}
       
-      <div className="grid gap-6 grid-cols-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-[97%] ">
+      <div id="searchResult" className="grid gap-6 grid-cols-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-[97%] ">
         {items.map((p) => (
           <Link
             key={p.id ?? p.product_id}
             to={`/product/${encodeURIComponent(p.product_id ?? p.id ?? "")}`}
             className="block group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow no-underline hover:no-underline"
           >
-            <div className="w-full h-40 aspect-[3/4] bg-gray-100 overflow-hidden flex items-center justify-center ml-[10%]">
+            <div  className="w-full h-40 aspect-[3/4] bg-gray-100 overflow-hidden flex items-center justify-center ml-[10%]">
               {p.main_image ? (
                 <img
                   src={p.main_image}
                   alt={p.name}
+                  id="searchedImage"
                   className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
                 />
               ) : (
@@ -272,7 +284,7 @@ export default function ProductList({ gender = null, limit = 50, category = null
               )}
             </div>
 
-            <div className="p-3 " >
+            <div className="p-3">
               <div className="text-sm font-semibold text-[#001f3f] text-center whitespace-normal break-words no-underline">{p.name}</div>
               <div className="mt-1 flex items-baseline gap-[2%] justify-center">
                 {p.displayMrp != null && (
@@ -286,7 +298,7 @@ export default function ProductList({ gender = null, limit = 50, category = null
                     : "Price N/A"}
                 </div>
                  {p.displayMrp && p.displayMrp > p.displayPrice &&(
-                      <div className="ml-[1%] text-red-600 font-semibold text-[#000000] visited:text-[#000000]">
+                      <div className="ml-[1%] text-red-600 font-semibold text-[#001f3f] visited:text-[#001f3f]">
                         ({Math.round(((p.displayMrp - p.displayPrice) / p.displayMrp) * 100)}% OFF)
                       </div> )}
               </div>
@@ -297,16 +309,52 @@ export default function ProductList({ gender = null, limit = 50, category = null
                   : "Single size"}
                   
               </div>
-              <div className="mt-3 flex justify-center">
-                <PrimaryButton
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(p); }}
-                  className="inline-flex items-center gap-2 rounded-full"
-                >
-                  <MdOutlineShoppingCart className="text-base" />
-                  Add to Cart
-                </PrimaryButton>
-              </div>
-            </div>
+{/* actions */}
+<div className="view-detail flex items-center justify-center space-y-4 mb-[10%] mt-[5%] ">
+  {/* View Details button */}
+  <PrimaryButton
+    onClick={() => setShowBottomActions(true)}
+    className="w-[50%]  py-3"
+  >
+    View Details
+  </PrimaryButton>
+</div>
+
+{/* Bottom action bar */}
+<div className={`bottom-actions ${showBottomActions ? "visible" : ""}`}>
+  <div className="inner">
+    <PrimaryButton
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        addToCart({
+          id: product.product_id ?? extractMongoIdString(product._id),
+          name: product.product_name,
+          price: displayPrice,
+          image: product.images?.[0] ?? "",
+          size: selectedVariant?.size ?? null,
+        });
+      }}
+      className="flex-1 py-3"
+    >
+      Add to Cart
+    </PrimaryButton>
+
+ 
+
+    {/* Close button */}
+    <button
+      onClick={() => setShowBottomActions(false)}
+      className="ml-3 px-3 py-2 rounded-md text-sm text-slate-600 hover:text-slate-900"
+      aria-label="Close"
+    >
+      ✕
+    </button>
+  </div>
+</div>
+
+                  
+                </div>
           </Link>
         ))}
       </div>

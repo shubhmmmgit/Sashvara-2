@@ -11,6 +11,8 @@ import { useCart } from "../context/CartContext";
 import PrimaryButton from "./PrimaryButton";
 import toast from "react-hot-toast";
 import { imageUrl } from "../utils/imageUrl";
+import { FaShoppingBag } from "react-icons/fa";
+
 
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
@@ -148,7 +150,8 @@ export default function HomeSlider({ gender = null, collection = null, limit = 1
   const [error, setError] = useState(null);
   const { cartItems, setCartItems } = useCart();
   const navigate = useNavigate();
-  
+  const [showBottomActions, setShowBottomActions] = useState(false);
+
 
   const addToCart = (p) => {
     const id = p.id ?? p.product_id;
@@ -164,10 +167,23 @@ export default function HomeSlider({ gender = null, collection = null, limit = 1
       return [...prev, { id, name, price, image, qty: 1 }];
     });
   };
-
+  
+  const goToCheckout = () => {
+   navigate("/checkout");
+  };
   const handleCheckout = () => {
     if (cartItems.length === 0) {
-      toast("Your cart is empty. Add some items to proceed with checkout.");
+      toast("Your cart is empty. Add some items to proceed with checkout.",{
+                position: "top-center",
+        style: {
+        background: "#fff",     
+        color: "#001f3f",       
+        fontWeight: "500",
+        fontSize: "14px",
+        border: "1px solid #001f3f",
+        borderRadius: "8px",
+    }
+      });
       return;
     }
     navigate("/checkout");
@@ -225,9 +241,9 @@ export default function HomeSlider({ gender = null, collection = null, limit = 1
     return <div className="py-8 text-center text-gray-600"></div>;
 
   return (
-    <section className="py-6 w-full"  >
+    <section className="product-section py-6 w-full"  >
       
-      <div className="w-full px-4 border-b-2 border-[#808080]  " >
+      <div className="product-container w-full px-4 border-b-2 border-[#808080]  " >
         {title && (
           <h2 className="flex justify-center  text-2xl font-bold mb-[5%] text-[#001f3f]">{title}</h2>
         )}
@@ -239,11 +255,11 @@ export default function HomeSlider({ gender = null, collection = null, limit = 1
           slidesPerView={4}
           breakpoints={{
             // when window width is >= 320px
-            320: { slidesPerView: 1, spaceBetween: 8 },
+            320: { slidesPerView: 2, spaceBetween: 8 },
             // when window width is >= 640px
             640: { slidesPerView: 2, spaceBetween: 8 },
             // when window width is >= 768px
-            768: { slidesPerView: 3, spaceBetween: 8 },
+            768: { slidesPerView: 2, spaceBetween: 8 },
             // when window width is >= 1024px (desktop)
             1024: { slidesPerView: 4, spaceBetween: 8 },
           }}
@@ -262,7 +278,7 @@ export default function HomeSlider({ gender = null, collection = null, limit = 1
                       src={p.main_image}
                       alt={p.name}
                       loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105" 
+                      className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"  style={{borderRadius:"16px"}}
                     />
                   ) : (
                     <div >
@@ -272,7 +288,7 @@ export default function HomeSlider({ gender = null, collection = null, limit = 1
                 </div>
 
                 <div className="mt-2">
-                  <div className=" font-medium text-[#001f3f] text-center whitespace-normal break-words  "  style={{fontSize:"1.11rem", marginTop:"1rem"}}>{p.name}</div>
+                  <div id="product-name" className="product-name font-medium text-[#001f3f] text-center whitespace-normal break-words"  style={{fontSize:"1.11rem", marginTop:"1rem", marginBottom:"1.2rem"}}>{p.name}</div>
 
                   <div className="mt-1 flex items-baseline gap-3 justify-center">
                     {p.displayMrp != null && (
@@ -287,21 +303,62 @@ export default function HomeSlider({ gender = null, collection = null, limit = 1
                         
                     </div>
                     {p.displayMrp != null && (
-                      <div className="ml-[1%] text-red-600 font-semibold text-[#000000] visited:text-[#000000]" >
+                      <div className="ml-[1%] text-red-600 font-semibold text-[#001f3f] visited:text-[#001f3f]" >
                         ({Math.round(((p.displayMrp - p.displayPrice) / p.displayMrp) * 100)}% OFF)
                       </div>
                     )}
                   </div>
 
-                  <div className="mt-3 flex justify-center">
-                    <PrimaryButton
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(p); }}
-                      className="inline-flex items-center gap-2 rounded-full mb-[10%] "
-                    >
-                      <MdOutlineShoppingCart className="text-base" />
-                      Add to Cart
-                    </PrimaryButton>
-                  </div>
+{/* actions */}
+<div className="view-detail flex items-center justify-center space-y-4 mb-[10%] ">
+  {/* View Details button */}
+  <PrimaryButton
+    onClick={() => setShowBottomActions(true)}
+    className="w-[70%]  py-3"
+  >
+    View Details
+  </PrimaryButton>
+</div>
+
+{/* Bottom action bar */}
+<div className={`bottom-actions ${showBottomActions ? "visible" : ""}`}>
+  <div className="inner">
+    <PrimaryButton
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        addToCart({
+          id: product.product_id ?? extractMongoIdString(product._id),
+          name: product.product_name,
+          price: displayPrice,
+          image: product.images?.[0] ?? "",
+          size: selectedVariant?.size ?? null,
+        });
+      }}
+      className="flex-1 py-3"
+    >
+      Add to Cart
+    </PrimaryButton>
+
+    <PrimaryButton
+      type="button"
+      onClick={goToCheckout}
+      className="flex-1 py-3 bg-green-600 hover:bg-green-700"
+    >
+      Checkout
+    </PrimaryButton>
+
+    {/* Close button */}
+    <button
+      onClick={() => setShowBottomActions(false)}
+      className="ml-3 px-3 py-2 rounded-md text-sm text-slate-600 hover:text-slate-900"
+      aria-label="Close"
+    >
+      ✕
+    </button>
+  </div>
+</div>
+
                   
                 </div>
               </Link>
