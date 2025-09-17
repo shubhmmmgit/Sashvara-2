@@ -593,6 +593,7 @@ button.primary-button,
 
 /* Optional: mobile tweak so modal uses most of screen */
 @media (min-width: 520px) {
+  
   .order-tracking-modal {
     width: 100%;
     height: auto;
@@ -883,10 +884,9 @@ footer#site-footer .container {
 
 
 @media (max-width: 768px) {
-   .desktop-nav {
-    display: none !important;
-    align-items: center;
-  }
+  .desktop-nav {
+    display: none !important;}
+
   .brand-logo {
   display: flex;
   justify-content: center;
@@ -901,7 +901,7 @@ footer#site-footer .container {
   display: block;
   margin: 0 auto;
 } 
-  .mobile-toggle-label,
+.mobile-toggle-label,
   #mobile-toggle {
     display: inline-flex;
   }
@@ -909,6 +909,7 @@ footer#site-footer .container {
    #mobile-toggle:checked ~ .mobile-menu {
     display: block;
   }
+ 
    .dash-line{
 
     justify-content: center !important;
@@ -1376,7 +1377,69 @@ footer#site-footer .container {
     justify-content: center !important;
    
   }
+    .product-container{
+    width: 100%;
+    max-width: 100% !important;
+  }
+  .product-image {
+    aspect-ratio: 9/16; 
+    max-height: 360px;
+    height: auto;
+    border-radius: 10px;
+    overflow: hidden;
+  }
 
+  .product-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+  }
+
+ 
+  .product-image + .mt-2 .font-medium {
+    font-size: 1rem !important; 
+    line-height: 1.2 !important;
+    margin-top: 0.5rem !important;
+    padding: 0 8px !important;
+    text-align: center !important;
+    word-break: break-word !important;
+  }
+
+  .product-image + .mt-2 .text-xl {
+    font-size: 1.05rem !important; 
+    margin-bottom: 0.35rem !important;
+  }
+
+  .product-image + .mt-2 .text-xs {
+    font-size: 0.8rem !important;
+  }
+
+  
+  .product-image + .mt-2 .primary-button,
+  .product-image + .mt-2 button.primary-button {
+    padding: 6px 12px !important;
+    font-size: 0.9rem !important;
+    min-width: 0 !important;
+    border-radius: 9999px !important; 
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .product-image + .mt-2 .primary-button svg,
+  .product-image + .mt-2 button.primary-button svg {
+    font-size: 1rem !important;
+  }
+
+  .product-image + .mt-2 { padding-bottom: 0.4rem !important; }
+  .product-image + .mt-2 .mt-1 { margin-top: 0.35rem !important; }
+
+  .product-name {
+    font-size: 1rem !important; 
+    line-height: 1.2 !important;
+    margin-bottom: 0.25rem !important;
+  }
     
   #collections{
     display: flex;
@@ -1767,25 +1830,69 @@ footer#site-footer .container {
    
   }
 
-  .product-container{
-    width: 100;
-    max-width: 90% !important;
+.product-container{
+    width: 100%;
+    max-width: 100% !important;
   }
-   .product-section {
-    justify-content: center !important;
-    align-items: center !important;
-    margin-left: 4%;
-   }
-  .product-image { max-height: 300px;   }
-  .product-image + .mt-2 .font-medium { font-size: 0.95rem !important; }
-  .product-image + .mt-2 .text-xl { font-size: 1rem !important; }
-  .product-image + .mt-2 .primary-button { padding: 6px 10px !important; font-size: 0.85rem !important; }
+  .product-image {
+    aspect-ratio: 9/16; 
+    max-height: 360px;
+    height: auto;
+    border-radius: 10px;
+    overflow: hidden;
+  }
 
-   #product-name{
-    font-size: 0.8rem !important; 
+  .product-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+  }
+
+ 
+  .product-image + .mt-2 .font-medium {
+    font-size: 1rem !important; 
+    line-height: 1.2 !important;
+    margin-top: 0.5rem !important;
+    padding: 0 8px !important;
+    text-align: center !important;
+    word-break: break-word !important;
+  }
+
+  .product-image + .mt-2 .text-xl {
+    font-size: 1.05rem !important; 
+    margin-bottom: 0.35rem !important;
+  }
+
+  .product-image + .mt-2 .text-xs {
+    font-size: 0.8rem !important;
+  }
+
+  
+  .product-image + .mt-2 .primary-button,
+  .product-image + .mt-2 button.primary-button {
+    padding: 6px 12px !important;
+    font-size: 0.9rem !important;
+    min-width: 0 !important;
+    border-radius: 9999px !important; 
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .product-image + .mt-2 .primary-button svg,
+  .product-image + .mt-2 button.primary-button svg {
+    font-size: 1rem !important;
+  }
+
+  .product-image + .mt-2 { padding-bottom: 0.4rem !important; }
+  .product-image + .mt-2 .mt-1 { margin-top: 0.35rem !important; }
+
+  .product-name {
+    font-size: 1rem !important; 
     line-height: 1.2 !important;
     margin-bottom: 0.25rem !important;
-   }
+  }
   .view-details-button {
     padding: 6px 12px !important;
     font-size: 0.9rem !important;
