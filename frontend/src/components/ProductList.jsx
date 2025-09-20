@@ -123,7 +123,12 @@ const normalizeProduct = (raw) => {
 
 /* ---------- Component ---------- */
 
-export default function ProductList({ gender = null, limit = 50, category = null }) {
+export default function ProductList({ 
+   gender = null,
+   limit = 50, 
+   category = null,
+   newArrival = false,
+   bestSeller = false, }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -188,6 +193,8 @@ export default function ProductList({ gender = null, limit = 50, category = null
         if (gender) params.set("gender", gender);
         if (category) params.set("category", category);
         if (limit) params.set("limit", String(limit));
+        if (newArrival) params.set("newArrival", "true");
+        if (bestSeller) params.set("bestSeller", "true");
         if (searchQuery) params.set("q", searchQuery);
 
         // Use search endpoint if there's a search query, otherwise use products endpoint
@@ -287,18 +294,20 @@ export default function ProductList({ gender = null, limit = 50, category = null
             <div className="p-3">
               <div className="text-sm font-semibold text-[#001f3f] text-center whitespace-normal break-words no-underline">{p.name}</div>
               <div className="mt-1 flex items-baseline gap-[2%] justify-center">
+              <div className="text-base font-bold text-[#001f3f]" style={{fontSize:"1.5rem"}} >
+                
+                  {p.displayPrice != null
+                    ? `₹${Number(p.displayPrice).toLocaleString()}`
+                    : "Price N/A"}
+                </div>
                 {p.displayMrp != null && (
                   <div className="text-xs text-gray-500 line-through  text-[#001f3f] hover:text-[#001f3f] visited:text-[#001f3f]">
                     ₹{Number(p.displayMrp).toLocaleString()}
                   </div>
                 )}
-                <div className="text-base font-bold text-[#001f3f]" style={{fontSize:"1.5rem"}} >
-                  {p.displayPrice != null
-                    ? `₹${Number(p.displayPrice).toLocaleString()}`
-                    : "Price N/A"}
-                </div>
+    
                  {p.displayMrp && p.displayMrp > p.displayPrice &&(
-                      <div className="ml-[1%] text-red-600 font-semibold text-[#001f3f] visited:text-[#001f3f]">
+                      <div className="ml-[1%] text-red-600 font-semibold text-[#016B00] visited:text-[#001f3f]">
                         ({Math.round(((p.displayMrp - p.displayPrice) / p.displayMrp) * 100)}% OFF)
                       </div> )}
               </div>
@@ -357,7 +366,9 @@ export default function ProductList({ gender = null, limit = 50, category = null
                 </div>
           </Link>
         ))}
-      </div>
+
+        
+      </div>   
 
       {/* Debug: Show cart state 
       <div className="mt-4 px-4 text-center">

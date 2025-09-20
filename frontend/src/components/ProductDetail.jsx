@@ -179,14 +179,15 @@ export default function ProductDetail() {
   const [zoomed, setZoomed] = useState(false);
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [showBottomActions, setShowBottomActions] = useState(false);
+  const [selectedQty, setSelectedQty] = useState(1)
 
 
   // UI state
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
 
-  const addToCart = (p) => {
-    const id = p.id ?? p.product_id??extractMongoIdString(p._id);;
-    const name = p.name?? p.product_name ?? "Unnamed Product";
+  const addToCart = (p, qty = selectedQty) => {
+    const id = p.id ?? p.product_id ?? extractMongoIdString(p._id);
+    const name = p.name ?? p.product_name ?? "Unnamed Product";
     const price = Number(p.displayPrice ?? p.price ?? p.sell_price ?? p.mrp ?? 0);
     const image = p.main_image ?? p.image ?? (Array.isArray(p.images) ? p.images[0] : "");
     const selectedSize =
@@ -194,16 +195,44 @@ export default function ProductDetail() {
       (Array.isArray(p.variants) ? p.variants[selectedVariantIndex]?.size : undefined) ??
       p?.cheapestVariant?.size ??
       null;
+  
     if (!id) return;
+  
+    const amt = Math.max(1, Number(qty || 1)); // ensure at least 1
+  
     setCartItems((prev) => {
       const existing = prev.find((it) => it.id === id);
       if (existing) {
-        return prev.map((it) => (it.id === id ? { ...it, qty: (it.qty || 0) + 1 } : it));
+        // increment by amt
+        return prev.map((it) =>
+          it.id === id ? { ...it, qty: (Number(it.qty || 0) + amt) } : it
+        );
       }
-      return [...prev, { id, name, price, image: imageUrl(image), qty: 1, size: selectedSize || "One Size" }];
+      return [...prev, { id, name, price, image: imageUrl(image), qty: amt, size: selectedSize || "One Size" }];
     });
+  
+    // optional: toast or feedback
+    toast(
+      <span className="flex items-center">
+      <MdOutlineShoppingCart className="text-green-600 text-lg" />
+      <span className="font-semibold text-green-700">
+        {name} added to cart (Qty: {amt})
+      </span>
+    </span>,
+      {
+        position: "top-center", 
+        style: {
+          width:"30rem",
+          background: "#fff",
+          color: "#016B00",
+          fontWeight: "500",
+          fontSize: "14px",
+          border: "1px solid #001f3f",
+          borderRadius: "8px",
+        },
+      }
+    );
   };
-
   
   const goToCheckout = () => {
   // Ensure the product is in the cart before navigating
@@ -215,7 +244,7 @@ export default function ProductDetail() {
     name: product.product_name ?? "Unnamed Product",
     price: displayPrice ?? 0,
     image: (product.images && product.images[0]) ? imageUrl(product.images[0]) : "",
-    qty: 1,
+    qty: Math.max(1, Number(selectedQty || 1)),
     size: selectedVariant?.size ?? product?.cheapestVariant?.size ?? "One Size",
   };
 
@@ -241,6 +270,7 @@ export default function ProductDetail() {
       setRawProduct(null);
       setProduct(null);
       setSelectedVariantIndex(0);
+      setSelectedQty(1);
 
       try {
         const endpoint = `${BACKEND_HOST}/api/products/${encodeURIComponent(id)}`;
@@ -361,6 +391,8 @@ export default function ProductDetail() {
   }, [product]);
 
   // Actions
+  const incrementQty = () => setSelectedQty((q) => Number(q || 1) + 1);
+  const decrementQty = () => setSelectedQty((q) => Math.max(1, (Number(q || 1) - 1)));
 
   const handleDelete = async () => {
     if (!window.confirm("Delete this product?")) return;
@@ -467,7 +499,7 @@ export default function ProductDetail() {
         {/* right: details */}
         <div id="product-detail" className="product-detail discription flex-1 space-y-6 mb-8">
           <div id="product-detail-name" className="product-detail-name">
-            <h1 className="text-3xl font-avenir font-bold text-[#001f3f]">{product.product_name}</h1>
+            <h1 className="text-3xl text-[#001f3f]"style={{fontWeight:500}}>{product.product_name}</h1>
             
           </div>
 
@@ -488,17 +520,18 @@ export default function ProductDetail() {
       {/* Case 2: Discounted → MRP line-through + final price */}
             {displayMrp && displayMrp !== displayPrice && (
         <>
-        <div className="text-sm text-gray-500 line-through">
-          ₹{displayMrp.toLocaleString()}
-        </div>
-        <div
-          className="text-3xl font-extrabold text-[#001f3f]"
-          style={{ fontWeight: 700, fontSize: "2rem" }}
+         <div
+          className="text-3xl font-extrabold mr-[2%] text-[#001f3f]"
+          style={{ fontWeight: 500, fontSize: "2rem" }}
         >
           ₹{displayPrice?.toLocaleString() ?? "N/A"}
         </div>
+        <div className="text-sm text-gray-500 line-through">
+          ₹{displayMrp.toLocaleString()}
+        </div>
+
         {displayMrp && displayMrp > displayPrice &&(
-            <div className="ml-[1%] text-red-600 font-semibold text-[#001f3f] visited:text-[#001f3f]">
+            <div className="ml-[1%] text-red-600 font-semibold text-[#016B00] visited:text-[#001f3f]">
             ({Math.round(((displayMrp - displayPrice) / displayMrp) * 100)}% OFF)
             </div> )}
          </>
@@ -506,7 +539,7 @@ export default function ProductDetail() {
         </div>
 
             {savedAmount > 0 && (
-              <div className="text-sm text-gray-600 mt-2 mb-[5%] ">You save ₹{savedAmount.toLocaleString()}</div>
+              <div className="text-sm text-[#016B00] mt-2 mb-[5%] ">You save ₹{savedAmount.toLocaleString()}</div>
             )}
           </div>
 
@@ -533,10 +566,18 @@ export default function ProductDetail() {
                 })
               ) : (
                 <div className="text-gray-500">No sizes available</div>
-              )}
-            </div>
-          </div>
+              )}     
+
+            </div> 
+            
+          </div> 
+          
           <div className="space-y-[2%] mt-[5%]">
+          <div className="size-box w-[8%] ">
+          <button onClick={decrementQty} aria-label="Decrease quantity" className="px-3 py-2 border rounded">-</button>
+              <span className="font-medium">{selectedQty}</span>
+              <button onClick={incrementQty} aria-label="Increase quantity" className="px-3 py-2 border rounded">+</button>
+            </div>
           <div className="flex gap-3 items-center">
             <PrimaryButton   onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart({
                id: product.product_id ?? extractMongoIdString(product._id),
@@ -552,7 +593,7 @@ export default function ProductDetail() {
            <div className=" px-0 py-4 bg-white shadow mt-6">
           
             <PrimaryButton type="button" onClick={goToCheckout} className="w-full py-3">
-              Checkout
+              BUY NOW 
             </PrimaryButton>
            
           </div>
@@ -605,25 +646,26 @@ export default function ProductDetail() {
           setShowSizeChart(false);
           document.body.classList.remove('modal-open');
         }}
-      >
+        >
         ✕
-      </button>
+        </button>
 
-      <img
+        <img
         src="../images/sizechart.png" 
         alt="Size Chart"
-      />
-    </div>
-  </>
-)}
-
+        />
+         </div>
+         </> 
+      )}
+          
             <div
          className="cursor-pointer"
          onClick={() => setShowSizeChart(true)}
-         >
-         <img className="w-[20%]" src="../images/sizechart.png" />
+         > 
+         <img className="w-[8%]" src="../images/sizeicon.png" /><p className="text-[#808080]"  style={{fontSize:"0.9rem"}}>Size Chart</p>
+         
           </div>
-          <p className="text-[#808080]" style={{fontSize:"0.9rem"}}>click to view</p>
+          
 
              
 
@@ -699,26 +741,28 @@ export default function ProductDetail() {
               <div className="p-3">
                 <div
                   className="text-[#001f3f] font-semibold text-center line-clamp-2 h-10"
-                  style={{ fontWeight: 600 }}
+                  style={{ fontWeight: 400 }}
                 >
                   {sp.product_name || pid}
                 </div>
                 <div className="mt-1 flex justify-center items-baseline gap-[1%] ">
-                  {mrp && mrp !== price && (
-                    <div className="text-xs text-gray-500 line-through">
-                      ₹{Number(mrp).toLocaleString()}
-                    </div>
-                  )}
-                  <div
+
+                <div
                     className="text-[#001f3f]  font-bold"
-                    style={{ fontWeight: 500, fontSize: "1.5rem" }}
+                    style={{ fontWeight: 400, fontSize: "1.5rem" }}
                   >
                     {price !== null
                       ? `₹${Number(price).toLocaleString()}`
                       : "N/A"}
                   </div>
+                  {mrp && mrp !== price && (
+                    <div className="text-xs text-gray-500 line-through">
+                      ₹{Number(mrp).toLocaleString()}
+                    </div>
+                  )}
+
                   {mrp && mrp > price && (
-                    <div className="ml-[1%] text-red-600 font-semibold text-[#001f3f] visited:text-[#001f3f]">
+                    <div className="ml-[1%] text-red-600 font-semibold text-[#016B00] visited:text-[#001f3f]">
                       ({Math.round(((mrp - price) / mrp) * 100)}% OFF)
                     </div>
                   )}

@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useCart } from "../context/CartContext";
 import PrimaryButton from "./PrimaryButton";
-import { MdOutlineShoppingCart, MdLocationOn, MdPhone, MdEmail } from "react-icons/md";
-import { FaInfoCircle } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import FlashCard from "./Flashcard";
+import { MdOutlineShoppingCart } from "react-icons/md";
 import { IoWalletSharp } from "react-icons/io5";
 import { MdPayment } from "react-icons/md";
-import { RiMoneyRupeeCircleLine } from "react-icons/ri";
-import { FaRegTrashAlt } from "react-icons/fa";
 
 console.log("VITE MODE:", import.meta.env.VITE_RAZORPAY_MODE);
 console.log("TEST KEY:", import.meta.env.VITE_RAZORPAY_KEY_ID_TEST);
@@ -45,6 +42,92 @@ export default function Checkout() {
   const [selectedShipping, setSelectedShipping] = useState("");
   const navigate = useNavigate();
 
+  // ---------- localStorage helpers ----------
+  const CART_KEY = "cartItems";
+  const FORM_KEY = "checkoutForm";
+  const saveCartRef = useRef(null);
+  const saveFormRef = useRef(null);
+
+  function safeParse(str, fallback) {
+    try { return JSON.parse(str); } catch { return fallback; }
+  }
+
+  // Hydrate formData from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedForm = safeParse(localStorage.getItem(FORM_KEY), null);
+      if (savedForm && typeof savedForm === "object") {
+        // merge saved form over defaults (so new fields get defaults)
+        setFormData(prev => ({ ...prev, ...savedForm }));
+      }
+    } catch (err) {
+      console.warn("Failed to load checkout form from localStorage", err);
+    }
+  }, []);
+
+  // Hydrate cart from localStorage if cartItems is empty on mount
+  useEffect(() => {
+    try {
+      if ((!cartItems || cartItems.length === 0) && typeof localStorage !== "undefined") {
+        const savedCart = safeParse(localStorage.getItem(CART_KEY), null);
+        if (Array.isArray(savedCart) && savedCart.length) {
+          // ensure numeric qty
+          setCartItems(savedCart.map(it => ({ ...it, qty: Number(it.qty) || 1 })));
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to load cart from localStorage", err);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setCartItems]);
+
+  // Persist formData to localStorage (debounced)
+  useEffect(() => {
+    clearTimeout(saveFormRef.current);
+    saveFormRef.current = setTimeout(() => {
+      try {
+        localStorage.setItem(FORM_KEY, JSON.stringify(formData));
+      } catch (err) {
+        console.warn("Failed to save checkout form to localStorage", err);
+      }
+    }, 200);
+    return () => clearTimeout(saveFormRef.current);
+  }, [formData]);
+
+  // Persist cartItems to localStorage (debounced)
+  useEffect(() => {
+    clearTimeout(saveCartRef.current);
+    saveCartRef.current = setTimeout(() => {
+      try {
+        if (Array.isArray(cartItems) && cartItems.length > 0) {
+          localStorage.setItem(CART_KEY, JSON.stringify(cartItems));
+        } else {
+          localStorage.removeItem(CART_KEY);
+        }
+      } catch (err) {
+        console.warn("Failed to save cart to localStorage", err);
+      }
+    }, 200);
+    return () => clearTimeout(saveCartRef.current);
+  }, [cartItems]);
+
+  // Optional: sync across tabs (if cart/form changed elsewhere)
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (!e.key) return;
+      if (e.key === FORM_KEY && e.newValue) {
+        const parsed = safeParse(e.newValue, null);
+        if (parsed) setFormData(prev => ({ ...prev, ...parsed }));
+      }
+      if (e.key === CART_KEY && e.newValue) {
+        const parsed = safeParse(e.newValue, null);
+        if (Array.isArray(parsed)) setCartItems(parsed.map(it => ({ ...it, qty: Number(it.qty) || 1 })));
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, [setCartItems]);
+
   // Hide global header on checkout page and restore on unmount
   useEffect(() => {
     const headerEl = document.querySelector('header');
@@ -77,11 +160,97 @@ export default function Checkout() {
     }));
   };
 
+  // Replace your current handleProceed with this:
+  const handleProceed = () => {
+    // basic trimmed values
+    const v = {
+      email: (formData.email || "").trim(),
+      firstName: (formData.firstName || "").trim(),
+      lastName: (formData.lastName || "").trim(),
+      address: (formData.address || "").trim(),
+      city: (formData.city || "").trim(),
+      pincode: (formData.pincode || "").trim(),
+      phone: (formData.phone || "").trim(),
+    };
+
+    // simple validation rules
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRe = /^\d{10}$/;     // 10 digits
+    const pinRe = /^\d{5,6}$/;      // 5 or 6 digits (adjust if you require 6)
+
+    // check required fields in order (so focus goes to first bad field)
+    if (!v.email) {
+      toast.error("Please enter email or mobile phone number", {position: "top-center"} );
+      const el = document.getElementById("email"); if (el) el.focus();
+      return;
+    }
+    // If you accept phone-only in email field, comment out the next email format check.
+    if (!emailRe.test(v.email) && !phoneRe.test(v.email)) {
+      // allow either a valid email OR a 10-digit phone in the same field
+      toast.error("Enter a valid email or 10-digit phone number" , {position: "top-center"} );
+      const el = document.getElementById("email"); if (el) el.focus();
+      return;
+    }
+
+    if (!v.firstName) {
+      toast.error("Please enter first name" , {position: "top-center"} );
+      const el = document.getElementById("firstName"); if (el) el.focus();
+      return;
+    }
+    if (!v.lastName) {
+      toast.error("Please enter last name", {position: "top-center"} );
+      const el = document.getElementById("lastName"); if (el) el.focus();
+      return;
+    }
+    if (!v.address) {
+      toast.error("Please enter address", {position: "top-center"} );
+      const el = document.getElementById("address"); if (el) el.focus();
+      return;
+    }
+    if (!v.city) {
+      toast.error("Please enter city", {position: "top-center"} );
+      const el = document.getElementById("city"); if (el) el.focus();
+      return;
+    }
+    if (!v.pincode) {
+      toast.error("Please enter PIN code", {position: "top-center"} );
+      const el = document.getElementById("pincode"); if (el) el.focus();
+      return;
+    }
+    if (!pinRe.test(v.pincode)) {
+      toast.error("Please enter a valid PIN code", {position: "top-center"} );
+      const el = document.getElementById("pincode"); if (el) el.focus();
+      return;
+    }
+    if (!v.phone) {
+      toast.error("Please enter phone number", {position: "top-center"} );
+      const el = document.getElementById("phone"); if (el) el.focus();
+      return;
+    }
+    if (!phoneRe.test(v.phone)) {
+      toast.error("Please enter a valid 10-digit phone number", {position: "top-center"} );
+      const el = document.getElementById("phone"); if (el) el.focus();
+      return;
+    }
+
+    // optional: ensure cart not empty before proceeding
+    if (!cartItems || cartItems.length === 0) {
+      toast.error("Your cart is empty", {position: "top-center"} );
+      return;
+    }
+
+    // all good — persist current form to localStorage (you already do this elsewhere, but safe)
+    try { localStorage.setItem(FORM_KEY, JSON.stringify(formData)); } catch (err) {}
+
+    // navigate
+    navigate("/checkout/payment", { state: { formData } });
+  };
+
   const handleApplyDiscount = () => {
-    if (formData.discountCode.toLowerCase() === 'welcome10') {
+    if ((formData.discountCode || "").toLowerCase() === 'welcome10') {
       setDiscountAmount(subtotal * 0.1);
       setDiscountApplied(true);
-    } else if (formData.discountCode.toLowerCase() === 'save20') {
+    } else if ((formData.discountCode || "").toLowerCase() === 'save20') {
       setDiscountAmount(subtotal * 0.2);
       setDiscountApplied(true);
     } else {
@@ -99,7 +268,7 @@ export default function Checkout() {
       )
     );
   };
-
+  
   const removeItem = (id) => {
     if (!setCartItems) return;
     setCartItems((prev) => prev.filter((p) => p.id !== id));
@@ -191,6 +360,11 @@ export default function Checkout() {
                   }
                 });
                 setShowFlash(true);
+                // Clear persisted cart + form so refresh won't repeat
+                try {
+                  localStorage.removeItem(CART_KEY);
+                  localStorage.removeItem(FORM_KEY);
+                } catch (err) {}
                 navigate("/");
               } else {
                 toast.error(" Payment verification failed.", {
@@ -243,6 +417,11 @@ export default function Checkout() {
           }
         });
         setShowFlash(true);
+        // Clear persisted cart + form so refresh won't repeat
+        try {
+          localStorage.removeItem(CART_KEY);
+          localStorage.removeItem(FORM_KEY);
+        } catch (err) {}
       }
     } catch (err) {
       console.error("Checkout error:", err.message);
@@ -259,38 +438,27 @@ export default function Checkout() {
       });
     }
   };
-
+ 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 bg-[#EBEBEB]">
-      {showFlash && (
-        <FlashCard
-          message="Thank you ! VISIT SASHVARA AGAIN!"
-          imageUrl="../images/LOGO.jpg"
-          onClose={() => setShowFlash(false)}
-          duration={3000}
-        />
-      )}
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-start mb-4">
-
-</div>
-
-<h1 className="text-3xl text-center font-bold text-[#001f3f] border-b-1 bg-[#ffffff] border-[#808080] "> 
-    <button
-    type="button"
-    onClick={() => navigate(-1)}
-    className="text-sm px-3 py-2 flex justify-center rounded hover:bg-gray-100 border border-gray-200 text-[#ffffff] bg-[#001f3f] "
-    aria-label="Go back"
-  >
-    ← Back
-  </button>Checkout </h1>
+    <div className="checkout-detail">
+      
+      <div className="">
+       
+      <h1 className="text-3xl text-center font-bold text-[#001f3f] border-b-1 bg-[#ffffff] border-[#808080] "> 
+      <button
+      type="button"
+      onClick={() => navigate(-1)}
+      className="text-sm px-3 py-2 flex justify-center rounded hover:bg-gray-100 border border-gray-200 text-[#ffffff] bg-[#001f3f] "
+      aria-label="Go back" >
+      ← Back
+         </button> <MdOutlineShoppingCart />Checkout </h1>
           
-        <div id="checkout-page" className="grid grid-cols-2 lg:grid-cols-2 ">
+        <div id="checkout-page" className="checkout-inputs flex">
           {/* Left Column - Forms */}
-          <div className="space-y-8  w-[70%] ml-[30%]  ">
+          <div className="flex justify-center w-full">
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Contact Section */}
-              <div id="contact-detail" className="bg-white rounded-lg shadow-sm p-6">
+              <div id="contact-detail" className="bg-white  rounded-lg shadow-sm p-6">
                 <h2 className="text-xl font-medium text-[#001f3f] mb-4 ">Contact</h2>
                 <div className="space-y-4">
                   <div>
@@ -303,7 +471,7 @@ export default function Checkout() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="contact-input border w-[70%] focus:outline-none focus:ring-2 focus:ring-[#27ADF5]   "
+                      className="contact-input border w-full focus:outline-none focus:ring-2 focus:ring-[#27ADF5]   "
                       style={{ borderRadius: "5px", minHeight: "50px" }}
                       placeholder="Enter email or phone number"
                       required
@@ -327,14 +495,14 @@ export default function Checkout() {
               {/* Delivery Section */}
               <div id="delivery" className="bg-white rounded-lg shadow-sm p-6">
                 <h2 className="text-xl font-semibold text-[#001f3f] " >Delivery</h2>
-                <div className="space-y-4  ">
+                <div className="space-y-[5%] ">
                   <div>
                     <select
                       id="country"
                       name="country"
                       value={formData.country}
                       onChange={handleInputChange}
-                      className="border w-[71%] mb-[3%] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5]"
+                      className="border w-[101%]  border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5]"
                       style={{ borderRadius: "5px", minHeight: "50px" }  }
                     >
                       <option value="India">India</option>
@@ -342,7 +510,7 @@ export default function Checkout() {
                   </div>
 
                   {/* Name Fields */}
-                  <div id="name-field" className="flex flex-cols-2 gap-[10%] ">
+                  <div id="name-field" className="flex gap-[20%] ">
                     <div>
                       <input
                         type="text"
@@ -351,7 +519,7 @@ export default function Checkout() {
                         placeholder="First name"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        className=" w-[130%]  border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] "
+                        className=" w-full  border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] "
                         style={{ borderRadius: "5px", minHeight: "50px" }}
                         required
                       />
@@ -364,7 +532,7 @@ export default function Checkout() {
                         placeholder="Last name"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        className=" w-[125%] border mb-[10%]  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
+                        className=" w-[120%] border   rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
                         style={{ borderRadius: "5px", minHeight: "50px" }}
                         required
                       />
@@ -380,7 +548,7 @@ export default function Checkout() {
                         name="address"
                         value={formData.address}
                         onChange={handleInputChange}
-                        className="w-[70%] mb-[3%]  border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
+                        className="w-full   border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
                         style={{ borderRadius: "5px", minHeight: "50px" }}
                         placeholder="Enter your address"
                         required
@@ -397,7 +565,7 @@ export default function Checkout() {
                       placeholder=" Apartment, suite, etc. (optional)"
                       value={formData.apartment}
                       onChange={handleInputChange}
-                      className="w-[70%] mb-[3%] border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
+                      className="w-full  border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
                       style={{ borderRadius: "5px", minHeight: "50px" }}
                     />
                   </div>
@@ -434,7 +602,14 @@ export default function Checkout() {
                         <option value="Hyderabad">Hyderabad</option>
                       </select>
                     </div>
-                    <div>
+                    <div className="relative w-full">
+                    <span className="absolute left-3 top-1/3 flex justify-end ml-[5%] ">
+                      <img
+                        src="/images/indiaicon.png"   
+                        alt="India Map"
+                        className="w-[10%] opacity-80"
+                     />
+                    </span>
                       <input
                         type="text"
                         id="pincode"
@@ -442,7 +617,7 @@ export default function Checkout() {
                         placeholder="PIN code"
                         value={formData.pincode}
                         onChange={handleInputChange}
-                        className="w-[93%]  border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
+                        className="w-full  border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
                         style={{ borderRadius: "5px", minHeight: "50px" }}
                         required
                       />
@@ -450,7 +625,8 @@ export default function Checkout() {
                   </div>
 
                   {/* Phone */}
-                  <div>
+                  <div> 
+
                     <div className="relative">
                       <input
                         type="tel"
@@ -459,8 +635,8 @@ export default function Checkout() {
                         placeholder="Phone "
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-[70%] border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
-                        style={{ borderRadius: "5px", minHeight: "35px" }}
+                        className="w-full border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
+                        style={{ borderRadius: "5px", minHeight: "50px" }}
                         required
                       />
                     </div>
@@ -468,181 +644,32 @@ export default function Checkout() {
 
                 </div>
               </div>
-
-              {/* Payment Section */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h2 className="payment text-xl font-semibold text-[#001f3f] mb-4">Payment</h2>
-                <p id="payment-line" className="text-sm text-gray-600 mb-4">All transactions are secure and encrypted.</p>
-
-                <div className="space-y-4">
-                  <div>
-                    <label id="payment-method" className="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
-                    <p id="off" className="text-[#000000] "> Extra 5-10% off on UPI </p>
-                    <div className="space-y-2">
-                      <label id="payment-upi" className="flex items-center w-[70%] p-3 border text-[#808080] border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer " style={{ borderRadius: "5px", minHeight: "35px", fontWeight: 550 }}>
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="upi"
-                          onChange={handleInputChange}
-                          className="peer hidden"
-                        />
-                        <span  className="peer-checked:text-[#001f3f]">  <MdPayment className="text-[#000000]" /> Razorpay Secure (UPI, Cards, Wallets, NetBanking) </span>
-                      </label>
-                      <label id="payment-cod" className="flex items-center w-[70%] p-3 text-[#808080] border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer " style={{ borderRadius: "5px", minHeight: "35px", fontWeight: 550 }}>
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="cod"
-                          onChange={handleInputChange}
-                          className="peer hidden"
-                        />
-                        <span className="peer-checked:text-[#001f3f]"> <IoWalletSharp className="text-[#000000]" />  Cash on Delivery</span>
-                      </label>
-                      <label id="payment-partial" className="flex items-center w-[70%] p-3 text-[#808080]  border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer peer-checked:border-[#001f3f]" style={{ borderRadius: "5px", minHeight: "35px", fontWeight: 550 }}>
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="partialcod"
-                          onChange={handleInputChange}
-                          className="peer hidden"
-                        />
-                        <span className="peer-checked:text-[#001f3f]"> <RiMoneyRupeeCircleLine className="text-[#000000]" />Partial COD (Pay 25% )</span>
-                      </label>
-
-                      <PrimaryButton
-                        onClick={handleSubmit}
-                        className="w-[70%] mt-6 py-3 text-lg mt-[5%] "
-                      >
-                        PAY NOW
-                      </PrimaryButton>
-                    </div>
-                  </div>
-                </div>
+              <div className="flex justify-center">
+                <PrimaryButton type="button"
+                  onClick={handleProceed}
+                  className="w-[50%] bg-[#001f3f] text-white py-3 rounded-lg mt-[5%]">Proceed to Payment </PrimaryButton>
+              </div>
+              <div className="flex justify-center mt-[2%] gap-[2%] ">
+                <img
+                  src="/images/Visaicon.png"
+                  alt="visaicon"
+                  className="w-[5%] "
+                />
+                <img
+                  src="/images/UPIicon.png"
+                  alt="visaicon"
+                  className="w-[5%] "
+                />
+                <img
+                  src="/images/mastercardicon.png"
+                  alt="visaicon"
+                  className="w-[5%] "
+                />
               </div>
             </form>
           </div>
 
           {/* Right Column - Order Summary */}
-          <div id="orderSummary" className="lg:sticky lg:top-8 h-full w-full  ">
-            <div className=" rounded-lg shadow-sm p-6 mr-[25%] h-[100%] ">
-              <h2 className="text-xl font-semibold text-[#001f3f]  ">Order Summary</h2>
-
-              {/* Cart Items with working qty + remove */}
-              <div className="space-y-4 mb-6">
-                {cartItems.map((item, index) => (
-                  <div key={item.id ?? index} className="flex items-center space-x-3 ml-[2%] ">
-                    <div className="relative">
-                      <img
-                        src={item.image || "/placeholder-product.jpg"}
-                        alt={item.name}
-                        className={`thumb-box relative w-20 h-24 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200`}
-                      />
-                    </div>
-
-                    <div className="flex-1 ml-[5%]">
-                      <h3 className="font-medium text-[#001f3f]">{item.name}</h3>
-                      <p className="text-sm text-[#808080]">Size: {item.size ?? item.selectedSize ?? item.variant?.size ?? 'One Size'}</p>
-                      <p className="text-sm font-semibold text-gray">₹{(item.price || 0).toLocaleString()}</p>
-
-                      <div className= "size-container ml-[32%]">
-                        <div className="size-box ">
-                        <button
-                          onClick={() => updateQty(item.id, -1)}
-                          className="px-2 py-1 border rounded"
-                          aria-label="Decrease quantity"
-                        >-</button>
-
-                        <span className="px-2">{item.qty ?? 1}</span>
-
-                        <button
-                          onClick={() => updateQty(item.id, 1)}
-                          className="px-2 py-1 border rounded"
-                          aria-label="Increase quantity"
-                        >+</button>
-                       </div>
-                        <FaRegTrashAlt onClick={() => removeItem(item.id)} className="text-sm px-2 py-1 cursor-pointer" />
-                      </div>
-                    </div>
-
-                    <div className="ml-auto">
-                     
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Discount Code */}
-              <div className="mb-6">
-                <label id="discount" htmlFor="discountCode" className="block text-sm font-medium text-gray-700 mb-1 ml-[2%]">
-                  Discount code or gift card
-                </label>
-                <div id="discountField" className="flex space-x-2 mb-[3%] ml-[2%] ">
-                  <input
-                    type="text"
-                    id="discountCode"
-                    name="discountCode"
-                    value={formData.discountCode}
-                    onChange={handleInputChange}
-                    className="w-[40%] border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
-                    style={{ borderRadius: "5px", minHeight: "35px" }}
-                    placeholder="Enter discount code"
-                  />
-                  <PrimaryButton
-                    type="button"
-                    id="applyButton"
-                    onClick={handleApplyDiscount}
-                    className="px-4 py-2 ml-[2%]"
-                  >
-                    Apply
-                  </PrimaryButton>
-                </div>
-                {discountApplied && (
-                  <p className="text-sm text-green-600 ml-[2%] ">Discount applied!</p>
-                )}
-              </div>
-
-              {/* Order Totals */}
-              <div className="pt-4">
-                <div className="flex justify-start gap-[45%] ml-[2%]">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">₹{subtotal.toLocaleString()}</span>
-                </div>
-
-                <div className="flex justify-start ml-[2%]">
-                  <span className="text-gray-600 flex items-center">Shipping</span>
-                  <span className="font-medium text-[82%] text-[#808080]">
-                    {shippingCost === 0 ? "" : `₹${shippingCost.toLocaleString()}`}
-                  </span>
-                </div>
-
-                {discountAmount > 0 && (
-                  <div className="flex justify-between text-green-600 ml-[2%]">
-                    <span>Coupon Discount</span>
-                    <span className="text-center">-₹{Math.round(discountAmount).toLocaleString()}</span>
-                  </div>
-                )}
-
-                {/* Show UPI discount if selected */}
-                {paymentMethodDiscount > 0 && (
-                  <div className="flex justify-between text-green-600 ml-[2%]">
-                    <span>UPI Discount</span>
-                    <span className="text-center">-₹{paymentMethodDiscount.toLocaleString()}</span>
-                  </div>
-                )}
-
-                <div className="flex justify-start text-lg font-bold pt-2 gap-[40%] ml-[2%]">
-                  <span>Total</span>
-                  <span className="ml-[2%]" style={{ fontSize: "1.25rem" }}>INR ₹{total.toLocaleString()}</span>
-                </div>
-
-                <p className="text-sm text-[#808080] ml-[2%]">
-                  Including ₹{tax.toFixed(2)} in taxes
-                </p>
-              </div>
-
-            </div>
-          </div>
 
         </div>
       </div>

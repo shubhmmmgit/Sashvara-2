@@ -1,10 +1,11 @@
-import {React, useState} from "react";
+import React, { useState, useEffect } from "react";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import PrimaryButton from "./PrimaryButton";
 import { useNavigate } from "react-router-dom";
 import { FaRegTrashAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
+
 
 
 
@@ -16,6 +17,33 @@ const CartDrawer = ({
   asPage = false,
 }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("cart");
+      if (!stored) return;
+      const parsed = JSON.parse(stored);
+      if (!Array.isArray(parsed)) return;
+  
+      // Only overwrite if current products is empty — prevents clobbering
+      setProducts((prev = []) => {
+        if (Array.isArray(prev) && prev.length) return prev;
+        return parsed.map((it) => ({ ...it, qty: Number(it.qty) || 1 }));
+      });
+    } catch (err) {
+      console.error("Failed to restore cart from localStorage:", err);
+    }
+  }, [setProducts]);
+
+
+  // 🟢 Save cart items to localStorage whenever products change
+  useEffect(() => {
+    if (products.length > 0) {
+      localStorage.setItem("cart", JSON.stringify(products));
+    } else {
+      localStorage.removeItem("cart"); // clear if empty
+    }
+  }, [products]);
 
   const subtotal = products.reduce(
     (acc, item) => acc + (Number(item.price) || 0) * (Number(item.qty) || 0),
@@ -77,6 +105,25 @@ const CartDrawer = ({
   
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const STORAGE_KEY = 'sashvara_cart_v1';
+  const TS_KEY = 'sashvara_cart_ts';
+  const [hydrated, setHydrated] = useState(false);
+  const [cartItems, setCartItems] = useState(() => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+});
+
+  useEffect(() => { setHydrated(true); }, []);
+
+  useEffect(() => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cartItems));
+    localStorage.setItem(TS_KEY, String(Date.now()));
+  } catch (e) { console.warn('Failed to persist cart', e); }
+}, [cartItems]);
+
   // Page mode: render a normal page layout under the sticky header
   if (asPage) {
     return (

@@ -1,7 +1,7 @@
 
 import HomeSlider from '../../components/Swiper';
 import { Link } from "react-router-dom";
-
+import PrimaryButton from "../../components/PrimaryButton";
 
 
 
@@ -11,9 +11,9 @@ import { Link } from "react-router-dom";
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-50 to-indigo-100 py-16">
         <div className="container mx-auto px-4 text-center ">
-          <h2 className="welcome text-4xl font-bold text-[#D4AF37] mb-4">WELCOME TO SASHVARA</h2>
+          <h2 className="welcome text-4xl font-bold text-[#001f3f] mb-4">WELCOME TO SASHVARA</h2>
           <div className="dash-line ml-[10%] mr-[10%] border-b mb-[2%] " >
-          <p className="moto text-xl text-[#D4AF37] mb-8">YOUR EVERYDAY ELEGANCE</p>
+          <p className="moto text-xl text-[#001f3f] mb-8">YOUR EVERYDAY ELEGANCE</p>
           </div>
         </div>
       </div>
@@ -59,11 +59,11 @@ import { Link } from "react-router-dom";
         <HomeSlider gender="Men" title="MEN" endpoint="/api/products" />
       </section>
       
-      <section id="women">
-        <h2 className="flex justify-center text-[#001f3f] text-2xl font-bold mb-4">
-          
-        </h2>
-        <HomeSlider gender="Women" title="WOMEN"  endpoint="/api/products"/>
+      <section id="women" className="mb-[5%] " >
+        <h2 className="flex justify-center text-[#001f3f] text-2xl font-bold mb-4">  </h2>             
+               
+        <HomeSlider gender="Women" title="WOMEN"  endpoint="/api/products"/>     
+   
       </section>
        <h2 id='collection-heading' className="flex justify-center text-center text-[#001f3f] text-2xl  font-bold ml-[10%] ">COLLECTIONS</h2>
       <section id="collections"  className="collection grid grid-cols-3 pl-[10%]"> 

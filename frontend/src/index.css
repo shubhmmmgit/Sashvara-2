@@ -588,7 +588,11 @@ button.primary-button,
   gap: 12px;
 }
 
-/* Order tracking overlay (full-screen dimmer) */
+ .checkout-detail{
+    background-color: #fff;
+   }
+.payment-label { position: relative; padding: 1rem; border-radius: 0.375rem; min-height: 100px; width: 100%; }
+.floating-tag { position: absolute; top: -1rem; left: 1rem; background: #fff; padding: 0 .5rem; font-size: .875rem; margin-left: 25%;}
 
 
 /* Optional: mobile tweak so modal uses most of screen */
@@ -644,6 +648,9 @@ footer#site-footer .container {
       #collections{
     display: flex;
     flex-direction: column;
+  }
+  #collections img {
+    margin-left: 15%;
   }
   .aafat_ki_adda h2{
     margin-left: 120px;
@@ -1048,6 +1055,9 @@ footer#site-footer .container {
     display: flex;
     flex-direction: column;
   }
+  #collections img {
+    margin-left: 13%;
+  }
   .aafat_ki_adda h2{
     margin-left: 120px;
     
@@ -1444,6 +1454,9 @@ footer#site-footer .container {
   #collections{
     display: flex;
     flex-direction: column;
+  }
+  #collections img {
+    margin-left: 13%;
   }
   .aafat_ki_adda h2{
     margin-left: 120px;
@@ -1907,6 +1920,10 @@ footer#site-footer .container {
   #collections{
     display: flex;
     flex-direction: column;
+    
+  }
+  #collections img {
+    margin-left: 13%;
   }
   .aafat_ki_adda h2{
     margin-left: 120px;
@@ -2074,135 +2091,14 @@ footer#site-footer .container {
     display: flex;
     flex-direction: column;
    }
-
-   #checkout-page{
-    display: grid;
-    grid-template-columns: 1fr;
-    margin-right: 100%;
-
-   }
-
+   
+  
    #contact-detail{
-    align-items: center;
-    justify-content: center;
+    margin-left: 25%;
     
-   }#email-input{
-    width: 400%;
-   }
-   #email{
-    width: 200%;
-   }.email-checkbox {
-    font-size: 0.7rem;
-    width: 200%;
-   }
-   #delivery{
-    
-   }
-   #country{
-   width: 355%; 
-    
-   }
-   #name-field{
-    display: grid;
-    grid-template-columns: 1fr;
     
    }
    
-   #firstName{
-    width: 350%;
-    margin-top:10%;
-
-   }
-   #lastName{
-    width: 350%;
-
-   }#whereabouts{
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 200%;
-    gap: 10%;
-   }
-   #address{
-    width: 350%;
-    margin-top: 20%;
    
-   }
-   #apartment{
-     width: 350%;
-    margin-top: 7%;
-   }
-   #city{
-    width: 175%;
-     margin-top: 5%;
-   }
-   #state{
-    width: 180%;
-   }
-   #pincode{
-    width: 180%;
-   }
-   #phone{
-    margin-right: 10%;
-    width: 360%;
-    margin-top: 50%;
-    
-   }
-
-   #payment-line{
-    width: 400%;
-   }
-   #payment-method{
-    width: 200%;
-   }
-   #off{
-    width: 200%;
-   }
-   #payment-upi{
-    width: 350%;
-   }
-   #payment-cod{
-    width: 350%;
-   }
-   #payment-partial{
-    width: 350%;
-   }
-
-   #orderSummary{
-    margin-left: 20%;
-   }
-   #discount{
-    width: 250%;
-   }
-   #discountCode{
-    width: 250%;
-   }
-   #discountField{
-    display: grid;
-    grid-template-columns: 1fr;
-
-   }
-   #applyButton{
-    margin-top: 2%;
-   }
-
-   #cartProductPrize{
-    margin-right: 15%;
-   }
-
-   #cartSubtotal{
-    margin-right: 15%;
-   }
-   #cartSubtotal p{
-    margin-left: 5%;
-
-   }
-   #cartCross{
-    margin-right: 5%;
-   }
-   #searchResult{
-    display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
-  gap: 1rem; 
-   }
  
   }

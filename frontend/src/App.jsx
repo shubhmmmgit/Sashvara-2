@@ -11,11 +11,16 @@ import Footer from "./components/Footer";
 import CartDrawer from "./components/CartDrawer";
 import Collection from "./components/Collection";
 import Checkout from "./components/Checkout";
+import CheckoutPayment from "./components/CheckoutPayment";
 import RefundPolicy from "./components/RefundPolicy";
 import ShippingPolicy from "./components/ShippingPolicy";
 import AboutUs from "./components/AboutUs";
 import { Toaster } from "react-hot-toast";
-import Preloader from "./components/Preloader";
+import Women from "./components/Women";
+import Men from "./components/Men";
+import BestSellers from "./components/BestSellers";
+import NewArrivals from "./components/NewArrivals";
+
 
 
 function App() {
@@ -74,11 +79,16 @@ function App() {
               }
             />
              <Route path="/checkout" element={<Checkout />} />
+             <Route path="/checkout/payment" element={<CheckoutPayment />} />
              <Route path="/collections/:collection" element={<Collection />} />
              <Route path="/refund-policy" element={<RefundPolicy />} />
              <Route path="/shipping-policy" element={<ShippingPolicy/>} />
              <Route path="/aboutus" element={<AboutUs />} />
-             
+             <Route path="/women" element={<Women />} />
+             <Route path="/men" element={<Men />} />
+             <Route path="/best-sellers" element={<BestSellers />} />
+             <Route path="/new-arrivals" element={<NewArrivals />} /> 
+
             
           </Routes>
            <Toaster position="top-right" reverseOrder={false} />

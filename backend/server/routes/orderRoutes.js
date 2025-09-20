@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
     res.status(201).json(order);
   } catch (err) {
     console.error(" Error saving order:", err);
-    res.status(500).json({ error: "Failed to save order" });
+    res.status(500).json({ error: "Failed to save order",  details: err.message  });
   }
 });
 

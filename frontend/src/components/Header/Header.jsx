@@ -100,7 +100,7 @@ const Header = () => {
             >
               <MdOutlineShoppingCart className="text-[30px] text-[#001f3f]" />
               {totalQty > 0 && (
-                <span className="absolute-top-1-right-0 1bg-red-600 text-[#DE101A] text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute-top-1-right-0 1bg-red-600 text-[#DE101A] text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center" style={{fontWeight:450, fontSize:"1rem"}} >
                   {totalQty}
                 </span>
               )}
