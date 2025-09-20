@@ -24,17 +24,20 @@ const allowedOrigins = [
 // cors options
 const corsOptions = {
   origin: (origin, callback) => {
-    // allow non-browser tools (no origin) like curl/postman
-    if (!origin) return callback(null, true);
-
-    // Debug log to help you see incoming origin
-    // (remove this in production if you don't want logs)
-    // console.log("CORS check origin:", origin);
-
-    if (allowedOrigins.includes(origin)) {
+    // origin will be undefined for non-browser tools (curl/postman)
+    console.log("[CORS] incoming origin:", origin || "(no origin)");
+    if (!origin) {
+      console.log("[CORS] allowing non-browser tool (no origin).");
       return callback(null, true);
     }
-    // If origin is not in the whitelist, respond with false (no CORS headers)
+
+    if (allowedOrigins.includes(origin)) {
+      console.log("[CORS] allowed origin:", origin);
+      return callback(null, true);
+    }
+
+    console.warn("[CORS] blocked origin:", origin);
+    // keep behavior of not sending CORS headers for blocked origins
     return callback(null, false);
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
