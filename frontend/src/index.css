@@ -463,6 +463,7 @@ button.primary-button,
   left: 0;
   right: 0;
   top: 100%;
+  width: 100%;
   background: white;
   padding: 16px 20px;
   border-bottom: 1px solid rgba(0,0,0,0.06);
@@ -625,6 +626,35 @@ footer#site-footer .container {
 }
 
 @media (max-width: 1200px) {
+   .desktop-nav {
+    display: none !important;
+    align-items: center;
+  }
+
+  
+ .mobile-toggle-label,
+  #mobile-toggle {
+    display: inline-flex;
+  }
+  
+   #mobile-toggle:checked ~ .mobile-menu {
+    display: block;
+  }
+  .brand-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
+  text-align: center;
+  margin-left: 6rem;
+}
+
+
+.brand-logo img {
+  display: block;
+  margin: 0 auto;
+}
+ 
 
   .banner {
     width: calc(100% - 32px) !important;
@@ -884,15 +914,140 @@ footer#site-footer .container {
 
    #searchResult{
     display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+  grid-template-columns: repeat(2, 1fr); 
   gap: 1rem; 
    }
+
+
+    /* payment section*/
+   #payment-section h2{
+      text-align: center;
+    }
+
+    #payment-upi{
+      width: 80%;
+      
+    }
+    #UpiSpan{
+      text-align: center;
+    }
+    #upiTag{
+      margin-left: 12%;
+    }
+    #payment-cod{
+       width: 80%;
+    }
+    #codSpan{
+      
+      margin-left: 20%;
+    }
+    #codTag{
+       margin-left: 8%;
+    }
+    #payment-partial{
+      width: 80%;
+    }
+    #partialSpan{
+      margin-left: 20%;
+    }
+    #partialTag{
+      margin-left: 8%;
+    }
+    #PaynowButton{
+     margin-right: 20%;
+    }
+     .orderSummaryWrap{
+      
+
+     }
+   
+    
+    #Summarytag{
+     
+     margin-right: 10% !important;
+     font-size: 1.25rem;
+    }
+    .cartDetails{
+        display: grid;
+      grid-template-rows: 1fr;
+    }
+    #cartImage{
+      width: 30%;
+      margin-left: 5%;
+    }  
+    #cartName{
+      font-size: 1rem !important;
+    }
+    #discountlabel{
+      margin-left: 0% !important;
+      margin-top: 2% !important;
+    }
+    #discountCode{
+      margin-right: 6% !important;
+      width: 50% !important;
+    }
+    #applyButton{
+       margin-left: 7% !important;
+      width: 40% !important;
+    }
+    #subtotalWrap{
+      gap: 15% !important;
+    }
+    #totalWrap{
+      gap: 15% !important;
+    }
+    #collectionName{
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    #collectionWrap{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 equal-width columns */
+        gap: 0% !important;
+    }
+    #collectionImgwrap{
+      width: 80%;
+      margin-left: 5%;
+      margin-right: 5%;
+     
+    }
+    #collectionName{
+      font-size: 1rem !important;
+
+    }
+    #addtocartButton{
+      width: 70%;
+    }
+     #moreCollection{
+      display: flex;
+    flex-direction: column;
+     
+     }
+     #moreCollection > * + * {
+  margin-top: 1.25rem; /* same as space-y-5 in Tailwind */
+}
+     #moreCollection img {
+      width: 50%;
+      margin-left: 25%;
+     }
 }
 
 
 @media (max-width: 768px) {
   .desktop-nav {
-    display: none !important;}
+    display: none !important;
+    align-items: center;
+  }
+
+  
+ .mobile-toggle-label,
+  #mobile-toggle {
+    display: inline-flex;
+  }
+  
+   #mobile-toggle:checked ~ .mobile-menu {
+    display: block;
+  }
 
   .brand-logo {
   display: flex;
@@ -1329,6 +1484,118 @@ footer#site-footer .container {
   grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
   gap: 1rem; 
    }
+   
+     /* payment section*/
+   #payment-section h2{
+      text-align: center;
+    }
+
+    #payment-upi{
+      width: 80%;
+      
+    }
+    #UpiSpan{
+      text-align: center;
+    }
+    #upiTag{
+      margin-left: 12%;
+    }
+    #payment-cod{
+       width: 80%;
+    }
+    #codSpan{
+      
+      margin-left: 20%;
+    }
+    #codTag{
+       margin-left: 8%;
+    }
+    #payment-partial{
+      width: 80%;
+    }
+    #partialSpan{
+      margin-left: 20%;
+    }
+    #partialTag{
+      margin-left: 8%;
+    }
+    #PaynowButton{
+     margin-right: 20%;
+    }
+     .orderSummaryWrap{
+      
+
+     }
+   
+    
+    #Summarytag{
+     
+     margin-right: 10% !important;
+     font-size: 1.25rem;
+    }
+    .cartDetails{
+        display: grid;
+      grid-template-rows: 1fr;
+    }
+    #cartImage{
+      width: 30%;
+      margin-left: 5%;
+    }  
+    #cartName{
+      font-size: 1rem !important;
+    }
+    #discountlabel{
+      margin-left: 0% !important;
+      margin-top: 2% !important;
+    }
+    #discountCode{
+      margin-right: 6% !important;
+      width: 50% !important;
+    }
+    #applyButton{
+       margin-left: 7% !important;
+      width: 40% !important;
+    }
+    #subtotalWrap{
+      gap: 15% !important;
+    }
+    #totalWrap{
+      gap: 15% !important;
+    }
+     #collectionName{
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    #collectionWrap{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 equal-width columns */
+        gap: 0% !important;
+    }
+    #collectionImgwrap{
+      width: 80%;
+      margin-left: 5%;
+      margin-right: 5%;
+     
+    }
+    #collectionName{
+      font-size: 1rem !important;
+
+    }
+    #addtocartButton{
+      width: 60%;
+    }
+     #moreCollection{
+      display: flex;
+    flex-direction: column;
+     
+     }
+     #moreCollection > * + * {
+  margin-top: 1.25rem; /* same as space-y-5 in Tailwind */
+}
+     #moreCollection img {
+      width: 50%;
+      margin-left: 25%;
+     }
 }
 
 
@@ -1626,135 +1893,119 @@ footer#site-footer .container {
     flex-direction: column;
    }
 
-   #checkout-page{
-    display: grid;
-    grid-template-columns: 1fr;
-    margin-right: 100%;
+    /* payment section*/
+  #payment-section h2{
+      text-align: center;
+    }
 
-   }
+    #payment-upi{
+      width: 80%;
+      
+    }
+    #UpiSpan{
+      text-align: center;
+    }
+    #upiTag{
+      margin-left: 12%;
+    }
+    #payment-cod{
+       width: 80%;
+    }
+    #codSpan{
+      
+      margin-left: 20%;
+    }
+    #codTag{
+       margin-left: 8%;
+    }
+    #payment-partial{
+      width: 80%;
+    }
+    #partialSpan{
+      margin-left: 20%;
+    }
+    #partialTag{
+      margin-left: 8%;
+    }
+    #PaynowButton{
+     margin-right: 20%;
+    }
+     .orderSummaryWrap{
+      
 
-   #contact-detail{
-    align-items: center;
-    justify-content: center;
-    
-   }#email-input{
-    width: 400%;
-   }
-   #email{
-    width: 200%;
-   }.email-checkbox {
-    font-size: 0.7rem;
-    width: 200%;
-   }
-   #delivery{
-    
-   }
-   #country{
-   width: 355%; 
-    
-   }
-   #name-field{
-    display: grid;
-    grid-template-columns: 1fr;
-    
-   }
+     }
    
-   #firstName{
-    width: 350%;
-    margin-top:10%;
-
-   }
-   #lastName{
-    width: 350%;
-
-   }#whereabouts{
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 200%;
-    gap: 10%;
-   }
-   #address{
-    width: 350%;
-    margin-top: 20%;
-   
-   }
-   #apartment{
-     width: 350%;
-    margin-top: 7%;
-   }
-   #city{
-    width: 175%;
-     margin-top: 5%;
-   }
-   #state{
-    width: 180%;
-   }
-   #pincode{
-    width: 180%;
-   }
-   #phone{
-    margin-right: 10%;
-    width: 360%;
-    margin-top: 50%;
     
-   }
+    #Summarytag{
+     
+     margin-right: 10% !important;
+     font-size: 1.25rem;
+    }
+    .cartDetails{
+        display: grid;
+      grid-template-rows: 1fr;
+    }
+    #cartImage{
+      width: 30%;
+      margin-left: 5%;
+    }  
+    #cartName{
+      font-size: 1rem !important;
+    }
+    #discountlabel{
+      margin-left: 0% !important;
+      margin-top: 2% !important;
+    }
+    #discountCode{
+      margin-right: 6% !important;
+      width: 50% !important;
+    }
+    #applyButton{
+       margin-left: 7% !important;
+      width: 40% !important;
+    }
+    #subtotalWrap{
+      gap: 15% !important;
+    }
+    #totalWrap{
+      gap: 15% !important;
+    }
 
-   #payment-line{
-    width: 400%;
-   }
-   #payment-method{
-    width: 200%;
-   }
-   #off{
-    width: 200%;
-   }
-   #payment-upi{
-    width: 350%;
-   }
-   #payment-cod{
-    width: 350%;
-   }
-   #payment-partial{
-    width: 350%;
-   }
+    #collectionName{
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    #collectionWrap{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 equal-width columns */
+        gap: 0% !important;
+    }
+    #collectionImgwrap{
+      width: 80%;
+      margin-left: 5%;
+      margin-right: 5%;
+     
+    }
+    #collectionName{
+      font-size: 1rem !important;
 
-   #orderSummary{
-    margin-left: 20%;
-   }
-   #discount{
-    width: 250%;
-   }
-   #discountCode{
-    width: 250%;
-   }
-   #discountField{
-    display: grid;
-    grid-template-columns: 1fr;
-
-   }
-   #applyButton{
-    margin-top: 2%;
-   }
-     #cartProductPrize{
-    margin-right: 15%;
-   }
-
-   #cartSubtotal{
-    margin-right: 15%;
-   }
-   #cartSubtotal p{
-    margin-left: 5%;
-
-   }
-   #cartCross{
-    margin-right: 5%;
-   }
-
-  #searchResult{
-    display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
-  gap: 1rem; 
-   }
+    }
+    #addtocartButton{
+      width: 20%;
+    }
+     #moreCollection{
+      display: flex;
+    flex-direction: column;
+     
+     }
+     #moreCollection > * + * {
+  margin-top: 1.25rem; /* same as space-y-5 in Tailwind */
+}
+     #moreCollection img {
+      width: 50%;
+      margin-left: 25%;
+     }
+    
 }
   
 
@@ -1762,8 +2013,21 @@ footer#site-footer .container {
 
 @media (max-width: 480px) {
 
-  .desktop-nav {
-    display: none !important;}
+   .desktop-nav {
+    display: none !important;
+    align-items: center;
+  }
+
+  
+ .mobile-toggle-label,
+  #mobile-toggle {
+    display: inline-flex;
+    margin-right: 100% !important;
+  }
+  
+   #mobile-toggle:checked ~ .mobile-menu {
+    display: block;
+  }
 
 .brand-logo {
   display: flex;
@@ -1779,14 +2043,6 @@ footer#site-footer .container {
   display: block;
   margin: 0 auto;
 }
- .mobile-toggle-label,
-  #mobile-toggle {
-    display: inline-flex;
-  }
-  
-   #mobile-toggle:checked ~ .mobile-menu {
-    display: block;
-  }
  
   .announcement-bar .container{
     width: 100% !important;
@@ -1819,7 +2075,7 @@ footer#site-footer .container {
   .dash-line{
 
     justify-content: center !important;
-    margin-left: 2rem;
+    margin-left: 3rem;
     margin-right: 4rem;
   }
 
@@ -1839,8 +2095,8 @@ footer#site-footer .container {
     max-height: 360px;
     object-fit: cover;
     border-radius: 10px;
-    margin-left: 5%;
-   
+    margin-left: 3%;
+    
   }
 
 .product-container{
@@ -2043,8 +2299,8 @@ footer#site-footer .container {
     height: 100% !important;   
     max-height: 70vh !important; 
     object-fit: contain !important;
-      object-position: center center;
-  max-width: 100%;
+    object-position: center center;
+    max-width: 100%;
    
   }
 
@@ -2093,12 +2349,244 @@ footer#site-footer .container {
    }
    
   
-   #contact-detail{
-    margin-left: 25%;
+    #searchResult{
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 2% !important;
+    }
+    #productImage-List{
+      
+     margin-left: 2% !important;
+     width: 100% !important;
+    }
+    .prizeTag{
+      gap: 2%;
+    }
+    #sellPrice_List{
+      font-size: 1rem !important;
+
+    }
     
-    
+    .checkout-inputs{
+      display: flex;
+      align-items: center;
+      
+    }
+    .checkout-inputs h2{
+      text-align: center;
+    }
+    #email-input{
+     margin-left: 20%;
+    }
+    #email{
+      margin-left: 20%;
+    }
+    .email-checkbox{
+      margin-left: 20%;
+    }
+    #country{
+      margin-left: 20%;
+      
+    }
+    #countryInput{
+      width: 70%;
+    }
+    #name-field{
+       margin-left: 20%;
+       width: 70%;
+    }
+    .relative{
+      margin-left: 20%;
+      width: 70%;
+      
+      
+    }
+    #address{
+      margin-top: 50%;
+    }
+    .apartmentInput{
+      margin-top: 10%;
+      margin-left: 20%;
+      width: 70%;
    }
+    .whereabouts{
+      display: grid;
+      grid-template-columns: 1fr;
+      margin-left: 20%;
+      width: 140%;
+      margin-top: 10%;
+      
+      
+    }
+    #state{
+      margin-top: 10%;
+    }
+    .pincodeBox{
+      position: relative;     /* container relative */
+    
+      width: 100%;
+      margin-top: 10%;
+    }
+    .pincode-input {
+      width: 100% !important;
+      padding-right: 3rem !important;    /* add space so text doesn’t overlap flag */
+      height: 40px !important;
+      box-sizing: border-box !important;
+}
+     .pincodeIcon{
+      position: absolute !important ;
+      right: 0px !important;         
+      top: 40% !important;
+      transform: translateY(-50%) !important;
+      transform: translateX(500%) !important;
+      width: 20px !important;           
+      height: auto !important;
+      pointer-events: none !important;
+      
+     
+     
+     }
+     .phonewrap{
+      margin-right: 12% !important;
+     }
+     .paymentBox{
+        margin-left: 50% !important;
+        width: 200% !important;
+       margin-top: 10% !important;
+       
+     }
+     .paymentBox button { 
+        display: flex !important;
+      justify-content: center !important;
+
+     }
+     .paymentIcon{
    
+      margin-top: 5% !important;
+     
+      
+     }
+     .Visaicon{
+      width: 30% !important;
+      margin-left: 200% !important;
+     }
+     .UPIicon{
+      width: 30% !important;
+     }
+     .mastercardicon{
+       width: 30% !important; 
+     }
+
+    #payment-section h2{
+      text-align: center;
+    }
+
+    #payment-upi{
+      width: 80%;
+      
+    }
+    #UpiSpan{
+      text-align: center;
+    }
+    #upiTag{
+      margin-left: 12%;
+    }
+    #payment-cod{
+       width: 80%;
+    }
+    #codSpan{
+      
+      margin-left: 20%;
+    }
+    #codTag{
+       margin-left: 8%;
+    }
+    #payment-partial{
+      width: 80%;
+    }
+    #partialSpan{
+      margin-left: 20%;
+    }
+    #partialTag{
+      margin-left: 8%;
+    }
+    #PaynowButton{
+     margin-right: 20%;
+    }
+  
    
- 
+    
+    #Summarytag{
+     
+     margin-right: 10% !important;
+     font-size: 1.25rem;
+    }
+    .cartDetails{
+        display: grid;
+      grid-template-rows: 1fr;
+    }
+    #cartImage{
+      width: 30%;
+      margin-left: 5%;
+    }  
+    #cartName{
+      font-size: 1rem !important;
+    }
+    #discountlabel{
+      margin-left: 0% !important;
+      margin-top: 2% !important;
+    }
+    #discountCode{
+      margin-right: 6% !important;
+      width: 50% !important;
+    }
+    #applyButton{
+       margin-left: 7% !important;
+      width: 40% !important;
+    }
+    #shippingWrap{
+      gap: 15% !important;
+    }
+    #subtotalWrap{
+      gap: 15% !important;
+    }
+    #totalWrap{
+      gap: 15% !important;
+    }
+
+    #collectionName{
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    #collectionWrap{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 equal-width columns */
+        gap: 0% !important;
+    }
+    #collectionImgwrap{
+      width: 80%;
+      margin-left: 5%;
+      margin-right: 5%;
+     
+    }
+    #collectionName{
+      font-size: 1rem !important;
+
+    }
+    #addtocartButton{
+      width: 20%;
+    }
+     #moreCollection{
+      display: flex;
+    flex-direction: column;
+     
+     }
+     #moreCollection > * + * {
+  margin-top: 1.25rem; /* same as space-y-5 in Tailwind */
+}
+     #moreCollection img {
+      width: 50%;
+      margin-left: 25%;
+     }
+     
   }

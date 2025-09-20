@@ -284,21 +284,21 @@ export default function Collection() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-[#001f3f] mb-6">{titleMap[collection] || collection}</h1>
+      <h1 id="collectionName" className="text-3xl font-bold text-[#001f3f] mb-6">{titleMap[collection] || collection}</h1>
 
       {loading ? (
         <div className="text-gray-600">Loading…</div>
       ) : items.length === 0 ? (
         <div className="text-gray-500">No products in this collection.</div>
       ) : (
-        <div className="grid grid-cols-4 sm:grid-cols-3 lg:grid-cols-5 gap-[5%] ">
+        <div id="collectionWrap"  className="grid grid-cols-4  gap-[5%]">
           {items.map((p) => (
             <Link
               key={p.id}
               to={`/product/${encodeURIComponent(p.id ?? "")}`}
               className="block bg-white overflow-hidden hover:shadow-md transition-shadow no-underline text-current"
             >
-              <div className="aspect-[9/16] bg-gray-100">
+              <div id="collectionImgwrap" className="aspect-[9/16] bg-gray-100">
                 {p.img ? (
                   <img src={imageUrl(p.img)} alt={p.name} className="w-full h-full object-contain" loading="lazy" />
                 ) : (
@@ -307,7 +307,7 @@ export default function Collection() {
               </div>
 
               <div className="p-3">
-                <div className="text-sm font-semibold text-[#001f3f] text-center whitespace-normal break-words no-underline" style={{ fontSize: "1.11rem", fontWeight: 500 }}>{p.name}</div>
+                <div id="collectionName" className="text-sm font-semibold text-[#001f3f] text-center whitespace-normal break-words no-underline" style={{ fontSize: "1.11rem", fontWeight: 500 }}>{p.name}</div>
 
                 <div className="mt-1 flex items-baseline gap-4 justify-center">
                   {p.displayMrp != null && <div className="text-xs text-gray-500 line-through">₹{Number(p.displayMrp).toLocaleString()}</div>}
@@ -315,7 +315,7 @@ export default function Collection() {
                 </div>
 
                 <div className="mt-3 flex justify-center mb-[20%]  ">
-                  <PrimaryButton onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(p); }} className="inline-flex items-center gap-2 rounded-full">
+                  <PrimaryButton id="addtocartButton"  onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(p); }} className="inline-flex items-center gap-2 rounded-full">
                     <MdOutlineShoppingCart className="text-base" />
                     Add to Cart
                   </PrimaryButton>
@@ -326,7 +326,7 @@ export default function Collection() {
         </div>
       )}
 
-      <div className="grid grid-cols-3">
+      <div id="moreCollection" className="grid grid-cols-3">
         <Link to="/collections/aafat_ki_adda" className="text-[#001f3f] underline"><img src="../images/aafat_ki_adaa.webp"  className="w-[80%]"/></Link>
          <Link to="/collections/desi_drama" className="text-[#001f3f] underline"><img src="../images/template_2.png"  className="w-[80%]"/></Link>
          <Link to="/collections/patakha" className="text-[#001f3f] underline" ><img src="../images/template_1_2.webp" className="w-[80%] "/></Link>

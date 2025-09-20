@@ -132,7 +132,7 @@ export default function CheckoutPayment() {
   // Recompute totals & discounts
   const subtotal = (cartItems || []).reduce((sum, item) => sum + (Number(item.price || 0) * Number(item.qty || 0)), 0);
   const tax = subtotal * 0.0476;
-  const paymentMethodDiscount = formData.paymentMethod === "upi" ? 60 : 0;
+  const paymentMethodDiscount = formData.paymentMethod === "upi" ? 30 : 0;
 
   // compute discount amount from discountCode in formData
   useEffect(() => {
@@ -146,11 +146,26 @@ export default function CheckoutPayment() {
     }
   }, [formData.discountCode, subtotal]);
 
-  const total = Math.max(0, subtotal + shippingCost - (discountAmount || 0) - paymentMethodDiscount);
+  const total = Math.max(0, subtotal + shippingCost - (discountAmount || 0) + paymentMethodDiscount);
 
   // Keep form changes
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    // === ADDED: update shippingCost when paymentMethod radio changes ===
+    if (name === "paymentMethod") {
+      // value will be one of: "upi", "cod", "partialcod" (matching your inputs)
+      let newShipping = 0;
+      if (value === "upi") {
+        newShipping = 30;     // add ₹30 for UPI (Razorpay)
+      } else if (value === "cod") {
+        newShipping = 70;     // add ₹70 for Cash on Delivery
+      } else if (value === "partialcod") {
+        newShipping = 45;     // add ₹45 for Partial COD
+      } else {
+        newShipping = 0;
+      }
+      setShippingCost(newShipping);
+    }
     setFormData(prev => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value
@@ -336,7 +351,7 @@ export default function CheckoutPayment() {
 
   // --- UI: kept same classNames & layout as you had ---
   return (
-    <div className="min-h-screen flex justify-center bg-[#fff] py-8">
+    <div className="paymentCheckout min-h-screen flex justify-center bg-[#fff] py-8">
       {/* FlashCard: shown on success */}
       {showFlash && (
         <FlashCard
@@ -357,18 +372,18 @@ export default function CheckoutPayment() {
           ← Back
         </button>
       </div>
-      <div className="max-w-5xl mx-auto  gap-8">
+      <div className="Paymentwrapper max-w-5xl mx-auto  gap-8">
         {/* Payment Section */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mt-[15%] ">
+        <div id="payment-section" className="bg-white rounded-lg shadow-sm p-6 mt-[15%] ">
           <h2 className="payment text-xl font-semibold text-[#001f3f] mb-4">Payment</h2>
           <p id="payment-line" className="text-sm text-gray-600 mb-4">All transactions are secure and encrypted.</p>
 
           <div className="">
             <div>
-              <label id="payment-method" className="block text-sm font-medium text-gray-700 mb-[10%] ">Payment Method</label>
+              <label  className="block text-sm font-medium text-gray-700 mb-[10%] ">Payment Method</label>
 
-              <div className="">
-                <div className="payment-label"> <p className="floating-tag text-[#016B00] ">Save ₹40 + Get Fast Delivery</p>
+              <div  className="">
+                <div className="payment-label"> <p id="upiTag" className="floating-tag text-[#016B00] ">Save ₹40 + Get Fast Delivery</p>
                   <label id="payment-upi" className="flex items-center  w-full p-3 border text-start text-[#808080] border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer " style={{ borderRadius: "5px", minHeight: "80px", fontWeight: 550 }}>
                     <input
                       type="radio"
@@ -385,11 +400,11 @@ export default function CheckoutPayment() {
                         className="w-[50%] opacity-80"
                       />
                     </span>
-                    <span className="peer-checked:text-[#001f3f] ml-[12%] flex ">  Razorpay Secure (UPI, Cards, Wallets, NetBanking) </span>
+                    <span id="UpiSpan" className="peer-checked:text-[#001f3f] ml-[12%] flex">  Razorpay Secure (UPI, Cards, Wallets, NetBanking) </span> <p className="mr-[10%] ">₹30</p>
                   </label>
                 </div>
 
-                <div className="payment-label"> <p className="floating-tag text-[#FF2B00]">₹70 Extra Handling Fee Applies</p>
+                <div className="payment-label"> <p id="codTag" className="floating-tag text-[#FF2B00]">₹70 Extra Handling Fee Applies</p>
                   <label id="payment-cod" className="flex items-center w-full p-3 text-[#808080] border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer " style={{ borderRadius: "5px", minHeight: "80px", fontWeight: 550 }}>
                     <input
                       type="radio"
@@ -406,11 +421,11 @@ export default function CheckoutPayment() {
                         className="w-[20%] opacity-80"
                       />
                     </span>
-                    <span className="peer-checked:text-[#001f3f] ml-[15%]">  Cash on Delivery</span>
+                    <span id="codSpan" className="peer-checked:text-[#001f3f] ml-[15%]">  Cash on Delivery</span><p className="ml-[40%] ">₹70</p>
                   </label>
                 </div>
 
-                <div className="payment-label"> <p className="floating-tag text-[#808080]"> Pay 25% Now, Rest at Delivery</p>
+                <div className="payment-label"> <p id="partialTag" className="floating-tag text-[#808080]"> Pay 25% Now, Rest at Delivery</p>
                   <label id="payment-partial" className="flex items-center w-full p-3 text-[#808080]  border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer peer-checked:border-[#001f3f]" style={{ borderRadius: "5px", minHeight: "80px", fontWeight: 550 }}>
                     <input
                       type="radio"
@@ -428,12 +443,12 @@ export default function CheckoutPayment() {
                         className="w-[10%] opacity-80"
                       />
                     </span>
-                    <span className="peer-checked:text-[#001f3f] ml-[15%]"> Partial COD (Pay 25% )</span>
+                    <span id="partialSpan" className="peer-checked:text-[#001f3f] ml-[15%]"> Partial COD (Pay 25%) </span> <p className="ml-[32%] ">₹45</p>
                   </label>
 
                 </div>
 
-                <div className="flex justify-center">
+                <div id="PaynowButton" className="flex justify-center">
                   <PrimaryButton
                     onClick={handleSubmit}
                     className="w-[70%] mt-6 py-3 text-lg mt-[5%] ml-[10%] "
@@ -447,14 +462,14 @@ export default function CheckoutPayment() {
         </div>
 
         <div id="orderSummary" className="lg:sticky lg:top-8 h-full w-full  ">
-          <div className=" rounded-lg shadow-sm p-6 h-full ">
-            <h2 className="text-xl font-semibold text-[#001f3f]  ">Order Summary</h2>
+          <div id="orderSummaryWrap" className=" rounded-lg shadow-sm p-6 h-full ">
+            <h2 id="Summarytag" className="text-xl font-semibold text-[#001f3f]">Order Summary</h2>
 
             {/* Cart Items with working qty + remove */}
             <div className="space-y-4 mb-6">
               {cartItems.map((item, index) => (
-                <div key={item.id ?? index} className="flex items-center space-x-3 ml-[2%] ">
-                  <div className="relative">
+                <div key={item.id ?? index} className="cartDetails flex items-center space-x-3 ml-[2%] ">
+                  <div id="cartImage" className="relative">
                     <img
                       src={item.image || "/placeholder-product.jpg"}
                       alt={item.name}
@@ -463,7 +478,7 @@ export default function CheckoutPayment() {
                   </div>
 
                   <div className="flex-1 ml-[5%]">
-                    <h3 className="font-medium text-[#001f3f]">{item.name}</h3>
+                    <h3 id="cartName" className="font-medium text-[#001f3f]">{item.name}</h3>
                     <p className="text-sm text-[#808080]">Size: {item.size ?? item.selectedSize ?? item.variant?.size ?? 'One Size'}</p>
                     <p className="text-sm font-semibold text-gray">₹{(item.price || 0).toLocaleString()}</p>
 
@@ -496,7 +511,7 @@ export default function CheckoutPayment() {
 
             {/* Discount Code */}
             <div className="mb-6 space-y-[5%]">
-              <label id="discount" htmlFor="discountCode" className="block text-sm font-medium text-gray-700 mb-1 ml-[2%]">
+              <label id="discountlabel" htmlFor="discountCode" className="block text-sm font-medium text-gray-700 mb-1 ml-[2%]">
                 Discount code or gift card
               </label>
               <div id="discountField" className="flex gap-[5%] mb-[3%] ml-[2%] ">
@@ -527,14 +542,14 @@ export default function CheckoutPayment() {
 
             {/* Order Totals */}
             <div className="pt-4">
-              <div className="flex justify-start gap-[45%] ml-[2%]">
-                <span className="text-gray-600">Subtotal</span>
+              <div id="subtotalWrap" className="flex justify-start gap-[45%] ml-[2%]">
+                <span id="Subtotalspan" className="text-gray-600">Subtotal</span>
                 <span className="font-medium">₹{subtotal.toLocaleString()}</span>
               </div>
 
-              <div className="flex justify-start ml-[2%]">
+              <div id="shippingWrap" className="flex justify-start ml-[2%] gap-[45%] ">
                 <span className="text-gray-600 flex items-center">Shipping</span>
-                <span className="font-medium text-[82%] text-[#808080]">
+                <span className="font-medium text-[90%] text-[#000000]">
                   {shippingCost === 0 ? "" : `₹${shippingCost.toLocaleString()}`}
                 </span>
               </div>
@@ -546,14 +561,9 @@ export default function CheckoutPayment() {
                 </div>
               )}
 
-              {paymentMethodDiscount > 0 && (
-                <div className="flex justify-between text-green-600 ml-[2%]">
-                  <span>UPI Discount</span>
-                  <span className="text-center">-₹{paymentMethodDiscount.toLocaleString()}</span>
-                </div>
-              )}
+             
 
-              <div className="flex justify-start text-lg font-bold pt-2 gap-[40%] ml-[2%]">
+              <div id="totalWrap" className="flex justify-start text-lg font-bold pt-2 gap-[40%] ml-[2%]">
                 <span>Total</span>
                 <span className="ml-[2%]" style={{ fontSize: "1.25rem" }}>INR ₹{total.toLocaleString()}</span>
               </div>

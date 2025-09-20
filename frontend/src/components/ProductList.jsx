@@ -278,7 +278,7 @@ export default function ProductList({
             to={`/product/${encodeURIComponent(p.product_id ?? p.id ?? "")}`}
             className="block group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow no-underline hover:no-underline"
           >
-            <div  className="w-full h-40 aspect-[3/4] bg-gray-100 overflow-hidden flex items-center justify-center ml-[10%]">
+            <div id="productImage-List" className="w-full h-40 aspect-[3/4] bg-gray-100 overflow-hidden flex items-center justify-center ml-[10%]">
               {p.main_image ? (
                 <img
                   src={p.main_image}
@@ -293,8 +293,8 @@ export default function ProductList({
 
             <div className="p-3">
               <div className="text-sm font-semibold text-[#001f3f] text-center whitespace-normal break-words no-underline">{p.name}</div>
-              <div className="mt-1 flex items-baseline gap-[2%] justify-center">
-              <div className="text-base font-bold text-[#001f3f]" style={{fontSize:"1.5rem"}} >
+              <div className="prizeTag mt-1 flex items-baseline gap-[2%] justify-center">
+              <div id="sellPrice_List" className="text-base font-bold text-[#001f3f]" style={{fontSize:"1.5rem"}} >
                 
                   {p.displayPrice != null
                     ? `₹${Number(p.displayPrice).toLocaleString()}`

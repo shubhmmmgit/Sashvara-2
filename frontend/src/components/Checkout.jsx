@@ -442,7 +442,7 @@ export default function Checkout() {
   return (
     <div className="checkout-detail">
       
-      <div className="">
+      <div className="CheckoutPage">
        
       <h1 className="text-3xl text-center font-bold text-[#001f3f] border-b-1 bg-[#ffffff] border-[#808080] "> 
       <button
@@ -476,7 +476,7 @@ export default function Checkout() {
                       placeholder="Enter email or phone number"
                       required
                     />
-                    <div className="flex items-center justify-between mt-2">
+                    <div className="email-checkbox flex items-center justify-between mt-2">
                       <label className="flex items-center">
                         <input
                           type="checkbox"
@@ -485,7 +485,7 @@ export default function Checkout() {
                           onChange={handleInputChange}
                           className="mr-2"
                         />
-                        <span className="email-checkbox text-sm text-gray-600">Email me with news and offers</span>
+                        <span className="text-sm text-gray-600">Email me with news and offers</span>
                       </label>
                     </div>
                   </div>
@@ -496,9 +496,9 @@ export default function Checkout() {
               <div id="delivery" className="bg-white rounded-lg shadow-sm p-6">
                 <h2 className="text-xl font-semibold text-[#001f3f] " >Delivery</h2>
                 <div className="space-y-[5%] ">
-                  <div>
+                  <div id="country">
                     <select
-                      id="country"
+                      id="countryInput"
                       name="country"
                       value={formData.country}
                       onChange={handleInputChange}
@@ -557,7 +557,7 @@ export default function Checkout() {
                   </div>
 
                   {/* Apartment */}
-                  <div>
+                  <div className="apartmentInput">
                     <input
                       type="text"
                       id="apartment"
@@ -571,8 +571,8 @@ export default function Checkout() {
                   </div>
 
                   {/* City, State, Pincode */}
-                  <div id="whereabouts" className="flex flex-cols-3 gap-[3%] mb-[3%]">
-                    <div>
+                  <div id="" className="whereabouts flex flex-cols-3 gap-[3%]  mb-[3%]">
+                    <div className="CityBox">
                       <input
                         type="text"
                         id="city"
@@ -585,7 +585,7 @@ export default function Checkout() {
                         required
                       />
                     </div>
-                    <div>
+                    <div className="stateBox">
                       <select
                         id="state"
                         name="state"
@@ -602,14 +602,14 @@ export default function Checkout() {
                         <option value="Hyderabad">Hyderabad</option>
                       </select>
                     </div>
-                    <div className="relative w-full">
-                    <span className="absolute left-3 top-1/3 flex justify-end ml-[5%] ">
+                    <div className="pincodeBox w-full">
+                     {/*  <span className="absolute left-3 top-1/3 flex justify-end ml-[5%] ">
                       <img
                         src="/images/indiaicon.png"   
                         alt="India Map"
                         className="w-[10%] opacity-80"
                      />
-                    </span>
+                    </span>*/}
                       <input
                         type="text"
                         id="pincode"
@@ -617,17 +617,17 @@ export default function Checkout() {
                         placeholder="PIN code"
                         value={formData.pincode}
                         onChange={handleInputChange}
-                        className="w-full  border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
+                        className="pincode-input w-full  border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
                         style={{ borderRadius: "5px", minHeight: "50px" }}
                         required
-                      />
+                      /> 
                     </div>
                   </div>
 
                   {/* Phone */}
                   <div> 
 
-                    <div className="relative">
+                    <div className="phonewrap relative">
                       <input
                         type="tel"
                         id="phone"
@@ -644,26 +644,26 @@ export default function Checkout() {
 
                 </div>
               </div>
-              <div className="flex justify-center">
+              <div className="paymentBox flex justify-center">
                 <PrimaryButton type="button"
                   onClick={handleProceed}
                   className="w-[50%] bg-[#001f3f] text-white py-3 rounded-lg mt-[5%]">Proceed to Payment </PrimaryButton>
               </div>
-              <div className="flex justify-center mt-[2%] gap-[2%] ">
+              <div className="paymentIcon flex justify-center mt-[2%] gap-[2%] ">
                 <img
                   src="/images/Visaicon.png"
                   alt="visaicon"
-                  className="w-[5%] "
+                  className="Visaicon w-[5%] "
                 />
                 <img
                   src="/images/UPIicon.png"
                   alt="visaicon"
-                  className="w-[5%] "
+                  className="UPIicon w-[5%] "
                 />
                 <img
                   src="/images/mastercardicon.png"
                   alt="visaicon"
-                  className="w-[5%] "
+                  className="mastercardicon w-[5%] "
                 />
               </div>
             </form>

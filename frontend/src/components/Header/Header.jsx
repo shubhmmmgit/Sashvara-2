@@ -59,7 +59,7 @@ const Header = () => {
 
           {/* Nav links (desktop only) */}
           <nav className="desktop-nav col2 hidden">
-            <ul className="flex list-none space-x-6">
+            <ul className="navList flex list-none space-x-6">
               <li><Link smooth to="/#bestsellers" className="text-[18px] no-underline whitespace-nowrap">BEST SELLERS</Link></li>
               <li><Link smooth to="/#newarrival" className="text-[18px] no-underline">NEW ARRIVALS</Link></li>
               <li><Link smooth to="/#women" className="text-[18px] no-underline">WOMEN</Link></li>
