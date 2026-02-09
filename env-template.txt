@@ -1,0 +1,64 @@
+# ===========================================
+# SASHVARA - ENVIRONMENT VARIABLES TEMPLATE
+# ===========================================
+# Copy this content to a file named .env and fill in your actual values
+
+# ===========================================
+# SERVER CONFIGURATION
+# ===========================================
+NODE_ENV=development
+PORT=5000
+
+# ===========================================
+# MONGODB CONFIGURATION
+# ===========================================
+# Local MongoDB (default)
+MONGODB_URI=mongodb://127.0.0.1:27017/sashvara
+
+# MongoDB Atlas (uncomment and replace with your connection string)
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/sashvara?retryWrites=true&w=majority
+
+# ===========================================
+# CLOUDINARY CONFIGURATION
+# ===========================================
+# Get these from your Cloudinary dashboard: https://cloudinary.com/console
+CLOUDINARY_CLOUD_NAME=your_cloud_name_here
+CLOUDINARY_API_KEY=your_api_key_here
+CLOUDINARY_API_SECRET=your_api_secret_here
+
+# ===========================================
+# CORS CONFIGURATION (Optional)
+# ===========================================
+# Frontend URL for CORS (if needed)
+FRONTEND_URL=http://localhost:5173
+
+# ===========================================
+# SECURITY CONFIGURATION (Optional)
+# ===========================================
+# JWT Secret (if you plan to add authentication later)
+JWT_SECRET=your_jwt_secret_here
+
+# ===========================================
+# FILE UPLOAD CONFIGURATION (Optional)
+# ===========================================
+# Maximum file size in bytes (5MB default)
+MAX_FILE_SIZE=5242880
+
+# Maximum number of files per upload (10 default)
+MAX_FILES=10
+
+# ===========================================
+# LOGGING CONFIGURATION (Optional)
+# ===========================================
+# Enable detailed logging
+LOG_LEVEL=debug
+
+# ===========================================
+# DEVELOPMENT TOOLS (Optional)
+# ===========================================
+# Enable MongoDB query logging
+MONGODB_DEBUG=true
+
+# Enable detailed error messages in development
+SHOW_DETAILED_ERRORS=true
+

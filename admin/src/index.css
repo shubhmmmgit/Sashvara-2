@@ -1,0 +1,317 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,body{
+  background-color: #F5F5F5;
+  font-family: "Montserrat", sans-serif;
+}
+
+.adminHeader {
+  display: block;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 15%;
+  height: 100vh;
+  background: #001f3f;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+ .footer{
+ margin-top: 100%;
+ }
+
+ @media (max-width: 780px){
+     .toggleButton{
+  display: block !important;
+}
+  .adminHeader{
+    margin: 0;
+    width: 100%;
+}
+.footer{
+ margin-top: 0;
+ }
+ .dashboardPage{
+  display: grid;
+  justify-content: center;
+  margin-left: -10% !important;
+  margin-right: 10% !important;
+
+ }
+ .dashboardPage h1{
+  
+ }
+ .metricCard{
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: 15%;
+
+ }
+ .recent-visitors{
+  width: 70%;
+ }
+ .SalesBox{
+  margin-top: 20%;
+ }
+ .recentVisitor{
+  margin: 0 auto;
+  width: 100%;
+ }
+ .productPage{
+  display: grid;
+ }
+ .productIdBox{
+  width: 250%;
+ }
+ .productNameBox{
+  width: 250%;
+ }
+ 
+ .categoryBox{
+  width: 200%;
+ }
+ .colorBox{
+  width: 160%;
+  
+ }
+ .genderINPUT{
+ width: 110%;
+ }
+ .descrptionBox{
+  width: 250%;
+ }
+ .imageInput{
+   
+ }
+ .productDetailPage{
+  
+  justify-content: center;
+ }
+ .productNamelabel{
+  width: 300%;
+ }
+ .detailLabel{
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 300%;
+ }
+ }
+
+ @media (max-width: 600px) {
+   .toggleButton{
+  display: block !important;
+}
+  .adminHeader{
+    margin: 0;
+    width: 100%;
+}
+.footer{
+ margin-top: 0;
+ }
+ .dashboardPage{
+  display: grid;
+  justify-content: center;
+  margin-left: -10% !important;
+  margin-right: 10% !important;
+
+ }
+ .dashboardPage h1{
+  
+ }
+ .metricCard{
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: 15%;
+
+ }
+ .recent-visitors{
+  width: 70%;
+ }
+ .SalesBox{
+  margin-top: 20%;
+ }
+ .recentVisitor{
+  margin: 0 auto;
+  width: 100%;
+ }
+ .productPage{
+  display: grid;
+ }
+ .productIdBox{
+  width: 250%;
+ }
+ .productNameBox{
+  width: 250%;
+ }
+ 
+ .categoryBox{
+  width: 200%;
+ }
+ .colorBox{
+  width: 160%;
+  
+ }
+ .genderINPUT{
+ width: 110%;
+ }
+ .descrptionBox{
+  width: 250%;
+ }
+ .imageInput{
+   
+ }
+ .productDetailPage{
+  
+  justify-content: center;
+ }
+ .productNamelabel{
+  width: 300%;
+ }
+ .detailLabel{
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 300%;
+ }
+ }
+@media (max-width: 480px){
+  
+html,body{
+  background-color: #F5F5F5;
+  font-family: "Montserrat", sans-serif;
+  margin-left: 0% !important;
+}
+  
+  .toggleButton{
+  display: block !important;
+}
+  .adminHeader{
+    margin: 0;
+    
+}
+.footer{
+ margin-top: 0;
+ }
+ .dashboardPage{
+  display: grid;
+  justify-content: center;
+  margin-left: -10% !important;
+  margin-right: 10% !important;
+
+ }
+ .dashboardPage h1{
+  
+ }
+ .metricCard{
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: 15%;
+
+ }
+ .recent-visitors{
+  width: 70%;
+ }
+ .SalesBox{
+  margin-top: 20%;
+ }
+ .recentVisitor{
+  margin: 0 auto;
+  width: 100%;
+ }
+ .productPage{
+  display: grid;
+ }
+ .productIdBox{
+  width: 250%;
+ }
+ .productNameBox{
+  width: 250%;
+ }
+ 
+ .categoryBox{
+  width: 200%;
+ }
+ .colorBox{
+  width: 160%;
+  
+ }
+ .genderINPUT{
+ width: 110%;
+ }
+ .descrptionBox{
+  width: 250%;
+ }
+ .imageInput{
+   
+ }
+ .variantContainer{
+  width: 70%;
+  margin-top: 5%;
+  gap: 12%;
+ }
+ .removeButton{
+  width: 90% !important;
+ }
+ .ordercontainer {
+  display: grid;
+  
+ }
+ .allProducts{
+  margin-right: 10%;
+
+ }
+.allProductsWrap{
+  width: 100%;
+}
+.productDetailPage{
+  margin-left: -15% !important;
+}
+.productNamelabel{
+  width: 90%;
+  
+}
+.productpriceBox{
+  width: 30% !important;
+}
+.adminordersPage{
+  margin-left: -15% !important;
+
+}
+.orderdetailContainer{
+  min-height: 80px !important;
+}
+.orderHeaderWrap{
+  display: grid;
+
+}
+.orderButtons{
+  margin-bottom: 5%;
+}
+.InvoicePage{
+  margin-left: -15% !important;
+
+}
+.invoiceContainer{
+  display: grid;
+  margin-bottom: 5%;
+}
+.invoiceButton{
+  margin-top: 5%;
+}
+.invoiceBulkDownload{
+  display: grid;
+}
+.analyticDetailPage{
+  margin-left: -15% !important;
+}
+.CouponsPage{
+   margin-left: -15% !important;
+}
+.couponPagewrap{
+  display: flex;
+  flex-direction: column;
+}
+}

@@ -1,0 +1,82 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+
+# Environment files
+# Ignore all env files by default
+.env
+.env.*
+# But allow frontend/.env (safe, only contains VITE_ keys)
+!frontend/.env
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Optional: OS specific
+Thumbs.db
+
+# Uploaded assets (NEVER commit)
+backend/public/images/
+frontend/public/images/
+backend/data/invoices/
+
+# Media
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.heic
+*.mov
+*.mp4
+*.pdf
+
+# Downloads
+*.crdownload
+
+

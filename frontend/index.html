@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Icons -->
+  <link rel="icon" href="/TitleLOGO.jpeg">
+  <link rel="apple-touch-icon" href="/TitleLOGO.jpeg">
+
+  <!-- Viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- SEO -->
+  <title>Sashvara</title>
+  <meta name="description" content="Discover premium clothing from Sashvara. Trendy, comfortable, and high-quality fashion designed for you." />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sashvara.com/" />
+  <meta property="og:title" content="Sashvara" />
+  <meta property="og:description" content="Explore stylish and premium clothing at Sashvara." />
+  <meta property="og:image" content="https://sashvara.com/TitleLOGO.jpeg" />
+
+  <!-- Fonts (non-blocking) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'"
+  >
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap">
+  </noscript>
+
+  <!-- Tiny critical CSS -->
+  <style>
+    body { margin: 0; font-family: Montserrat, system-ui, sans-serif; }
+    #root { min-height: 100vh; }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <div id="cart-root"></div>
+
+  <!-- React (Vite handles bundling) -->
+  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- Razorpay (load only on checkout) -->
+  <script>
+    window.loadRazorpay = function () {
+      if (window.Razorpay) return;
+      const s = document.createElement("script");
+      s.src = "https://checkout.razorpay.com/v1/checkout.js";
+      s.async = true;
+      document.body.appendChild(s);
+    };
+  </script>
+
+  <!-- Analytics (idle time) -->
+  <script>
+    requestIdleCallback(() => {
+      const s = document.createElement("script");
+      s.src = "https://www.googletagmanager.com/gtag/js?id=G-RDPTT5M08H";
+      s.async = true;
+      document.head.appendChild(s);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RDPTT5M08H");
+    });
+  </script>
+</body>
+</html>

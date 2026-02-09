@@ -1,0 +1,872 @@
+// src/pages/ProductDetail.jsx
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import {
+  FaArrowLeft,
+  FaEdit,
+  FaTrash,
+  FaSpinner,
+  FaHeart,
+  FaShare,
+} from "react-icons/fa";
+import PrimaryButton from "./PrimaryButton";
+import ProductZoom from "./ProductZoom";
+import { useCart } from "../context/CartContext";
+import { MdOutlineShoppingCart } from "react-icons/md";
+import toast from "react-hot-toast";
+import { imageUrl } from '../utils/imageUrl';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Thumbs, FreeMode,Navigation } from "swiper/modules";
+
+
+const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
+const BRAND = "#001f3f";
+const MAX_QTY = 10;
+const incrementQty = () => {
+  setSelectedQty((q) => Math.min(MAX_QTY, Number(q || 1) + 1));
+};
+
+const decrementQty = () => {
+  setSelectedQty((q) => Math.max(1, Number(q || 1) - 1));
+};
+const SIZE_CHARTS = {
+  men: "https://res.cloudinary.com/dgnevjqr6/image/upload/v1770098743/SASHVARA_Clothes_Size_Chart_Instagram_Post.jpg_ilctlu.jpg",
+  women: "https://res.cloudinary.com/dgnevjqr6/image/upload/v1769093313/sizechart_zgq0yg.png",
+};
+
+/* ----------------- Helpers -----------------
+const normalizeImageUrl = (img) => {
+  if (img === undefined || img === null) return "";
+  const s = String(img).trim();
+  if (!s) return "";
+  if (/^https?:\/\//i.test(s)) return s;
+  return s.startsWith("/") ? `${BACKEND_HOST}/images/${s}` : `${BACKEND_HOST}/${s}`;
+}; */
+
+const extractMongoIdString = (maybeId) => {
+  if (!maybeId) return null;
+  if (typeof maybeId === "string") return maybeId;
+  if (maybeId && typeof maybeId === "object") {
+    if (maybeId.$oid) return maybeId.$oid;
+    if (typeof maybeId.toString === "function") {
+      try {
+        const s = maybeId.toString();
+        if (s && s !== "[object Object]") return s;
+      } catch {}
+    }
+  }
+  return String(maybeId);
+};
+const collectImages = (obj) => {
+  if (!obj || typeof obj !== "object") return [];
+
+  // 1️⃣ If obj.images is an array
+  if (Array.isArray(obj.images) && obj.images.length) {
+    return obj.images
+      .map((it) => (typeof it === "string" ? it : it?.url || it?.src || ""))
+      .filter(Boolean)
+      .map((i) => String(i).trim());
+  }
+
+  // 2️⃣ If obj has keys like images/0, images/1
+  const imageEntries = Object.keys(obj)
+    .filter((k) => /^images\/\d+$/.test(k))
+    .sort((a, b) => Number(a.split("/")[1]) - Number(b.split("/")[1]))
+    .map((k) => obj[k])
+    .filter(Boolean)
+    .map((i) => String(i).trim());
+
+  return imageEntries;
+};
+
+
+/**
+ * Accepts the raw product object (possibly malformed from older CSV import)
+ * and returns a normalized product:
+ *  - images: Array<string>
+ *  - variants: Array<{ size, mrp, sell_price, stock?, _id? }>
+ *  - fallback top-level mrp/sell_price mapped to variant if variants missing
+ */
+const normalizeRawProduct = (raw) => {
+  if (!raw || typeof raw !== "object") return null;
+  const p = { ...raw };
+
+  // 1) Normalize images:
+  let images = [];
+  if (Array.isArray(p.images) && p.images.length) images = p.images.slice();
+  else {
+    // collect keys like 'images/0', 'images/1' (CSV/flattened)
+    const imgKeys = Object.keys(p).filter((k) => /^images\/\d+$/.test(k));
+    if (imgKeys.length) {
+      imgKeys.sort((a, b) => {
+        const ia = Number(a.split("/")[1]);
+        const ib = Number(b.split("/")[1]);
+        return ia - ib;
+      });
+      images = imgKeys.map((k) => p[k]).filter(Boolean);
+    }
+  }
+images = images.map((i) => String(i).trim()).filter(Boolean);
+
+  // 2) Normalize variants:
+  let variants = [];
+  if (Array.isArray(p.variants) && p.variants.length) {
+    variants = p.variants.map((v) => ({ ...v }));
+  } else {
+    
+    const variantIndexSet = new Set();
+    Object.keys(p).forEach((k) => {
+      const m = k.match(/^variants\/(\d+)\/(.+)$/);
+      if (m) variantIndexSet.add(Number(m[1]));
+    });
+
+    if (variantIndexSet.size) {
+      const indexes = Array.from(variantIndexSet).sort((a, b) => a - b);
+      variants = indexes
+        .map((i) => {
+          const size = p[`variants/${i}/size`] ?? p[`variants/${i}/Size`] ?? null;
+          const mrp = p[`variants/${i}/mrp`] ?? p[`variants/${i}/MRP`] ?? null;
+          const sell_price = p[`variants/${i}/sell_price`] ?? p[`variants/${i}/sellPrice`] ?? null;
+          return {
+            size: size ? String(size).trim() : undefined,
+            mrp: mrp !== undefined && mrp !== null ? Number(mrp) : undefined,
+            sell_price: sell_price !== undefined && sell_price !== null ? Number(sell_price) : undefined,
+          };
+        })
+        .filter(Boolean);
+    }
+  }
+
+  // 3) Fallback: if no variants but top-level mrp / sell_price exist, synthesize a variant
+  if ((!variants || variants.length === 0) && (p.mrp !== undefined || p.sell_price !== undefined)) {
+    variants = [
+      {
+        size: p.size ?? "ONE",
+        mrp: p.mrp !== undefined ? Number(p.mrp) : undefined,
+        sell_price: p.sell_price !== undefined ? Number(p.sell_price) : undefined,
+      },
+    ];
+  }
+
+  // 4) Ensure variant size capitalization/trimming
+  variants = variants.map((v) => {
+    const copy = { ...v };
+    if (copy.size && typeof copy.size === "string") copy.size = copy.size.trim().toUpperCase();
+    if (copy.mrp !== undefined) copy.mrp = typeof copy.mrp === "number" ? copy.mrp : Number(copy.mrp ?? NaN);
+    if (copy.sell_price !== undefined) copy.sell_price = typeof copy.sell_price === "number" ? copy.sell_price : Number(copy.sell_price ?? NaN);
+    return copy;
+  });
+
+  // 5) Build cheapestVariant helper
+  let cheapestVariant = null;
+  for (const v of variants) {
+    if (!cheapestVariant) cheapestVariant = v;
+    else {
+      const a = v.sell_price ?? Number.POSITIVE_INFINITY;
+      const b = cheapestVariant.sell_price ?? Number.POSITIVE_INFINITY;
+      if (a < b) cheapestVariant = v;
+    }
+  }
+
+  return {
+    ...p,
+    images,
+    variants,
+    cheapestVariant,
+  };
+};
+
+/* ----------------- Component ----------------- */
+export default function ProductDetail() {
+  const { id } = useParams(); // id may be product_id, slug, or Mongo _id
+  const navigate = useNavigate();
+
+  const [rawProduct, setRawProduct] = useState(null);
+  const [product, setProduct] = useState(null); // normalized
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [similarProducts, setSimilarProducts] = useState([]);
+  const [loadingSimilar, setLoadingSimilar] = useState(false);
+  const { cartItems, setCartItems } = useCart();
+  const [zoomed, setZoomed] = useState(false);
+  const [showSizeChart, setShowSizeChart] = useState(false);
+  const [showBottomActions, setShowBottomActions] = useState(false);
+  const [selectedQty, setSelectedQty] = useState(1)
+
+
+  // UI state
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+
+  const addToCart = (p, qty = selectedQty) => {
+    const id = p.id ?? p.product_id ?? extractMongoIdString(p._id);
+    const name = p.name ?? p.product_name ?? "Unnamed Product";
+    const price = Number(p.displayPrice ?? p.price ?? p.sell_price ?? p.mrp ?? 0);
+    const image = p.main_image ?? p.image ?? (Array.isArray(p.images) ? p.images[0] : "");
+    const selectedSize =
+      p.size ??
+      (Array.isArray(p.variants) ? p.variants[selectedVariantIndex]?.size : undefined) ??
+      p?.cheapestVariant?.size ??
+      null;
+      
+  
+    if (!id) return;
+  
+    const amt = Math.max(1, Number(qty || 1)); // ensure at least 1
+  
+    setCartItems((prev) => {
+      const existing = prev.find((it) => it.id === id);
+      if (existing) {
+        // increment by amt
+        return prev.map((it) =>
+          it.id === id ? { ...it, qty: (Number(it.qty || 0) + amt) } : it
+        );
+      }
+      return [...prev, { id, name, price, image: imageUrl(image), qty: amt, size: selectedSize || "One Size" }];
+    });
+  
+    // optional: toast or feedback
+    toast(
+      <span className="flex items-center">
+      <MdOutlineShoppingCart className="text-green-600 text-lg" />
+      <span className="font-semibold text-green-700">
+        {name} added to cart (Qty: {amt})
+      </span>
+    </span>,
+      {
+        position: "top-center", 
+        style: {
+          width:"30rem",
+          background: "#fff",
+          color: "#016B00",
+          fontWeight: "500",
+          fontSize: "14px",
+          border: "1px solid #001f3f",
+          borderRadius: "8px",
+        },
+      }
+    );
+  };
+  
+  const goToCheckout = () => {
+  // Ensure the product is in the cart before navigating
+  const id = product?.product_id ?? extractMongoIdString(product?._id);
+  if (!id) return;
+
+  const item = {
+    id,
+    name: product.product_name ?? "Unnamed Product",
+    price: displayPrice ?? 0,
+    image: (product.images && product.images[0]) ? imageUrl(product.images[0]) : "",
+    qty: Math.max(1, Number(selectedQty || 1)),
+    size: selectedVariant?.size ?? product?.cheapestVariant?.size ?? "One Size",
+  };
+
+  // Insert into CartContext (same as drawer does)
+  setCartItems((prev) => {
+    const existing = prev.find((it) => it.id === id);
+    if (existing) {
+      return prev.map((it) =>
+        it.id === id ? { ...it, qty: (it.qty || 0) + 1 } : it
+      );
+    }
+    return [...prev, item];
+  });
+
+  // Navigate after adding
+  navigate("/checkout");
+};
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      setLoading(true);
+      setError(null);
+      setRawProduct(null);
+      setProduct(null);
+      setSelectedVariantIndex(0);
+      setSelectedQty(1);
+
+      try {
+        const endpoint = `${BACKEND_HOST}/api/products/${encodeURIComponent(id)}`;
+        const res = await fetch(endpoint);
+        // prefer structured response { success: true, data: product }
+        let json = null;
+        try { json = await res.json(); } catch (e) { /* ignore parse error */ }
+
+        let fetched = null;
+        if (json && json.success === true && json.data) fetched = json.data;
+        else if (json && Array.isArray(json)) fetched = json; // unlikely for single
+        else if (res.ok && json) fetched = json.data ?? json; // fallback
+
+        // If server gave single product object, use it
+        if (fetched && typeof fetched === "object" && !Array.isArray(fetched)) {
+          if (mounted) {
+            setRawProduct(fetched);
+            const norm = normalizeRawProduct(fetched);
+            setProduct(norm);
+            // default variant selection: cheapest or first
+            if (norm?.variants?.length) {
+              const idx = norm.variants.findIndex((v) => v === norm.cheapestVariant);
+              setSelectedVariantIndex(idx >= 0 ? idx : 0);
+            }
+            setLoading(false);
+          }
+          return;
+        }
+
+        // fallback: fetch list and match product_id OR _id
+        const listRes = await fetch(`${BACKEND_HOST}/api/products`);
+        if (!listRes.ok) throw new Error(`Products list failed with ${listRes.status}`);
+        const listJson = await listRes.json();
+        const arr = Array.isArray(listJson) ? listJson : listJson?.data ?? [];
+
+        const lowerId = id ? String(id).trim().toLowerCase() : "";
+        const found = arr.find((it) => {
+          const pid = (it.product_id ?? "").toString().trim().toLowerCase();
+          if (pid && pid === lowerId) return true;
+          const slug = (it.slug ?? "").toString().trim().toLowerCase();
+          if (slug && slug === lowerId) return true;
+          const _idStr = extractMongoIdString(it._id) || "";
+          if (_idStr && _idStr.toString().trim().toLowerCase() === lowerId) return true;
+          return false;
+        });
+
+        if (!found) {
+          if (mounted) setError("Product not found");
+        } else {
+          if (mounted) {
+            setRawProduct(found);
+            const norm = normalizeRawProduct(found);
+            setProduct(norm);
+            if (norm?.variants?.length) {
+              const idx = norm.variants.findIndex((v) => v === norm.cheapestVariant);
+              setSelectedVariantIndex(idx >= 0 ? idx : 0);
+            }
+            setLoading(false);
+          }
+        }
+      } catch (err) {
+        console.error("ProductDetail load error:", err);
+        if (mounted) setError("Failed to load product. Check server logs.");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+
+    load();
+    return () => { mounted = false; };
+  }, [id]);
+
+  // Load similar products (same category and gender), exclude current
+  useEffect(() => {
+    let mounted = true;
+    async function loadSimilar() {
+      if (!product) return;
+      setLoadingSimilar(true);
+      try {
+        const res = await fetch(`${BACKEND_HOST}/api/products`);
+        const listJson = await res.json().catch(() => null);
+        const arr = Array.isArray(listJson) ? listJson : listJson?.data ?? [];
+
+        const normalized = arr
+          .map((p) => normalizeRawProduct(p))
+          .filter(Boolean);
+
+        const currentId = product.product_id ?? extractMongoIdString(product._id);
+        const targetCategory = (product.category ?? "").toString().trim().toLowerCase();
+        const targetGender = (product.gender ?? "").toString().trim().toLowerCase();
+        const targetColor    = (product.color ?? "").toString().trim().toLowerCase();
+
+
+        const sims = normalized
+          .filter((p) => {
+            const pid = p.product_id ?? extractMongoIdString(p._id);
+            if (pid && currentId && String(pid) === String(currentId)) return false;
+            const pc = (p.category ?? "").toString().trim().toLowerCase();
+            const pg = (p.gender ?? "").toString().trim().toLowerCase();
+            const pcl = (p.color ?? "").toString().trim().toLowerCase();
+            if (targetCategory && pc !== targetCategory) return false;
+            if (targetGender && pg !== targetGender) return false;
+            if (targetColor && pcl !== targetColor) return false;
+            return true;
+          })
+          .slice(0, 6);
+
+        if (mounted) setSimilarProducts(sims);
+      } catch (e) {
+        if (mounted) setSimilarProducts([]);
+      } finally {
+        if (mounted) setLoadingSimilar(false);
+      }
+    }
+
+    loadSimilar();
+    return () => { mounted = false; };
+  }, [product]);
+
+  // Actions
+  const incrementQty = () => setSelectedQty((q) => Number(q || 1) + 1);
+  const decrementQty = () => setSelectedQty((q) => Math.max(1, (Number(q || 1) - 1)));
+
+  const handleDelete = async () => {
+    if (!window.confirm("Delete this product?")) return;
+    try {
+      const identifier = product?.product_id ?? extractMongoIdString(product?._id);
+      if (!identifier) throw new Error("No identifier found for product");
+      const res = await fetch(`${BACKEND_HOST}/api/products/${encodeURIComponent(identifier)}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        toast("Product deleted");
+        navigate("/products");
+      } else {
+        const json = await res.json().catch(() => null);
+        toast.error(`Delete failed: ${json?.message ?? res.statusText}`);
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("Delete error, check console",{
+                position: "top-center",
+        style: {
+        background: "#fff",     
+        color: "#001f3f",       
+        fontWeight: "500",
+        fontSize: "14px",
+        border: "1px solid #001f3f",
+        borderRadius: "8px",
+    }
+      });
+    }
+  };
+
+  const handleEdit = () => {
+    const pid = product?.product_id ?? extractMongoIdString(product?._id);
+    if (!pid) return toast("No product id to edit",{
+              position: "top-center",
+        style: {
+        background: "#fff",     
+        color: "#001f3f",       
+        fontWeight: "500",
+        fontSize: "14px",
+        border: "1px solid #001f3f",
+        borderRadius: "8px",
+    }
+    });
+    navigate(`/edit-product/${encodeURIComponent(pid)}`);
+  };
+
+  /* ----------------- Render states ----------------- */
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <FaSpinner className="animate-spin text-4xl text-[#001f3f] mx-auto mb-4" />
+          <div className="text-gray-600">Loading product...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="max-w-lg w-full text-center">
+          <div className="text-red-600 font-bold mb-3">⚠️ {error}</div>
+          <div className="flex justify-center gap-3">
+            <PrimaryButton onClick={() => navigate("/")}>Back</PrimaryButton>
+            <PrimaryButton onClick={() => window.location.reload()} className="bg-gray-100 text-gray-800 border-gray-100 hover:bg-gray-200 hover:border-gray-200">Reload</PrimaryButton>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return null;
+  }
+  
+  const variants = product.variants ?? [];
+  const selectedVariant = variants[selectedVariantIndex] ?? null;
+  const displayPrice = selectedVariant?.sell_price ?? selectedVariant?.mrp ?? product.sell_price ?? product.mrp ?? null;
+  const displayMrp = selectedVariant?.mrp ?? product.mrp ?? null;
+  const discountPct = (displayMrp && displayPrice && displayMrp > displayPrice)
+    ? Math.round(((displayMrp - displayPrice) / displayMrp) * 100)
+    : 0;
+  const savedAmount = (displayMrp && displayPrice && displayMrp > displayPrice) ? (displayMrp - displayPrice) : 0;
+   //size chart 
+  const sizeChartImage =
+  product?.gender === "Men"
+    ? SIZE_CHARTS.men
+    : SIZE_CHARTS.women;
+  return (
+    <div className="container mx-auto px-4 py-8">
+      {/* layout */}
+      <div id="product-conatiner" className="grid grid-cols-2 sm:grid grid-cols-1 md:grid grid-cols-1  gap-8">
+        {/* left: images */}
+        <div id="left-box" className="left-box flex items-start space-x-8">
+         
+          <ProductZoom 
+            images={
+            product.images
+            ? product.images.map((img) =>
+            imageUrl(img, { w: 1200, q: 90 })
+            )
+            : []
+            }
+            productName={product.product_name || product.product_id || "Product"} 
+          />
+        </div>
+
+        {/* right: details */}
+        <div id="product-detail" className="product-detail discription flex-1 space-y-6 mb-8">
+          <div id="product-detail-name" className="product-detail-name">
+            <h1 className="text-3xl text-[#001f3f]"style={{fontWeight:500}}>{product.product_name}</h1>
+            
+          </div>
+
+          {/* price area */}
+         <div className="bg-white p-4 rounded-lg shadow-sm ">
+         <div className="flex items-baseline gap-4 mb-[2%] ">
+
+          {/* Case 1: No discount → only MRP */}
+          {displayMrp && displayMrp === displayPrice && (
+         <div
+        className="text-3xl font-extrabold text-[#001f3f]"
+        style={{ fontWeight: 700, fontSize: "2rem" }}
+         >
+         ₹{displayMrp.toLocaleString()}
+        </div>
+             )}
+
+      {/* Case 2: Discounted → MRP line-through + final price */}
+            {displayMrp && displayMrp !== displayPrice && (
+        <>
+         <div
+          className="text-3xl font-extrabold mr-[2%] text-[#001f3f]"
+          style={{ fontWeight: 500, fontSize: "2rem" }}
+        >
+          ₹{displayPrice?.toLocaleString() ?? "N/A"}
+        </div>
+        <div className="text-sm text-gray-500 line-through">
+          ₹{displayMrp.toLocaleString()}
+        </div>
+
+        {displayMrp && displayMrp > displayPrice &&(
+            <div className="ml-[1%] text-red-600 font-semibold text-[#016B00] visited:text-[#001f3f]">
+            ({Math.round(((displayMrp - displayPrice) / displayMrp) * 100)}% OFF)
+            </div> )}
+         </>
+          )}
+        </div>
+
+            {savedAmount > 0 && (
+              <div className="text-sm text-[#016B00] mt-2 mb-[5%] ">You save ₹{savedAmount.toLocaleString()}</div>
+            )}
+          </div>
+
+          {/* size selector (variants) */}
+          <div id="size-selector" className="bg-white p-4 rounded-lg ">
+            <div className="text-gray-500 mb-2" >Select Size</div>
+            <div id="size-selector-wrap" className="flex flex-wrap " style={{ gap:"15px" }} >
+              {variants.length ? (
+                variants.map((v, idx) => {
+                  const isSelected = idx === selectedVariantIndex;
+                  return (
+                    <button
+                      key={v.size ?? idx}
+                      type="button"
+                      onClick={() => {
+                        console.log('Button clicked, setting index to:', idx);
+                        setSelectedVariantIndex(idx);
+                      }}
+                      className={`px-4 py-2 rounded border  font-semibold ${isSelected ? "bg-[#001f3f] text-[#ffffff]" : "bg-[#ffffff] text-[#001f3f]"}`}
+                        style={{borderRadius:"5px", minWidth:"60px", minHeight:"40px"}}>
+                      {v.size ?? "ONE"}
+                    </button>
+                  );
+                })
+              ) : (
+                <div className="text-gray-500">No sizes available</div>
+              )}     
+
+            </div> 
+            
+          </div> 
+          
+          <div className="space-y-[2%] mt-[5%]">
+          <div className="size-box w-[9%] ">
+          <button
+    onClick={decrementQty}
+    disabled={selectedQty <= 1}
+    aria-label="Decrease quantity"
+    className={`px-3 py-2 border rounded ${
+      selectedQty <= 1 ? "opacity-40 cursor-not-allowed" : ""
+    }`}
+  >
+    –
+  </button>
+
+  <span className="font-medium min-w-[12px] text-center">
+    {selectedQty}
+  </span>
+
+  <button
+    onClick={incrementQty}
+    disabled={selectedQty >= MAX_QTY}
+    aria-label="Increase quantity"
+    className={`px-3 py-2 border rounded ${
+      selectedQty >= MAX_QTY ? "opacity-40 cursor-not-allowed" : ""
+    }`}
+  >
+    +
+  </button>
+            </div>
+          <div className="flex gap-3 items-center">
+            <PrimaryButton   onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart({
+               id: product.product_id ?? extractMongoIdString(product._id),
+              name: product.product_name,
+              price: displayPrice,
+              image: product.images?.[0] ?? "",
+              size: selectedVariant?.size ?? null,
+            }); }} 
+             className="flex-1 py-3">Add to Cart</PrimaryButton>
+            
+            
+          </div>
+           <div className=" px-0 py-4 bg-white shadow mt-6">
+          
+            <PrimaryButton type="button" onClick={goToCheckout} className="w-full py-3">
+              BUY NOW 
+            </PrimaryButton>
+           
+          </div>
+           </div>
+
+          {/* specs grid */}
+          <div id="product-params" className="grid grid-cols-1 gap-4">
+            <div id="category" className=" bg-white p-3 rounded-lg ">
+              <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Category:</p>
+              <p className="font-medium">{product.category ?? "N/A"}</p>
+            </div>
+            <div className="bg-white p-3 rounded-lg ">
+              <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Color:</p>
+              <p className="font-medium">{product.colour ?? "N/A"}</p>
+            </div>
+
+          </div>
+
+          {/* description */}
+          <div id="product-description" className="bg-white p-4 rounded-lg ">
+            <p className="text-sm text-[#001f3f]" style={{fontWeight:650, fontSize:"1rem"}}>Description:</p>
+            <p className="font-medium whitespace-pre-line text-[#808080] " style={{fontSize:"0.9rem"}}>{product.description ?? "N/A"}</p>
+            <p className="text-[#808080] " >Model is wearing size XS with a height of 5'5" </p>
+            <p className="text-[#808080] " > CARE : Gentle machine wash or Handwash preferred . </p>
+
+
+{/* SizeChartModal - drop this where you currently render your modal */}
+{showSizeChart && (
+  <>
+    <div
+      className="sizechart-overlay"
+      onClick={() => {
+        setShowSizeChart(false);
+        // remove body lock if you add it (see below)
+        document.body.classList.remove('modal-open');
+      }}
+      aria-hidden="true"
+    />
+    <div
+      className="sizechart-modal"
+      role="dialog"
+      aria-modal="true"
+      onClick={(e) => e.stopPropagation()} // prevent overlay click from closing
+    >
+      <button
+        type="button"
+        className="sizechart-close"
+        aria-label="Close size chart"
+        onClick={() => {
+          setShowSizeChart(false);
+          document.body.classList.remove('modal-open');
+        }}
+        >
+        ✕
+        </button>
+
+        <img
+        src={imageUrl(sizeChartImage)}
+        alt="Size Chart"
+        />
+         </div>
+         </> 
+      )}
+          
+            <div
+         className="cursor-pointer"
+         onClick={() => setShowSizeChart(true)}
+         > 
+         <img className="w-[8%]" src={imageUrl("https://res.cloudinary.com/dgnevjqr6/image/upload/v1769093437/sizeicon_zbespl.png")} /><p className="text-[#808080]"  style={{fontSize:"0.9rem"}}>Size Chart</p>
+         
+          </div>
+          
+
+             
+
+          </div>
+
+          {/* actions */}
+
+          {/* extra info 
+          <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-600 mb-8">
+            <p><strong>Product ID:</strong> {product.product_id}</p>
+            <p><strong>Added:</strong> {product.createdAt ? new Date(product.createdAt).toLocaleDateString() : "—"}</p>
+            <p><strong>Last updated:</strong> {product.updatedAt ? new Date(product.updatedAt).toLocaleDateString() : "—"}</p>
+            <p><strong>Variant:</strong> {selectedVariant ? `${selectedVariant.size} — ₹${(selectedVariant.sell_price ?? selectedVariant.mrp ?? "N/A").toLocaleString()}` : "—"}</p>
+          </div>*/}
+        </div>
+      </div>
+
+      {/* Similar Products */}
+<div className="similar-prodcuts">
+  <h2 className="text-2xl text-center font-bold text-[#001f3f] mb-4">Similar Products</h2>
+  {loadingSimilar ? (
+    <div className="text-gray-600">Loading similar products...</div>
+  ) : similarProducts.length === 0 ? (
+    <div className="text-gray-500">No similar products found.</div>
+  ) : (
+    <Swiper
+      navigation
+      modules={[Navigation]}
+      spaceBetween={25}   // matches your current inline style gap: "25px"
+      slidesPerView={4}
+      breakpoints={{
+        320: { slidesPerView: 2, spaceBetween: 8 },
+        640: { slidesPerView: 2, spaceBetween: 8 },
+        768: { slidesPerView: 2, spaceBetween: 8 },
+        1024: { slidesPerView: 4, spaceBetween: 25 },
+      }}
+      slidesOffsetBefore={0}
+      slidesOffsetAfter={0}
+      className="mySwiper w-[97%]"
+    >
+      {similarProducts.slice(0, 4).map((sp) => {
+        const pid = sp.product_id ?? extractMongoIdString(sp._id);
+        const img =
+          sp.images && sp.images.length ? imageUrl(sp.images[0]) : "";
+        const variant = sp.cheapestVariant ?? sp.variants?.[0] ?? null;
+        const price =
+          variant?.sell_price ??
+          variant?.mrp ??
+          sp.sell_price ??
+          sp.mrp ??
+          null;
+        const mrp = variant?.mrp ?? sp.mrp ?? null;
+        return (
+          <SwiperSlide key={pid}>
+            <Link
+              to={`/product/${encodeURIComponent(pid)}`}
+              className="rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow no-underline text-current"
+            >
+              <div className="aspect-square bg-gray-100 overflow-hidden">
+                {img ? (
+                  <img
+                    src={imageUrl(img)}
+                    alt={sp.product_name || pid}
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                    No Image
+                  </div>
+                )}
+              </div>
+              <div className="p-3">
+                <div
+                  className="similarproduct-name text-[#001f3f] font-semibold text-center line-clamp-2 h-10"
+                  style={{ fontWeight: 400 }}
+                >
+                  {sp.product_name || pid}
+                </div>
+                <div className="mt-1 flex justify-center items-baseline gap-[1%] ">
+
+                <div
+                    className="similarproduct-price text-[#001f3f]  font-bold"
+                    style={{ fontWeight: 400, fontSize: "1.5rem" }}
+                  >
+                    {price !== null
+                      ? `₹${Number(price).toLocaleString()}`
+                      : "N/A"}
+                  </div>
+                  {mrp && mrp !== price && (
+                    <div className="similarproduct-mrp text-xs text-gray-500 line-through">
+                      ₹{Number(mrp).toLocaleString()}
+                    </div>
+                  )}
+
+                  {mrp && mrp > price && (
+                    <div className="ml-[1%] text-red-600 font-semibold text-[#016B00] visited:text-[#001f3f]">
+                      ({Math.round(((mrp - price) / mrp) * 100)}% OFF)
+                    </div>
+                  )}
+                </div>
+<div className="view-detail flex items-center justify-center space-y-4 mb-[10%] mt-[5%] ">
+  {/* View Details button */}
+  <PrimaryButton
+    onClick={() => setShowBottomActions(true)}
+    className="w-[50%]  py-3"
+  >
+    View Details
+  </PrimaryButton>
+</div>
+
+{/* Bottom action bar */}
+<div className={`bottom-actions ${showBottomActions ? "visible" : ""}`}>
+  <div className="inner">
+    <PrimaryButton
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        addToCart({
+          id: product.product_id ?? extractMongoIdString(product._id),
+          name: product.product_name,
+          price: displayPrice,
+          image: product.images?.[0] ?? "",
+          size: selectedVariant?.size ?? null,
+        });
+      }}
+      className="flex-1 py-3"
+    >
+      Add to Cart
+    </PrimaryButton>
+
+    <PrimaryButton
+      type="button"
+      onClick={goToCheckout}
+      className="flex-1 py-3 bg-green-600 hover:bg-green-700"
+    >
+      Checkout
+    </PrimaryButton>
+
+    {/* Close button */}
+    <button
+      onClick={() => setShowBottomActions(false)}
+      className="ml-3 px-3 py-2 rounded-md text-sm text-slate-600 hover:text-slate-900"
+      aria-label="Close"
+    >
+      ✕
+    </button>
+  </div>
+</div>
+
+                  
+                </div>
+            </Link>
+          </SwiperSlide>
+        );
+      })}
+    </Swiper>
+  )}
+</div>
+    </div>
+  );
+}
