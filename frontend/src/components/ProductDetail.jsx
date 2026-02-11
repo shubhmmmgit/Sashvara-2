@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { imageUrl } from '../utils/imageUrl';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Thumbs, FreeMode,Navigation } from "swiper/modules";
+import TrustBadges from "./TrustBadge";
 
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
@@ -640,7 +641,10 @@ export default function ProductDetail() {
            
           </div>
            </div>
+         <div>  
+           <TrustBadges/>
 
+           </div>
           {/* specs grid */}
           <div id="product-params" className="grid grid-cols-1 gap-4">
             <div id="category" className=" bg-white p-3 rounded-lg ">

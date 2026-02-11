@@ -9,7 +9,6 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { IoWalletSharp } from "react-icons/io5";
 import { MdPayment } from "react-icons/md";
 import { imageUrl } from "../utils/imageUrl";
-import TrustBadges from "./TrustBadge";
 
 
 export default function Checkout() {
@@ -721,7 +720,7 @@ rzp.open();
         </div>
         
       </div>
-      <TrustBadges/>
+      
     </div>
   );
 }

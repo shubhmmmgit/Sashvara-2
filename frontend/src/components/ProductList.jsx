@@ -121,6 +121,7 @@ const normalizeProduct = (raw) => {
   };
 };
 
+
 /* ---------- Component ---------- */
 
 export default function ProductList({ 
@@ -272,31 +273,30 @@ export default function ProductList({
       )}
       
       <div id="searchResult" className="grid gap-6 grid-cols-4  w-[97%] ">
-        {items.map((p, index) =>  (
+        {items.map((p, index) =>  {
           <Link
+            
             key={p.id ?? p.product_id}
             to={`/product/${encodeURIComponent(p.product_id ?? p.id ?? "")}`}
-            className="block group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow no-underline hover:no-underline"
-          >
+            className="block group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow no-underline hover:no-underline"> 
             <div id="productImage-List" className="w-full h-40 aspect-[3/4] bg-gray-100 overflow-hidden flex items-center justify-center ml-[10%]">
               {p.main_image ? (
               <img
-  src={imageUrl(p.main_image, { w: 800, q: 80, dpr: "auto" })}
-  srcSet={`
-    ${imageUrl(p.main_image, { w: 320, q: 70, dpr: "auto" })} 320w,
-    ${imageUrl(p.main_image, { w: 480, q: 75, dpr: "auto" })} 480w,
-    ${imageUrl(p.main_image, { w: 720, q: 78, dpr: "auto" })} 720w,
-    ${imageUrl(p.main_image, { w: 1024, q: 80, dpr: "auto" })} 1024w,
-    ${imageUrl(p.main_image, { w: 1600, q: 85, dpr: "auto" })} 1600w
-  `}
-  sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 300px"
-  alt={p.name}
-  width="400"            // intrinsic width to avoid CLS (see below)
-  height="600"           // intrinsic height matching aspect (or use aspect-ratio in CSS)
-  loading="lazy"
-  decoding="async"
-  className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
- />
+              src={imageUrl(p.main_image, { w: 800, q: 80, dpr: "auto" })}
+              srcSet={`
+              ${imageUrl(p.main_image, { w: 320, q: 70, dpr: "auto" })} 320w,
+              ${imageUrl(p.main_image, { w: 480, q: 75, dpr: "auto" })} 480w,
+              ${imageUrl(p.main_image, { w: 720, q: 78, dpr: "auto" })} 720w,
+              ${imageUrl(p.main_image, { w: 1024, q: 80, dpr: "auto" })} 1024w,
+              ${imageUrl(p.main_image, { w: 1600, q: 85, dpr: "auto" })} 1600w
+             `}
+             sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 300px"
+             alt={p.name}
+             width="400"            // intrinsic width to avoid CLS (see below)
+             height="600"           // intrinsic height matching aspect (or use aspect-ratio in CSS)
+             loading="lazy"
+             decoding="async"
+             className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"/>
               ) : (
                 <div className="text-gray-400">📦</div>
               )}
@@ -378,7 +378,7 @@ export default function ProductList({
                   
                 </div>
           </Link>
-        ))}
+   })}
 
         
       </div>   

@@ -25,6 +25,7 @@ const productSchema = new Schema(
     category: { type: String, required: true, trim: true },
     colour: { type: String, trim: true },
     gender: { type: String, required: true, trim: true, lowercase: true },
+    showUrgency: { type: Boolean, default: false },
     images: [{ type: String, trim: true }],
     variants: {
       type: [variantSchema],

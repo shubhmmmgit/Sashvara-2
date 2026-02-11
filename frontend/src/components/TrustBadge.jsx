@@ -24,7 +24,7 @@ const badges = [
 
 export default function TrustBadges() {
   return (
-    <section className="trustBadgeSection w-[25%]  bg-[#F7F7F2] ml-[36%] py-6">
+    <section className="trustBadgeSection w-full py-6">
       <h3 className="badgeHeading text-center text-lg font-semibold text-[#001f3f] mb-4">
         Shop With Confidence
       </h3>

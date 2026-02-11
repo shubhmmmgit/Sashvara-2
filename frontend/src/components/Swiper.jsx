@@ -77,6 +77,10 @@ const normalizeProduct = (p) => {
   const displayName = namePick.value ? String(namePick.value).trim() : "Unnamed product";
 
   const variants = collectVariants(p);
+  const stock =
+  variants?.[0]?.stock ??
+  p?.variants?.[0]?.stock ??
+  0;
   let cheapest = null;
   if (variants.length) {
     cheapest = variants.reduce((a, b) =>
@@ -105,6 +109,8 @@ const normalizeProduct = (p) => {
     displayMrp,
     images,
     main_image,
+    stock,
+    showUrgency: p.showUrgency ?? false,
     raw: p,
   };
 };
@@ -252,7 +258,7 @@ export default function HomeSlider({
 
   if (error) return <div className="py-8 text-center text-red-600">{error}</div>;
   if (!items.length) return <div className="py-8 text-center text-gray-600"></div>;
-
+  
   return (
     <section className="product-section py-6 w-full">
       <div className="product-container w-full px-4 border-b-2 border-[#808080]">
@@ -273,10 +279,14 @@ export default function HomeSlider({
           slidesOffsetAfter={0}
           className="mySwiper h-[] w-[97%]"
         >
-          {items.map((p) => (
+          {items.map((p) => {
+              const urgencyText = p.showUrgency ? "Limited Stock – Few Left" : null;
+
+             return(
             <SwiperSlide key={p.id ?? p.product_id}>
               <Link to={`/product/${p.product_id ?? ""}`} className="block group no-underline hover:no-underline">
                 <div className="product-image flex-shrink-0 w-full aspect-[3/4] object-cover object-center bg-gray-100 rounded-lg overflow-hidden">
+                  
                   {p.main_image ? (
                     <img
                       src={p.main_image}
@@ -300,12 +310,25 @@ export default function HomeSlider({
                      
                     </div> {p.displayMrp != null && <div className="text-xs text-[#001f3f] line-through">₹{Number(p.displayMrp).toLocaleString()}</div>}
                     {p.displayMrp != null && p.displayPrice != null && (
+                      
                       <div className="ml-[1%] text-red-600 font-semibold text-[#016B00] visited:text-[#016B00]">({Math.round(((p.displayMrp - p.displayPrice) / p.displayMrp) * 100)}% OFF)</div>
+                      
                     )}
+                   
+                   
+                    
+                  </div> 
+                   <div className=" flex text-center min-h-[20px]">    
+                        {urgencyText && (
+                <div className="urgencyText text-xs text-[#E32500] ml-[33%] px-2 py-1 rounded font-semibold shadow-md ">
+                   {urgencyText}
                   </div>
-
-                  <div className="view-detail flex items-center justify-center space-y-4 mb-[15%]">
-                    <PrimaryButton onClick={() => setShowBottomActions(true)} className="w-[70%] py-3">
+                   )         }  </div>
+                    
+                  <div className="view-detail flex items-center justify-center space-y-4 mb-[15%] mt-[10%] ">
+                
+            
+                   <PrimaryButton onClick={() => setShowBottomActions(true)} className="w-[70%] py-3">
                       View Details
                     </PrimaryButton>
                   </div>
@@ -328,7 +351,9 @@ export default function HomeSlider({
                 </div>
               </Link>
             </SwiperSlide>
-          ))}
+            );
+
+          })}
         </Swiper>
 
         {/* View All button */}
