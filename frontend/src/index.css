@@ -2816,6 +2816,17 @@ footer#site-footer .container {
      .urgencyText{
       margin-left: 8%;
      }
+     .reviewVideosSection{
+      width: 50%;
+      margin-left: 50%;
+      margin-top: 100%;
+     }
+     .reviewVideo{
+      width: 130%;
+      margin-left: 0;
+      margin-top: 2%;
+      border-radius: 8px;
+     }
   }
 
   

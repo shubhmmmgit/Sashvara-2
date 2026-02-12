@@ -18,7 +18,7 @@ import { imageUrl } from '../utils/imageUrl';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Thumbs, FreeMode,Navigation } from "swiper/modules";
 import TrustBadges from "./TrustBadge";
-
+import ReviewVideo from "./ReviewVideo";
 
 const BACKEND_HOST = import.meta.env.VITE_API_HOST || "https://sashvara-2.onrender.com";
 const BRAND = "#001f3f";
@@ -727,6 +727,12 @@ export default function ProductDetail() {
             <p><strong>Variant:</strong> {selectedVariant ? `${selectedVariant.size} — ₹${(selectedVariant.sell_price ?? selectedVariant.mrp ?? "N/A").toLocaleString()}` : "—"}</p>
           </div>*/}
         </div>
+        {product?.reviewVideos?.length > 0 && (
+  <ReviewVideo
+    videoUrl={product.reviewVideos[0].videoUrl}
+    thumbnail={product.reviewVideos[0].thumbnail}
+  />
+)}
       </div>
 
       {/* Similar Products */}
@@ -870,6 +876,7 @@ export default function ProductDetail() {
       })}
     </Swiper>
   )}
+
 </div>
     </div>
   );

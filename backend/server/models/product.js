@@ -15,7 +15,13 @@ const variantSchema = new Schema(
   },
   { _id: true }
 );
-
+const reviewVideoSchema = new Schema(
+  {
+    videoUrl: { type: String, required: true, trim: true },
+    thumbnail: { type: String, trim: true },
+  },
+  { _id: false }
+);
 /* ---------------------- Product Schema ---------------------- */
 const productSchema = new Schema(
   {
@@ -26,6 +32,10 @@ const productSchema = new Schema(
     colour: { type: String, trim: true },
     gender: { type: String, required: true, trim: true, lowercase: true },
     showUrgency: { type: Boolean, default: false },
+    reviewVideos: {
+      type: [reviewVideoSchema],
+      default: [],
+    },
     images: [{ type: String, trim: true }],
     variants: {
       type: [variantSchema],
