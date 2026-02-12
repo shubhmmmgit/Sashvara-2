@@ -273,7 +273,7 @@ export default function ProductList({
       )}
       
       <div id="searchResult" className="grid gap-6 grid-cols-4  w-[97%] ">
-        {items.map((p, index) =>  {
+        {items.map((p, index) =>  (
           <Link
             
             key={p.id ?? p.product_id}
@@ -378,7 +378,7 @@ export default function ProductList({
                   
                 </div>
           </Link>
-   })}
+   ))}
 
         
       </div>   
