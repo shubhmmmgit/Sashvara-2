@@ -609,9 +609,10 @@ async function applyCouponServer() {
 
             {/* Discount Code */}
             <div className="mb-6 space-y-[5%]">
-              <label id="discountlabel" htmlFor="discountCode" className="block text-sm font-medium text-gray-700 mb-1 ml-[2%]">
-                Discount code or gift card
+              <label id="discountlabel" htmlFor="discountCode" className="block text-sm font-medium text-[#016B00] mb-1 ml-[2%]">
+                APPLY COUPON-"LETSTRYIT"
               </label>
+              
               <div id="discountField" className="flex gap-[5%] mb-[3%] ml-[2%] ">
                 <input
                   type="text"
@@ -619,10 +620,11 @@ async function applyCouponServer() {
                   name="discountCode"
                   value={formData.discountCode}
                   onChange={handleInputChange}
-                  className="w-full border border-gray-300  rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
+                  className="w-full border border-gray-300 text-[#016B00] rounded-md focus:outline-none focus:ring-2 focus:ring-[#27ADF5] focus:border-transparent"
                   style={{ borderRadius: "5px", minHeight: "35px" }}
-                  placeholder="Enter discount code"
+                  placeholder="Enter discount code- LETSTRYIT"
                 />
+                
                 <PrimaryButton
                   type="button"
                   id="applyButton"
