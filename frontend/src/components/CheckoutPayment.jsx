@@ -158,6 +158,14 @@ export default function CheckoutPayment() {
     else if (value === "cod") newShipping = 100;
     else if (value === "partialcod") newShipping = 100;
     setShippingCost(newShipping);
+
+    // Clear coupon if switching away from UPI
+    if (value !== "upi" && appliedCoupon?.code === "LETSTRYIT") {
+      setAppliedCoupon(null);
+      setDiscountAmount(0);
+      setFormData(prev => ({ ...prev, discountCode: "" }));
+      toast("Coupon removed (valid only for UPI)", { position: "top-center" });
+    }
   }
 
   // handle coupon code changes
@@ -168,7 +176,7 @@ export default function CheckoutPayment() {
       setAppliedCoupon(null);
       setDiscountAmount(0);
     }
-    return; // stop here so we don’t run the generic update below
+    return;
   }
 
   // generic update for all other fields
@@ -295,7 +303,7 @@ const handleSubmit = async (e) => {
         return;
       }
       if (!window.Razorpay) {
-        toast.error("Payment SDK not loaded", { position: "top-center" });
+        toast.error("Payment system is loading. Please wait a moment and try again.", { position: "top-center" });
         return;
       }
 
@@ -392,7 +400,16 @@ async function applyCouponServer() {
     return toast.error("Invalid coupon code", { position: "top-center" });
   }
 
-  // Check for browser
+  // ✅ CHECK: Only allow for UPI payment method
+  if (formData.paymentMethod !== "upi") {
+    setDiscountAmount(0);
+    setAppliedCoupon(null);
+    return toast.error("Coupon valid only for UPI payments", {
+      position: "top-center",
+    });
+  }
+
+  // Check if already used
   if (localStorage.getItem(USED_KEY)) {
     setDiscountAmount(0);
     setAppliedCoupon(null);
@@ -401,7 +418,7 @@ async function applyCouponServer() {
     });
   }
 
-  // Apply flat ₹100 
+  // Apply flat ₹100 discount
   const discount = Math.min(100, subtotal);
 
   setDiscountAmount(discount);
@@ -446,7 +463,33 @@ async function applyCouponServer() {
     };
   }, []);
 
+  // Add this useEffect near the top of your component, after your other useEffects
+useEffect(() => {
+  // Load Razorpay SDK
+  const script = document.createElement('script');
+  script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+  script.async = true;
+  script.onload = () => {
+    console.log('Razorpay SDK loaded successfully');
+  };
+  script.onerror = () => {
+    console.error('Failed to load Razorpay SDK');
+    toast.error('Payment system failed to load. Please refresh the page.', {
+      position: 'top-center'
+    });
+  };
+  
+  // Only add if not already present
+  if (!document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')) {
+    document.head.appendChild(script);
+  }
 
+  // Cleanup function
+  return () => {
+    // Optional: remove script on unmount if needed
+    // script.remove();
+  };
+}, []);
  
   return (
     <div className="paymentCheckout min-h-screen flex justify-center bg-[#fff] py-8">
