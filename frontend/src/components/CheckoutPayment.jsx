@@ -144,9 +144,13 @@ export default function CheckoutPayment() {
  */}
 
   
-  const totalpayupi = subtotal + 50;
-  const totalpaycod = subtotal + 70;
-  const totalpayPartial = subtotal * 0.25 + 100;
+const totalpayupi = Math.max(0, subtotal + 50 - (discountAmount || 0));
+const totalpaycod = Math.max(0, subtotal + 70 - (discountAmount || 0));
+const totalpayPartial = Math.max(
+  0,
+  subtotal * 0.25 + 100 - (discountAmount || 0)
+);
+
   const total =
   formData.paymentMethod === "upi"
     ? totalpayupi
