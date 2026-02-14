@@ -143,10 +143,18 @@ export default function CheckoutPayment() {
 }, [formData.discountCode, subtotal]);
  */}
 
-  const total = Math.max(0, subtotal + shippingCost - (discountAmount || 0));
+  
   const totalpayupi = subtotal + 50;
   const totalpaycod = subtotal + 70;
   const totalpayPartial = subtotal * 0.25 + 100;
+  const total =
+  formData.paymentMethod === "upi"
+    ? totalpayupi
+    : formData.paymentMethod === "partialcod"
+    ? totalpayPartial
+    : formData.paymentMethod === "cod"
+    ? totalpaycod
+    : Math.max(0, subtotal - (discountAmount || 0));
 
   const handleInputChange = (e) => {
   const { name, value, type, checked } = e.target;
