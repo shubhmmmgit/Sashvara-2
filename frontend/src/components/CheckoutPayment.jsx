@@ -154,9 +154,9 @@ export default function CheckoutPayment() {
   // handle payment method changes
   if (name === "paymentMethod") {
     let newShipping = 0;
-    if (value === "upi") newShipping = 30;
-    else if (value === "cod") newShipping = 70;
-    else if (value === "partialcod") newShipping = 45;
+    if (value === "upi") newShipping = 50;
+    else if (value === "cod") newShipping = 100;
+    else if (value === "partialcod") newShipping = 100;
     setShippingCost(newShipping);
   }
 
