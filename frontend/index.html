@@ -62,7 +62,8 @@
 
   <!-- Analytics (idle time) -->
   <script>
-    requestIdleCallback(() => {
+  (function () {
+    const loadAnalytics = () => {
       const s = document.createElement("script");
       s.src = "https://www.googletagmanager.com/gtag/js?id=G-RDPTT5M08H";
       s.async = true;
@@ -72,7 +73,15 @@
       function gtag(){ dataLayer.push(arguments); }
       gtag("js", new Date());
       gtag("config", "G-RDPTT5M08H");
-    });
-  </script>
+    };
+
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(loadAnalytics);
+    } else {
+      setTimeout(loadAnalytics, 1500); // Safari fallback
+    }
+  })();
+</script>
+
 </body>
 </html>
