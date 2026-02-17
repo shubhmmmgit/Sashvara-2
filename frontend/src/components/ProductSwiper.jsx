@@ -1,6 +1,6 @@
 // src/components/ProductSwiper.jsx
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination } from "swiper";
 import ProductCard from "./ProductCard";
 
 import "swiper/css";

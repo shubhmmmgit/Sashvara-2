@@ -16,7 +16,7 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import toast from "react-hot-toast";
 import { imageUrl } from '../utils/imageUrl';
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Thumbs, FreeMode,Navigation } from "swiper/modules";
+import { Thumbs, FreeMode,Navigation } from "swiper";
 import TrustBadges from "./TrustBadge";
 import ReviewVideo from "./ReviewVideo";
 

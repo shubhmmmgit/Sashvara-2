@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Thumbs, FreeMode, Pagination  } from "swiper/modules";
+import { Thumbs, FreeMode, Pagination } from "swiper";
 import { imageUrl } from "../utils/imageUrl";
 import "swiper/css";
 import "swiper/css/pagination";
