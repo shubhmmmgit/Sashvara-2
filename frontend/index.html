@@ -54,27 +54,28 @@
  
 
   <!-- Analytics (idle time) -->
-  <script>
-  (function () {
-    const loadAnalytics = () => {
-      const s = document.createElement("script");
-      s.src = "https://www.googletagmanager.com/gtag/js?id=G-RDPTT5M08H";
-      s.async = true;
-      document.head.appendChild(s);
+<script>
+(function () {
+  const loadAnalytics = () => {
+    const s = document.createElement("script");
+    s.src = "https://www.googletagmanager.com/gtag/js?id=G-RDPTT5M08H";
+    s.async = true;
+    document.head.appendChild(s);
 
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
-      gtag("js", new Date());
-      gtag("config", "G-RDPTT5M08H");
-    };
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-RDPTT5M08H");
+  };
 
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(loadAnalytics);
-    } else {
-      setTimeout(loadAnalytics, 1500); // Safari fallback
-    }
-  })();
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(loadAnalytics);
+  } else {
+    setTimeout(loadAnalytics, 1500);
+  }
+})();
 </script>
+
 
 </body>
 </html>

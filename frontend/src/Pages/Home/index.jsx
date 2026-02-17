@@ -24,9 +24,11 @@ const Home = () => {
   const [showSliders, setShowSliders] = useState(false);
 
 useEffect(() => {
-  requestIdleCallback
-    ? requestIdleCallback(() => setShowSliders(true))
-    : setTimeout(() => setShowSliders(true), 300);
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(() => setShowSliders(true));
+  } else {
+    setTimeout(() => setShowSliders(true), 300);
+  }
 }, []);
 
 useEffect(() => {
