@@ -10,6 +10,11 @@
     "preview": "vite preview",
     "server": "node server/index.js"
   },
+   "browserslist": [
+    "last 2 versions",
+    "iOS >= 12",
+    "Safari >= 11"
+  ],
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.0.0",
     "@headlessui/react": "^2.2.7",
@@ -55,4 +60,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC"
+  
 }
