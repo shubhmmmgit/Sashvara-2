@@ -66,62 +66,9 @@ function App() {
     trackVisitor();
   }, []);
   return (
-    <BrowserRouter>
-     
-      <div className="flex flex-col min-h-screen">
-        {/* Header always at top */}
-        <Header />
-
-        {/* Page content */}
-        <main className="flex-1 min-h-[200px] min-w-[400px]">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/my-orders" element={<MyOrders />} />
-            <Route path="/products" element={<ProductList />} />
-            <Route path="/search" element={<ProductList />} />
-            <Route
-              path="/product/:id"
-              element={
-                <ErrorBoundary>
-                  <ProductDetail />
-                </ErrorBoundary>
-              }
-            />
-
-            
-            <Route
-              path="/cart"
-              element={
-                <CartDrawer
-                  products={cartItems}
-                  setProducts={setCartItems}
-                  open={true}
-                  setOpen={() => {}} 
-                  asPage={true}    
-                />
-              }
-            />
-             <Route path="/checkout" element={<Checkout />} />
-             <Route path="/checkout/payment" element={<CheckoutPayment />} />
-             <Route path="/collections/:collection" element={<Collection />} />
-             <Route path="/refund-policy" element={<RefundPolicy />} />
-             <Route path="/shipping-policy" element={<ShippingPolicy/>} />
-             <Route path="/aboutus" element={<AboutUs />} />
-             <Route path="/women" element={<Women />} />
-             <Route path="/men" element={<Men />} />
-             <Route path="/best-sellers" element={<BestSellers />} />
-             <Route path="/new-arrivals" element={<NewArrivals />} /> 
-
-            
-          </Routes>
-           <Toaster position="top-right" reverseOrder={false} />
-           
-        </main>
-
-        {/* Footer always at bottom */}
-        <Footer />
-      </div>
-    </BrowserRouter>
+     <div style={{color:"black", fontSize:"40px"}}>
+      SAFARI TEST WORKING
+    </div>
   );
 }
 
